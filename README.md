@@ -5,7 +5,7 @@
  contoh : 111215_tambahTableABC.sql
  Jika kalian berbaik hati, share juga data yang kalian pakai disana dengan format yang sama. 
 
-Kalau mau di merge :  silakan kontak Raymond atau Ste.
+Kalau mau di merge :  silakan kontak Raymond.
 
 ## PHPStorm ##
 Bagi yang mau pake PHPStorm buat autocomplete dan pengaturan git. Contact Ste.

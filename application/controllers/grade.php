@@ -57,7 +57,6 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  */
 class Grade extends CI_Controller {
 
-
     /**
      * Function : __construct()
      * dipanggil saat setiap kali inisialisasi controller Grade
