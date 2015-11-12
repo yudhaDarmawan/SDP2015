@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
+-- version 4.3.11
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2015 at 05:18 AM
--- Server version: 5.6.21
--- PHP Version: 5.6.3
+-- Generation Time: Nov 12, 2015 at 04:07 PM
+-- Server version: 5.6.24
+-- PHP Version: 5.6.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -29,16 +29,20 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `beasiswa` (
   `id` varchar(15) NOT NULL,
   `informasi_beasiswa_nama_beasiswa` varchar(30) NOT NULL,
-  `mahasiswa_nrp` varchar(9) NOT NULL
+  `mahasiswa_nrp` varchar(9) NOT NULL,
+  `tanggal_create` date NOT NULL,
+  `status` varchar(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `beasiswa`
 --
 
-INSERT INTO `beasiswa` (`id`, `informasi_beasiswa_nama_beasiswa`, `mahasiswa_nrp`) VALUES
-('BPP201311020002', 'Sosial Ekonomi', '213116270'),
-('BSP201311020001', 'PMB', '213116256');
+INSERT INTO `beasiswa` (`id`, `informasi_beasiswa_nama_beasiswa`, `mahasiswa_nrp`, `tanggal_create`, `status`) VALUES
+('BPP201508010001', 'Prestasi', '213116256', '2015-08-01', '1'),
+('BPP201508010002', 'Prestasi', '213116267', '2015-08-01', '1'),
+('BPP201508010003', 'Sosial Ekonomi', '213116270', '2015-08-01', '1'),
+('BPP201508010004', 'Sosial Ekonomi', '213180292', '2015-08-01', '1');
 
 -- --------------------------------------------------------
 
@@ -84,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `calon_mahasiswa` (
   `pekerjaan_wali` varchar(30) DEFAULT NULL,
   `skhun` varchar(100) DEFAULT NULL,
   `ijazah` varchar(100) DEFAULT NULL,
-  `informasi_kurikulum_id` varchar(7) DEFAULT NULL,
+  `informasi_kurikulum_id` varchar(8) DEFAULT NULL,
   `tanggal_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -94,10 +98,23 @@ CREATE TABLE IF NOT EXISTS `calon_mahasiswa` (
 --
 
 INSERT INTO `calon_mahasiswa` (`nomor_registrasi_id`, `email`, `password`, `nama`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `kewarganegaraan`, `agama`, `alamat`, `provinsi`, `kota`, `kodepos`, `nomor_hp`, `foto`, `rapor`, `nilai_mat`, `nilai_inggris`, `nilai_rata_rata`, `akte_kelahiran`, `kartu_keluarga`, `nama_sekolah`, `alamat_sekolah`, `provinsi_sekolah`, `kota_sekolah`, `kodepos_sekolah`, `nomor_telp_sekolah`, `relasi`, `nama_wali`, `alamat_wali`, `provinsi_wali`, `kota_wali`, `kodepos_wali`, `nomor_telp_wali`, `pekerjaan_wali`, `skhun`, `ijazah`, `informasi_kurikulum_id`, `tanggal_create`, `status`) VALUES
-('32gh56', 'asdasd@gmail.com', '123456', 'Christian Limanto', 'L', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2015-11-11 23:38:23', 1),
-('jktyi6', 'qweqwe@gmail.com', '321321', 'Andre Gossidhy', 'L', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2015-11-11 23:39:26', 1),
-('sdg23r', 'zxczcx@gmail.com', 'asdasd', 'Cynthia Wangsawinata', 'P', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2015-11-11 23:40:07', 1),
-('w45h42', 'dandan@gmail.com', 'dandan', 'Daniel Kurniawan', 'L', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2015-11-11 23:41:19', 1);
+('12po09', 'raymondwongso@gmail.com', '123456', 'Raymond Wongso Hartanto', 'L', 'Surabaya', '1995-11-02', 'WNI', 'Buddha', 'Darmo Harapan Indah VI / WW12A', 'Jawa Timur', 'Surabaya', '60187', '08113192777', '', '', 0, 0, 0, '', '', 'SMAK Frateran', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, 'Go Ong Ka Kiat', 'Darmo Harapan Indah VI / WW12A', 'Jawa Timur', 'Surabaya', '60187', NULL, 'Wirausaha', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('a7i4r1', 'stefanietanujaya@gmail.com', '123456', 'Stefanie Tanujaya', 'P', 'Surabaya', '0000-00-00', 'WNI', 'Buddha', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', 'SMAK St. Louis', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, 'Wirausaha', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('d91o04', 'melanialani@gmail.com', '123456', 'Melania Laniwati', 'P', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('f6t75y', 'ivanderwilson@gmail.com', '123456', 'Ivander Wilson', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('fdse45', 'chinam@gmail.com', '123456', 'Chinam', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('fe56ty', 'cynthiawangsawinata@gmail.com', '123456', 'Cynthia Wangsawinata', 'P', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('fewq23', 'nancyyonata@gmail.com', '123456', 'Nancy Yonata', 'P', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('gty564', 'yudhadarmawan@gmail.com', '123456', 'Yudha Darmawan', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('jj876u', 'stefanuskurniawan@gmail.com', '123456', 'Stefanus Kurniawan', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('jjhy77', 'lukaskristanto@gmail.com', '123456', 'Lukas Kristanto', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('kikio0', 'angelineizumi@gmail.com', '123456', 'Angeline Izumi', 'P', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('kl09op', 'sugihartojohanes@gmail.com', '123456', 'Sugiharto Johanes', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('kli908', 'rickysaid@gmail.com', '123456', 'Ricky Said', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('qw5678', 'christianlimanto@gmail.com', '123456', 'Christian Limanto', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('wertiu', 'andregozzidhy@gmail.com', '123456', 'Andre Gozzidhy', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('wqw123', 'danielstelar@gmail.com', '123456', 'Daniel Stelar', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1),
+('zx45mn', 'daniel@gmail.com', '123456', 'Daniel', 'L', 'Surabaya', '0000-00-00', 'WNI', '', '', 'Jawa Timur', 'Surabaya', '', '', '', '', 0, 0, 0, '', '', '', NULL, 'Jawa Timur', 'Surabaya', NULL, NULL, NULL, '', '', 'Jawa Timur', 'Surabaya', '', NULL, '', NULL, NULL, 'S1INF131', '2015-11-12 20:45:54', 1);
 
 -- --------------------------------------------------------
 
@@ -133,13 +150,6 @@ CREATE TABLE IF NOT EXISTS `dispensasi` (
   `mahasiswa_nrp` varchar(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `dispensasi`
---
-
-INSERT INTO `dispensasi` (`id`, `nama_dispensasi`, `periode_cicilan`, `tanggal_batas`, `calon_mahasiswa_nomor_registrasi`, `mahasiswa_nrp`) VALUES
-('UPP201511030001', 'Dispensasi UPP - Undur', 0, '2015-11-30', '0', '213116270');
-
 -- --------------------------------------------------------
 
 --
@@ -163,7 +173,8 @@ CREATE TABLE IF NOT EXISTS `dosen` (
 
 INSERT INTO `dosen` (`nip`, `nama`, `nomor_telepon`, `email`, `password`, `kepala_jurusan_id`, `jumlah_sks_mengajar`, `status`) VALUES
 ('DO001', 'Budi Sutanto', NULL, 'budi@stts.edu', 'budibudi', NULL, 0, '1'),
-('DO002', 'Stefanie', NULL, 'ste@gmail.com', 'steste', NULL, 0, '1');
+('DO002', 'Stefanie', NULL, 'ste@gmail.com', 'steste', NULL, 0, '1'),
+('DO003', 'Jenny Ngo', '031654654', 'jennyngo@gmail.com', 'jngojngo', NULL, 20, '1');
 
 -- --------------------------------------------------------
 
@@ -290,15 +301,19 @@ CREATE TABLE IF NOT EXISTS `kelas` (
 --
 
 INSERT INTO `kelas` (`id`, `nama`, `mata_kuliah_id`, `ruangan_id`, `dosen_nip`, `hari`, `jam_mulai`, `persentase_uts`, `persentase_uas`, `persentase_tugas`, `tambahan_grade`, `status_konfirmasi`, `komentar_kajur`, `kelas_id`, `tahun_ajaran`, `tanggal_create`, `tanggal_update`, `status`) VALUES
-('K00001', '-', 'MK001', 'R0001', 'DO001', '1', '05:00:00', 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-10 20:47:36', '2015-11-10 20:47:36', 1),
-('K00002', '-', 'MK002', 'R0001', 'DO001', '2', '09:00:00', 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-10 20:47:36', '2015-11-10 20:47:36', 1),
-('K00003', '-', 'MK003', 'R0001', 'DO002', '1', '11:00:00', 30, 30, 40, 0, 1, '', NULL, 'GASAL 2014/2015', '2015-11-10 20:47:36', '2015-11-10 20:47:36', 1),
-('K00004', '-', 'MK004', 'R0001', 'DO001', '2', NULL, 30, 30, 40, 0, 1, '', NULL, 'GENAP 2013/2014', '2015-11-10 20:47:36', '2015-11-10 20:47:36', 1),
-('K00005', '-', 'MK005', 'R0001', 'DO001', '1', NULL, 30, 30, 40, 0, 2, '', NULL, 'GENAP 2013/2014', '2015-11-10 20:47:36', '2015-11-10 20:47:36', 1),
-('K00006', '-', 'MK006', 'R0001', NULL, NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-10 20:47:36', '2015-11-10 20:47:36', 1),
-('K00007', '-', 'MK007', 'R0001', NULL, NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-10 20:47:36', '2015-11-10 20:47:36', 1),
-('K00008', '-', 'MK008', 'R0001', NULL, NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-10 20:47:36', '2015-11-10 20:47:36', 1),
-('K00009', '-', 'MK009', 'R0001', NULL, NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-10 20:47:36', '2015-11-10 20:47:36', 1);
+('K00001', '-', 'MK001', 'R0001', 'DO001', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:56:10', '2015-11-12 21:56:10', 1),
+('K00002', '-', 'MK002', 'R0003', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:56:58', '2015-11-12 21:56:58', 1),
+('K00003', '-', 'MK003', 'R0008', 'DO003', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:57:39', '2015-11-12 21:57:39', 1),
+('K00004', '-', 'MK004', 'R0006', 'DO001', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:57:39', '2015-11-12 21:57:39', 1),
+('K00005', '-', 'MK005', 'R0004', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:58:53', '2015-11-12 21:58:53', 1),
+('K00006', '-', 'MK005', 'R0006', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:58:53', '2015-11-12 21:58:53', 1),
+('K00007', '-', 'MK007', 'R0007', 'DO003', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:59:24', '2015-11-12 21:59:24', 1),
+('K00008', '-', 'MK008', 'R0006', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:59:24', '2015-11-12 21:59:24', 1),
+('K00009', '-', 'MK009', 'R0004', 'DO003', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:59:56', '2015-11-12 21:59:56', 1),
+('K00010', '-', 'MK010', 'R0001', 'DO003', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 21:59:56', '2015-11-12 21:59:56', 1),
+('K00011', '-', 'MK011', 'R0009', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 22:00:53', '2015-11-12 22:00:53', 1),
+('K00012', '-', 'MK012', 'R0008', 'DO001', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 22:00:53', '2015-11-12 22:00:53', 1),
+('K00013', '-', 'MK013', 'R0005', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, '', '2015-11-12 22:01:10', '2015-11-12 22:01:10', 1);
 
 -- --------------------------------------------------------
 
@@ -319,13 +334,16 @@ CREATE TABLE IF NOT EXISTS `kelas_mahasiswa` (
 --
 
 INSERT INTO `kelas_mahasiswa` (`mahasiswa_nrp`, `kelas_id`, `mata_kuliah_id`, `status_ambil`, `nilai_id`) VALUES
-('213116256', 'K00001', 'MK001', 'A', 'N62560001'),
-('213116256', 'K00002', 'MK002', 'A', 'N62560002'),
-('213116256', 'K00003', 'MK003', 'A', 'N62560003'),
-('213116256', 'K00004', 'MK004', 'A', 'N62560004'),
-('213116270', 'K00005', 'MK005', 'A', 'N62700001'),
-('213116270', 'K00006', 'MK006', 'A', 'N62700002'),
-('213116270', 'K00009', 'MK009', 'A', 'N62700003');
+('213116256', 'K00001', 'MK001', 'Y', 'N62560001'),
+('213116256', 'K00002', 'MK002', 'Y', 'N62560002'),
+('213116256', 'K00003', 'MK003', 'Y', 'N62560003'),
+('213116256', 'K00004', 'MK004', 'Y', 'N62560004'),
+('213116256', 'K00012', 'MK012', 'Y', NULL),
+('213116256', 'K00013', 'MK013', 'Y', NULL),
+('213116270', 'K00005', 'MK005', 'Y', NULL),
+('213116270', 'K00006', 'MK006', 'Y', NULL),
+('213116270', 'K00007', 'MK007', 'Y', NULL),
+('213116270', 'K00008', 'MK008', 'Y', NULL);
 
 -- --------------------------------------------------------
 
@@ -418,10 +436,23 @@ CREATE TABLE IF NOT EXISTS `mahasiswa` (
 --
 
 INSERT INTO `mahasiswa` (`nrp`, `nomor_registrasi_id`, `email`, `password`, `nama`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `kewarganegaraan`, `status_sosial`, `agama`, `alamat`, `provinsi`, `kota`, `kodepos`, `nomor_hp`, `relasi`, `nama_wali`, `alamat_wali`, `provinsi_wali`, `kota_wali`, `nomor_telp_wali`, `pekerjaan_wali`, `status_perwalian`, `sks`, `ipk`, `informasi_kurikulum_id`, `status`) VALUES
-('213116178', 'jktyi6', 'qweqwe@gmail.com', '321321', 'Andre Gossidhy', 'L', 'Surabaya', '1995-03-03', 'WNI', 'Lajang', 'Kristen', 'Dukuh Kupang Timur XX/55', 'Jawa Timur', 'Surabaya', '65523', '0875322142', 'O', 'Lee Kum Kee', 'Semu 223 / 33', 'Jawa Timur', 'Surabaya', '085213131313', 'Wiraswasta', '0', 18, '0', 'S1INF132', 1),
-('213116193', '32gh56', 'asdasd@gmail.com', '123456', 'Christian Limanto', 'L', 'Surabaya', '1995-01-01', 'WNI', 'Lajang', 'Kristen', 'Ngagel Jaya Selatan 22-30', 'Jawa Timur', 'Surabaya', '60223', '08123456789', 'O', 'Budi Sutanto', 'Asem 22/33', 'Jawa Timur', 'Surabaya', '03175432445', 'Swasta', '0', 18, '0', 'S1INF131', 1),
-('213116195', 'sdg23r', 'zxczcx@gmail.com', '567906', 'Cynthia Wangsawinata', 'P', 'Surabaya', '1995-05-05', 'WNI', 'Lajang', 'Kristen', 'Semolowaru 123', 'Jawa Timur', 'Surabaya', '61122', '0852342155', 'O', 'Lee Kuan Yew', 'Karet 312', 'Jawa Timur', 'Surabaya', '0813213212', 'Wiraswasta', '0', 18, '0', 'S1INF131', 1),
-('213116200', 'w45h42', 'dandan@gmail.com', 'dandan', 'Daniel Kurniawan', 'L', 'Surabaya', '1995-07-07', 'WNI', 'Lajang', 'Kristen', 'Sukomanunggal X/5', 'Jawa Timur', 'Surabaya', '65234', '08123423422', 'O', 'Jack Ma', 'Sukomanunggal X/5', 'Jawa Timur', 'Surabaya', '08155232323', 'Wiraswasta', '0', 18, '0', 'S1INF132', 1);
+('213116176', 'fdse45', 'chinam@gmail.com', '123456', 'Chinam', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116178', 'wertiu', 'andregozzidhy@gmail.com', '123456', 'Andre Gozzidhy', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116181', 'kikio0', 'angelineizumi@gmail.com', '123456', 'Angeline Izumi', 'P', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116193', 'qw5678', 'christianlimanto@gmail.com', '123456', 'Christian Limanto', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116195', 'fe56ty', 'cynthiawangsawinata@gmail.com', '123456', 'Cynthia Wangsawinata', 'P', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116196', 'wqw123', 'danielstelar@gmail.com', '123456', 'Daniel Stelar', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116200', 'zx45mn', 'daniel@gmail.com', '123456', 'Daniel', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116230', 'f6t75y', 'ivanderwilson@gmail.com', '123456', 'Ivander Wilson', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116241', 'jjhy77', 'lukaskristanto@gmail.com', '123456', 'Lukas Kristanto', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116249', 'd91o04', 'melanialani@gmail.com', '123456', 'Melania Laniwati', 'P', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116256', '12po09', 'raymondwongso@gmail.com', '123456', 'Raymond Wongso Hartanto', 'L', 'Surabaya', '1995-11-02', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116261', 'kli908', 'rickysaid@gmail.com', '123456', 'Ricky Said', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116267', 'a7i4r1', 'stefanietanujaya@gmail.com', '123456', 'Stefanie Tanujaya', 'P', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116268', 'jj876u', 'stefanuskurniawan@gmail.com', '123456', 'Stefanus Kurniawan', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116270', 'kl09op', 'sugihartojohanes@gmail.com', '123456', 'Sugiharto Johanes', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213116278', 'gty564', 'yudhadarmawan@gmail.com', '123456', 'Yudha Darmawan', 'L', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1),
+('213180292', 'fewq23', 'nancyyonata@gmail.com', '123456', 'Nancy Yonata', 'P', 'Surabaya', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', 0, '0', 'S1INF131', 1);
 
 -- --------------------------------------------------------
 
@@ -446,15 +477,19 @@ CREATE TABLE IF NOT EXISTS `mata_kuliah` (
 --
 
 INSERT INTO `mata_kuliah` (`id`, `nama`, `deskripsi`, `semester`, `jumlah_sks`, `informasi_kurikulum_id`, `lulus_minimal`, `berpraktikum`, `status`) VALUES
-('MK001', 'Intro To Programming', 'ITP', 1, 3, 'S1INF131', 'C', 0, 1),
-('MK002', 'Bahasa Indonesia', 'BI', 1, 2, 'S1INF131', 'D', 0, 1),
-('MK003', 'Agama', 'AGAMA', 1, 2, 'S1INF131', 'D', 0, 1),
-('MK004', 'Internet dan World Wide Web', 'IWWW', 2, 3, 'S1INF131', 'C', 0, 1),
-('MK005', 'Database', 'DB', 2, 3, 'S1INF131', 'C', 1, 1),
-('MK006', 'Jaringan Komputer', 'JARKOM', 2, 3, 'S1INF131', 'C', 0, 1),
-('MK007', 'Pemrograman Visual', 'PV', 3, 3, 'S1INF131', 'C', 1, 1),
-('MK008', 'Pemrograman Aplikasi Internet', 'APLIN', 3, 3, 'S1INF131', 'C', 1, 1),
-('MK009', 'Pemrograman Citra Digital', 'MZ LUKMAN MZ LUKMAN', 4, 3, 'S1INF131', 'C', 0, 1);
+('MK001', 'Algoritma dan Programming', 'Alpro 1', 1, 3, 'S1INF131', 'C', 0, 1),
+('MK002', 'Intro to Prgoramming', 'ITP', 1, 3, 'S1INF131', 'C', 1, 1),
+('MK003', 'Internet dan World Wide Web', 'IWWW', 1, 3, 'S1INF131', 'C', 0, 1),
+('MK004', 'Intro to Information Technology', 'IIT', 1, 3, 'S1INF131', 'C', 0, 1),
+('MK005', 'Religion', 'Agama', 1, 3, 'S1INF131', 'C', 0, 1),
+('MK006', 'Indonesian Language', 'BI', 1, 3, 'S1INF131', 'D', 0, 1),
+('MK007', 'Algoritma dan Programming 2', 'Alpro 2', 2, 3, 'S1INF131', 'C', 0, 1),
+('MK008', 'Pemrograman Visual', 'PV', 2, 3, 'S1INF131', 'C', 1, 1),
+('MK009', 'Database', 'db', 2, 3, 'S1INF131', 'C', 1, 1),
+('MK010', 'Computer Network', 'Jarkom', 2, 3, 'S1INF131', 'D', 0, 1),
+('MK011', 'English', 'English', 2, 2, 'S1INF131', 'D', 0, 1),
+('MK012', 'Logic Mathematics', 'LogMat', 2, 2, 'S1INF131', 'D', 0, 1),
+('MK013', 'Mathematics', 'Mat', 2, 2, 'S1INF131', 'D', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -502,12 +537,23 @@ CREATE TABLE IF NOT EXISTS `nomor_registrasi` (
 --
 
 INSERT INTO `nomor_registrasi` (`id`, `status`) VALUES
-('2tg24b', 0),
-('32gh56', 1),
-('3v3v34', 0),
-('jktyi6', 1),
-('sdg23r', 1),
-('w45h42', 1);
+('12po09', 0),
+('a7i4r1', 0),
+('d91o04', 0),
+('f6t75y', 0),
+('fdse45', 0),
+('fe56ty', 0),
+('fewq23', 0),
+('gty564', 0),
+('jj876u', 0),
+('jjhy77', 0),
+('kikio0', 0),
+('kl09op', 0),
+('kli908', 0),
+('qw5678', 0),
+('wertiu', 0),
+('wqw123', 0),
+('zx45mn', 0);
 
 -- --------------------------------------------------------
 
@@ -546,12 +592,10 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
 --
 
 INSERT INTO `pembayaran` (`id`, `jumlah`, `tanggal_bayar`, `calon_mahasiswa_nomor_registrasi`, `mahasiswa_nrp`, `status`, `status_lihat`) VALUES
-('SKS201508100001', 3398000, '2015-10-08', '130126', '213116270', '1', '0'),
-('SKS201510100002', 3398000, '2015-08-07', '130126', '213116270', '1', '0'),
-('SKS201512100003', 2230000, '2015-12-07', '130126', '213116270', '0', '0'),
-('SPP201508100001', 3398000, '2015-08-02', '130126', '213116270', '1', '0'),
-('SPP201510100002', 3398000, '2015-10-04', '130126', '213116270', '1', '0'),
-('SPP201512100003', 2230000, '2015-12-06', '130126', '213116270', '0', '0');
+('UPP201508010001', 3300000, '2015-08-10', '', '213116256', '1', '0'),
+('UPP201508010002', 3300000, '2015-08-10', '', '213116270', '1', '0'),
+('UPP201508010003', 3300000, '2015-08-10', '', '213116268', '1', '0'),
+('UPP201510010001', 3300000, '2015-10-10', '', '213116256', '1', '0');
 
 -- --------------------------------------------------------
 
@@ -582,7 +626,15 @@ CREATE TABLE IF NOT EXISTS `ruangan` (
 --
 
 INSERT INTO `ruangan` (`id`, `nama`, `kapasitas`, `status`) VALUES
-('R0001', 'B100', 69, 1);
+('R0001', 'B100', 69, 1),
+('R0002', 'B301', 40, 1),
+('R0003', 'B302', 50, 1),
+('R0004', 'B303', 60, 1),
+('R0005', 'U101', 20, 1),
+('R0006', 'U102', 20, 1),
+('R0007', 'U301', 40, 1),
+('R0008', 'U302', 40, 1),
+('R0009', 'U303', 40, 1);
 
 -- --------------------------------------------------------
 
@@ -616,17 +668,57 @@ CREATE TABLE IF NOT EXISTS `tagihan` (
 --
 
 INSERT INTO `tagihan` (`id`, `jumlah`, `tanggal_batas`, `calon_mahasiswa_nomor_registrasi`, `mahasiswa_nrp`, `status`, `status_lihat`) VALUES
-('SKS201508100001', 1900000, '2015-08-10', '130126', '213116270', '1', '0'),
-('SKS201508100004', 1900000, '2015-08-10', '130127', '213116256', '1', '0'),
-('SKS201510100002', 2300000, '2015-10-10', '130126', '213116270', '1', '0'),
-('SKS201510100005', 2300000, '2015-10-10', '130127', '213116256', '1', '0'),
-('SKS201512100006', 1900000, '2015-12-10', '130127', '213116256', '0', '0'),
-('SPP201508100001', 1900000, '2015-08-10', '130126', '213116270', '1', '0'),
-('SPP201508100004', 1900000, '2015-08-10', '130127', '213116256', '1', '0'),
-('SPP201510100002', 2300000, '2015-10-10', '130126', '213116270', '1', '0'),
-('SPP201510100005', 2300000, '2015-10-10', '130127', '213116256', '1', '0'),
-('SPP201512100003', 1900000, '2015-12-10', '130126', '213116270', '0', '0'),
-('SPP201512100006', 1900000, '2015-12-10', '130127', '213116256', '0', '0');
+('UPP201508010001', 3300000, '2015-08-10', '', '213116256', '0', '0'),
+('UPP201508010002', 3300000, '2015-08-10', '', '213116270', '0', '0'),
+('UPP201508010003', 3300000, '2015-08-10', '', '213116268', '0', '0'),
+('UPP201510010001', 3300000, '2015-10-10', '', '213116256', '0', '0'),
+('UPP201510010002', 3300000, '2015-10-10', '', '213116270', '1', '0'),
+('UPP201510010003', 3300000, '2015-10-10', '', '213116268', '1', '0'),
+('UPP201512010001', 4800000, '2015-12-10', '', '213116256', '1', '0'),
+('UPP201512010002', 4800000, '2015-12-10', '', '213116270', '1', '0'),
+('UPP201512010003', 4200000, '2015-12-10', '', '213116268', '1', '0'),
+('XPP201510010001', 3300000, '2015-10-20', '', '213116268', '1', '0'),
+('XPP201510010002', 3300000, '2015-10-18', '', '213116270', '1', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` varchar(9) NOT NULL DEFAULT '',
+  `password` varchar(20) DEFAULT NULL,
+  `peran` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `password`, `peran`) VALUES
+('213116176', '123456', 'mahasiswa'),
+('213116178', '123456', 'mahasiswa'),
+('213116181', '123456', 'mahasiswa'),
+('213116193', '123456', 'mahasiswa'),
+('213116195', '123456', 'mahasiswa'),
+('213116196', '123456', 'mahasiswa'),
+('213116200', '123456', 'mahasiswa'),
+('213116230', '123456', 'mahasiswa'),
+('213116241', '123456', 'mahasiswa'),
+('213116249', '123456', 'mahasiswa'),
+('213116256', '123456', 'mahasiswa'),
+('213116261', '123456', 'mahasiswa'),
+('213116267', '123456', 'mahasiswa'),
+('213116268', '123456', 'mahasiswa'),
+('213116270', '123456', 'mahasiswa'),
+('213116278', '123456', 'mahasiswa'),
+('213180292', '123456', 'mahasiswa'),
+('BAU01', 'baubau1', 'karyawan'),
+('BAU02', 'baubau2', 'karyawan'),
+('DO001', 'budibudi', 'dosen'),
+('DO002', 'steste', 'dosen'),
+('DO003', 'jngojngo', 'dosen_ketuabau');
 
 --
 -- Indexes for dumped tables
@@ -636,145 +728,151 @@ INSERT INTO `tagihan` (`id`, `jumlah`, `tanggal_batas`, `calon_mahasiswa_nomor_r
 -- Indexes for table `beasiswa`
 --
 ALTER TABLE `beasiswa`
- ADD PRIMARY KEY (`id`), ADD KEY `fk_beasiswa_informasi_beasiswa` (`informasi_beasiswa_nama_beasiswa`);
+  ADD PRIMARY KEY (`id`), ADD KEY `fk_beasiswa_informasi_beasiswa` (`informasi_beasiswa_nama_beasiswa`);
 
 --
 -- Indexes for table `calon_mahasiswa`
 --
 ALTER TABLE `calon_mahasiswa`
- ADD PRIMARY KEY (`nomor_registrasi_id`), ADD KEY `informasi_kurikulum_id` (`informasi_kurikulum_id`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`) USING BTREE;
+  ADD PRIMARY KEY (`nomor_registrasi_id`), ADD KEY `informasi_kurikulum_id` (`informasi_kurikulum_id`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`) USING BTREE;
 
 --
 -- Indexes for table `data_umum`
 --
 ALTER TABLE `data_umum`
- ADD PRIMARY KEY (`index`);
+  ADD PRIMARY KEY (`index`);
 
 --
 -- Indexes for table `dispensasi`
 --
 ALTER TABLE `dispensasi`
- ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `dosen`
 --
 ALTER TABLE `dosen`
- ADD PRIMARY KEY (`nip`);
+  ADD PRIMARY KEY (`nip`);
 
 --
 -- Indexes for table `drevisi_penilaian`
 --
 ALTER TABLE `drevisi_penilaian`
- ADD PRIMARY KEY (`id`), ADD KEY `fk_hrevisi_drevisi` (`hrevisi_penilaian_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `fk_hrevisi_drevisi` (`hrevisi_penilaian_id`);
 
 --
 -- Indexes for table `hrevisi_penilaian`
 --
 ALTER TABLE `hrevisi_penilaian`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `informasi_beasiswa`
 --
 ALTER TABLE `informasi_beasiswa`
- ADD PRIMARY KEY (`nama_beasiswa`);
+  ADD PRIMARY KEY (`nama_beasiswa`);
 
 --
 -- Indexes for table `informasi_kurikulum`
 --
 ALTER TABLE `informasi_kurikulum`
- ADD PRIMARY KEY (`id`), ADD KEY `id` (`id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `kelas`
 --
 ALTER TABLE `kelas`
- ADD PRIMARY KEY (`id`), ADD KEY `fk_kelas_mata_kuliah` (`mata_kuliah_id`), ADD KEY `fk_kelas_ruangan` (`ruangan_id`), ADD KEY `fk_dosen_kelas` (`dosen_nip`), ADD KEY `fk_kelas_kelas` (`kelas_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `fk_kelas_mata_kuliah` (`mata_kuliah_id`), ADD KEY `fk_kelas_ruangan` (`ruangan_id`), ADD KEY `fk_dosen_kelas` (`dosen_nip`), ADD KEY `fk_kelas_kelas` (`kelas_id`);
 
 --
 -- Indexes for table `kelas_mahasiswa`
 --
 ALTER TABLE `kelas_mahasiswa`
- ADD PRIMARY KEY (`mahasiswa_nrp`,`kelas_id`), ADD KEY `kelas_id` (`kelas_id`), ADD KEY `fk_kelas_mahasiswa_mata_kuliah` (`mata_kuliah_id`), ADD KEY `fk_kelas_mahasiswa_nilai` (`nilai_id`);
+  ADD PRIMARY KEY (`mahasiswa_nrp`,`kelas_id`), ADD KEY `kelas_id` (`kelas_id`), ADD KEY `fk_kelas_mahasiswa_mata_kuliah` (`mata_kuliah_id`), ADD KEY `fk_kelas_mahasiswa_nilai` (`nilai_id`);
 
 --
 -- Indexes for table `kode_verifikasi`
 --
 ALTER TABLE `kode_verifikasi`
- ADD PRIMARY KEY (`id`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`) USING BTREE;
+  ADD PRIMARY KEY (`id`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`) USING BTREE;
 
 --
 -- Indexes for table `kota`
 --
 ALTER TABLE `kota`
- ADD PRIMARY KEY (`id`), ADD KEY `provinsi_id` (`provinsi_id`) USING BTREE;
+  ADD PRIMARY KEY (`id`), ADD KEY `provinsi_id` (`provinsi_id`) USING BTREE;
 
 --
 -- Indexes for table `log_penilaian`
 --
 ALTER TABLE `log_penilaian`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `log_penilaian_nilai`
 --
 ALTER TABLE `log_penilaian_nilai`
- ADD PRIMARY KEY (`nilai_id`,`log_penilaian_id`), ADD KEY `log_penilaian_id` (`log_penilaian_id`);
+  ADD PRIMARY KEY (`nilai_id`,`log_penilaian_id`), ADD KEY `log_penilaian_id` (`log_penilaian_id`);
 
 --
 -- Indexes for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
- ADD PRIMARY KEY (`nrp`), ADD UNIQUE KEY `nomor_registrasi_id_2` (`nomor_registrasi_id`), ADD UNIQUE KEY `email` (`email`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`), ADD KEY `informasi_kurikulum_id` (`informasi_kurikulum_id`);
+  ADD PRIMARY KEY (`nrp`), ADD UNIQUE KEY `nomor_registrasi_id_2` (`nomor_registrasi_id`), ADD UNIQUE KEY `email` (`email`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`), ADD KEY `informasi_kurikulum_id` (`informasi_kurikulum_id`);
 
 --
 -- Indexes for table `mata_kuliah`
 --
 ALTER TABLE `mata_kuliah`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `nilai`
 --
 ALTER TABLE `nilai`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `nomor_registrasi`
 --
 ALTER TABLE `nomor_registrasi`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
- ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `provinsi`
 --
 ALTER TABLE `provinsi`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ruangan`
 --
 ALTER TABLE `ruangan`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `syarat_matakuliah`
 --
 ALTER TABLE `syarat_matakuliah`
- ADD PRIMARY KEY (`id_matakuliah`);
+  ADD PRIMARY KEY (`id_matakuliah`);
 
 --
 -- Indexes for table `tagihan`
 --
 ALTER TABLE `tagihan`
- ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Constraints for dumped tables
@@ -790,7 +888,7 @@ ADD CONSTRAINT `fk_beasiswa_informasi_beasiswa` FOREIGN KEY (`informasi_beasiswa
 -- Constraints for table `calon_mahasiswa`
 --
 ALTER TABLE `calon_mahasiswa`
-ADD CONSTRAINT `fk_informasi_kurikulum_id_calon_mahasiswa` FOREIGN KEY (`informasi_kurikulum_id`) REFERENCES `informasi_kurikulum` (`id`) ON DELETE CASCADE,
+ADD CONSTRAINT `fk_informasi_kurikulum_id_calon_mahasiswa` FOREIGN KEY (`informasi_kurikulum_id`) REFERENCES `informasi_kurikulum` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_nomor_registrasi_id_calon_mahasiswa` FOREIGN KEY (`nomor_registrasi_id`) REFERENCES `nomor_registrasi` (`id`) ON DELETE CASCADE;
 
 --
