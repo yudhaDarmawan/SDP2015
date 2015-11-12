@@ -68,7 +68,7 @@ class Grade extends CI_Controller {
 		$this->load->library('session');
 	}
     public function index(){
-        echo substr('213116267',-4);
+
     }
     /**
      * Function : ajax_class()
