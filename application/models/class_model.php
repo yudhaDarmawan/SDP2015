@@ -52,6 +52,7 @@ v0.1 - 7 Januari 2015
  * to use in your controllers here
  *
  * @property Class_model $class_model
+ * @property Grade_model $grade_model
  *
  */
 class Class_Model extends CI_Model {

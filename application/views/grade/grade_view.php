@@ -4,10 +4,10 @@
     <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
       <thead>
         <tr>
-          <th>Kode MK</th>
+          <th width="70">Kode MK</th>
           <th>Nama MK</th>
-            <th>SKS</th>
-          <th>Kelas</th>
+            <th width="20">SKS</th>
+          <th width="30">Kelas</th>
           <th>Hari, Jam</th>
           <th>Ruangan</th>
           <th>Status</th>

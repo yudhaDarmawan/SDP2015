@@ -47,6 +47,7 @@
  * to use in your controllers here
  *
  * @property Class_model $class_model
+ * @property Grade_model $grade_model
  *
  */
 class Grade_model extends CI_Model{
@@ -197,6 +198,7 @@ class Grade_model extends CI_Model{
     }
     public function getDatatableGradeOfClass($classId,$orders=null){
         $results = $this->getAllGradeOfClass($classId,$orders);
+        $this->load->helper('form');
         $students = [];
         $ctr = 0;
         foreach ($results as $result){
@@ -204,15 +206,13 @@ class Grade_model extends CI_Model{
             $student[] = ++$ctr;
             $student[] = $result->nrp;
             $student[] = $result->nama;
-            $student[] = $result->uts;
-            $student[] = $result->uas;
-            $student[] = $result->tugas;
+            $student[] = form_input(["type"=> "number","name"=>'uts', "class"=>'nilai_'.$ctr.' nilai_uts form-control', 'value' => $result->uts, "disabled" => ""]);
+            $student[] = form_input(["type"=> "number","name"=>'uas', "class"=>'nilai_'.$ctr.' nilai_uas form-control', 'value' => $result->uts, "disabled" => ""]);
+            $student[] = form_input(["type"=> "number","name"=>'tugas', "class"=>'nilai_'.$ctr.' nilai_tugas form-control', 'value' => $result->uts, "disabled" => ""]);
             $student[] = $result->nilai_akhir;
             $student[] = $result->nilai_akhir_grade;
-            $student[] = form_input(["name"=>'nilai_akhir', "class"=>'nilai_akhir form-control', 'value' => $result->nilai_akhir]);
-            $student[] = form_input(["name"=>'nilai_akhir_grade', "class"=>'nilai_akhir_grade form-control', 'value' => $result->nilai_akhir_grade]);
-            $student[] = form_input(["name"=>'nilai_grade', "class"=>'nilai_grade form-control', 'value' => $result->nilai_grade]);
-            $student[] = "<span class='grade_tools'><button class='btn btn-primary' data-value='".$ctr."'>Edit</button></span>";
+            $student[] = $result->nilai_grade;
+            $student[] = "<span class='grade_tools'><button class='btn btn-primary grade_edit btn-sm' data-value='".$ctr."'>Edit</button></span>";
             $students[] = $student;
         }
         return $students;

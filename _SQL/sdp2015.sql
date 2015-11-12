@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.2.11
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2015 at 04:07 PM
--- Server version: 5.6.24
--- PHP Version: 5.6.8
+-- Generation Time: Nov 12, 2015 at 08:03 PM
+-- Server version: 5.6.21
+-- PHP Version: 5.6.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -301,19 +301,19 @@ CREATE TABLE IF NOT EXISTS `kelas` (
 --
 
 INSERT INTO `kelas` (`id`, `nama`, `mata_kuliah_id`, `ruangan_id`, `dosen_nip`, `hari`, `jam_mulai`, `persentase_uts`, `persentase_uas`, `persentase_tugas`, `tambahan_grade`, `status_konfirmasi`, `komentar_kajur`, `kelas_id`, `tahun_ajaran`, `tanggal_create`, `tanggal_update`, `status`) VALUES
-('K00001', '-', 'MK001', 'R0001', 'DO001', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:56:10', '2015-11-12 21:56:10', 1),
-('K00002', '-', 'MK002', 'R0003', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:56:58', '2015-11-12 21:56:58', 1),
-('K00003', '-', 'MK003', 'R0008', 'DO003', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:57:39', '2015-11-12 21:57:39', 1),
-('K00004', '-', 'MK004', 'R0006', 'DO001', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:57:39', '2015-11-12 21:57:39', 1),
-('K00005', '-', 'MK005', 'R0004', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:58:53', '2015-11-12 21:58:53', 1),
-('K00006', '-', 'MK005', 'R0006', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-12 21:58:53', '2015-11-12 21:58:53', 1),
-('K00007', '-', 'MK007', 'R0007', 'DO003', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-12 21:59:24', '2015-11-12 21:59:24', 1),
-('K00008', '-', 'MK008', 'R0006', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-12 21:59:24', '2015-11-12 21:59:24', 1),
-('K00009', '-', 'MK009', 'R0004', 'DO003', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-12 21:59:56', '2015-11-12 21:59:56', 1),
-('K00010', '-', 'MK010', 'R0001', 'DO003', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:59:56', '2015-11-12 21:59:56', 1),
-('K00011', '-', 'MK011', 'R0009', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 22:00:53', '2015-11-12 22:00:53', 1),
-('K00012', '-', 'MK012', 'R0008', 'DO001', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 22:00:53', '2015-11-12 22:00:53', 1),
-('K00013', '-', 'MK013', 'R0005', 'DO002', NULL, NULL, 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 22:01:10', '2015-11-12 22:01:10', 1);
+('K15001', '-', 'MK004', 'R0003', 'DO001', '1', '08:00:00', 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-12 21:56:10', '2015-11-12 21:56:10', 1),
+('K15002', '-', 'MK003', 'R0003', 'DO002', '1', '10:30:00', 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:56:58', '2015-11-12 21:56:58', 1),
+('K15003', '-', 'MK003', 'R0008', 'DO003', '2', '13:00:00', 30, 30, 40, 0, 2, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:57:39', '2015-11-12 21:57:39', 1),
+('K15004', '-', 'MK004', 'R0006', 'DO001', '3', '13:00:00', 30, 30, 40, 0, 3, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:57:39', '2015-11-12 21:57:39', 1),
+('K15005', '-', 'MK005', 'R0004', 'DO002', '4', '15:30:00', 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:58:53', '2015-11-12 21:58:53', 1),
+('K15006', '-', 'MK005', 'R0006', 'DO002', '1', '08:00:00', 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-12 21:58:53', '2015-11-12 21:58:53', 1),
+('K15007', '-', 'MK007', 'R0007', 'DO003', '1', '08:00:00', 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-12 21:59:24', '2015-11-12 21:59:24', 1),
+('K15008', '-', 'MK008', 'R0006', 'DO002', '2', '10:30:00', 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-12 21:59:24', '2015-11-12 21:59:24', 1),
+('K15009', '-', 'MK009', 'R0004', 'DO003', '2', '10:30:00', 30, 30, 40, 0, 0, '', NULL, 'GENAP 2013/2014', '2015-11-12 21:59:56', '2015-11-12 21:59:56', 1),
+('K15010', '-', 'MK010', 'R0001', 'DO003', '3', '10:30:00', 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 21:59:56', '2015-11-12 21:59:56', 1),
+('K15011', '-', 'MK011', 'R0009', 'DO002', '4', '13:00:00', 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 22:00:53', '2015-11-12 22:00:53', 1),
+('K15012', '-', 'MK012', 'R0008', 'DO001', '5', '15:30:00', 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 22:00:53', '2015-11-12 22:00:53', 1),
+('K15013', '-', 'MK013', 'R0005', 'DO002', '1', '15:30:00', 30, 30, 40, 0, 0, '', NULL, 'GASAL 2014/2015', '2015-11-12 22:01:10', '2015-11-12 22:01:10', 1);
 
 -- --------------------------------------------------------
 
@@ -334,16 +334,16 @@ CREATE TABLE IF NOT EXISTS `kelas_mahasiswa` (
 --
 
 INSERT INTO `kelas_mahasiswa` (`mahasiswa_nrp`, `kelas_id`, `mata_kuliah_id`, `status_ambil`, `nilai_id`) VALUES
-('213116256', 'K00001', 'MK001', 'Y', 'N62560001'),
-('213116256', 'K00002', 'MK002', 'Y', 'N62560002'),
-('213116256', 'K00003', 'MK003', 'Y', 'N62560003'),
-('213116256', 'K00004', 'MK004', 'Y', 'N62560004'),
-('213116256', 'K00012', 'MK012', 'Y', NULL),
-('213116256', 'K00013', 'MK013', 'Y', NULL),
-('213116270', 'K00005', 'MK005', 'Y', NULL),
-('213116270', 'K00006', 'MK006', 'Y', NULL),
-('213116270', 'K00007', 'MK007', 'Y', NULL),
-('213116270', 'K00008', 'MK008', 'Y', NULL);
+('213116256', 'K15001', 'MK001', 'A', 'N62560001'),
+('213116256', 'K15002', 'MK002', 'A', 'N62560002'),
+('213116256', 'K15003', 'MK003', 'A', 'N62560003'),
+('213116256', 'K15004', 'MK004', 'A', 'N62560004'),
+('213116256', 'K15012', 'MK012', 'A', 'N62560005'),
+('213116256', 'K15013', 'MK013', 'A', 'N62560006'),
+('213116270', 'K15001', 'MK001', 'A', 'N62700001'),
+('213116270', 'K15006', 'MK006', 'A', 'N62700002'),
+('213116270', 'K15007', 'MK007', 'A', 'N62700003'),
+('213116270', 'K15008', 'MK008', 'A', 'N62700004');
 
 -- --------------------------------------------------------
 
@@ -516,6 +516,9 @@ INSERT INTO `nilai` (`id`, `uts`, `uas`, `tugas`, `nilai_akhir`, `nilai_akhir_gr
 ('N62560002', 56, 40, 20, 56, 54, 'A'),
 ('N62560003', 65, 70, 0, 60, 65, 'C'),
 ('N62560004', 0, 0, 0, 0, 0, 'T'),
+('N62560005', 0, 0, 0, 0, 0, 'T'),
+('N62560006', 0, 0, 0, 0, 0, 'T'),
+('N62560007', 0, 0, 0, 0, 0, 'T'),
 ('N62700001', 0, 0, 0, 0, 0, 'T'),
 ('N62700002', 0, 0, 0, 0, 0, 'T'),
 ('N62700003', 0, 0, 0, 0, 0, 'T'),
@@ -728,151 +731,151 @@ INSERT INTO `user` (`id`, `password`, `peran`) VALUES
 -- Indexes for table `beasiswa`
 --
 ALTER TABLE `beasiswa`
-  ADD PRIMARY KEY (`id`), ADD KEY `fk_beasiswa_informasi_beasiswa` (`informasi_beasiswa_nama_beasiswa`);
+ ADD PRIMARY KEY (`id`), ADD KEY `fk_beasiswa_informasi_beasiswa` (`informasi_beasiswa_nama_beasiswa`);
 
 --
 -- Indexes for table `calon_mahasiswa`
 --
 ALTER TABLE `calon_mahasiswa`
-  ADD PRIMARY KEY (`nomor_registrasi_id`), ADD KEY `informasi_kurikulum_id` (`informasi_kurikulum_id`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`) USING BTREE;
+ ADD PRIMARY KEY (`nomor_registrasi_id`), ADD KEY `informasi_kurikulum_id` (`informasi_kurikulum_id`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`) USING BTREE;
 
 --
 -- Indexes for table `data_umum`
 --
 ALTER TABLE `data_umum`
-  ADD PRIMARY KEY (`index`);
+ ADD PRIMARY KEY (`index`);
 
 --
 -- Indexes for table `dispensasi`
 --
 ALTER TABLE `dispensasi`
-  ADD UNIQUE KEY `id` (`id`);
+ ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `dosen`
 --
 ALTER TABLE `dosen`
-  ADD PRIMARY KEY (`nip`);
+ ADD PRIMARY KEY (`nip`);
 
 --
 -- Indexes for table `drevisi_penilaian`
 --
 ALTER TABLE `drevisi_penilaian`
-  ADD PRIMARY KEY (`id`), ADD KEY `fk_hrevisi_drevisi` (`hrevisi_penilaian_id`);
+ ADD PRIMARY KEY (`id`), ADD KEY `fk_hrevisi_drevisi` (`hrevisi_penilaian_id`);
 
 --
 -- Indexes for table `hrevisi_penilaian`
 --
 ALTER TABLE `hrevisi_penilaian`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `informasi_beasiswa`
 --
 ALTER TABLE `informasi_beasiswa`
-  ADD PRIMARY KEY (`nama_beasiswa`);
+ ADD PRIMARY KEY (`nama_beasiswa`);
 
 --
 -- Indexes for table `informasi_kurikulum`
 --
 ALTER TABLE `informasi_kurikulum`
-  ADD PRIMARY KEY (`id`), ADD KEY `id` (`id`);
+ ADD PRIMARY KEY (`id`), ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `kelas`
 --
 ALTER TABLE `kelas`
-  ADD PRIMARY KEY (`id`), ADD KEY `fk_kelas_mata_kuliah` (`mata_kuliah_id`), ADD KEY `fk_kelas_ruangan` (`ruangan_id`), ADD KEY `fk_dosen_kelas` (`dosen_nip`), ADD KEY `fk_kelas_kelas` (`kelas_id`);
+ ADD PRIMARY KEY (`id`), ADD KEY `fk_kelas_mata_kuliah` (`mata_kuliah_id`), ADD KEY `fk_kelas_ruangan` (`ruangan_id`), ADD KEY `fk_dosen_kelas` (`dosen_nip`), ADD KEY `fk_kelas_kelas` (`kelas_id`);
 
 --
 -- Indexes for table `kelas_mahasiswa`
 --
 ALTER TABLE `kelas_mahasiswa`
-  ADD PRIMARY KEY (`mahasiswa_nrp`,`kelas_id`), ADD KEY `kelas_id` (`kelas_id`), ADD KEY `fk_kelas_mahasiswa_mata_kuliah` (`mata_kuliah_id`), ADD KEY `fk_kelas_mahasiswa_nilai` (`nilai_id`);
+ ADD PRIMARY KEY (`mahasiswa_nrp`,`kelas_id`), ADD KEY `kelas_id` (`kelas_id`), ADD KEY `fk_kelas_mahasiswa_mata_kuliah` (`mata_kuliah_id`), ADD KEY `fk_kelas_mahasiswa_nilai` (`nilai_id`);
 
 --
 -- Indexes for table `kode_verifikasi`
 --
 ALTER TABLE `kode_verifikasi`
-  ADD PRIMARY KEY (`id`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`) USING BTREE;
+ ADD PRIMARY KEY (`id`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`) USING BTREE;
 
 --
 -- Indexes for table `kota`
 --
 ALTER TABLE `kota`
-  ADD PRIMARY KEY (`id`), ADD KEY `provinsi_id` (`provinsi_id`) USING BTREE;
+ ADD PRIMARY KEY (`id`), ADD KEY `provinsi_id` (`provinsi_id`) USING BTREE;
 
 --
 -- Indexes for table `log_penilaian`
 --
 ALTER TABLE `log_penilaian`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `log_penilaian_nilai`
 --
 ALTER TABLE `log_penilaian_nilai`
-  ADD PRIMARY KEY (`nilai_id`,`log_penilaian_id`), ADD KEY `log_penilaian_id` (`log_penilaian_id`);
+ ADD PRIMARY KEY (`nilai_id`,`log_penilaian_id`), ADD KEY `log_penilaian_id` (`log_penilaian_id`);
 
 --
 -- Indexes for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  ADD PRIMARY KEY (`nrp`), ADD UNIQUE KEY `nomor_registrasi_id_2` (`nomor_registrasi_id`), ADD UNIQUE KEY `email` (`email`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`), ADD KEY `informasi_kurikulum_id` (`informasi_kurikulum_id`);
+ ADD PRIMARY KEY (`nrp`), ADD UNIQUE KEY `nomor_registrasi_id_2` (`nomor_registrasi_id`), ADD UNIQUE KEY `email` (`email`), ADD KEY `nomor_registrasi_id` (`nomor_registrasi_id`), ADD KEY `informasi_kurikulum_id` (`informasi_kurikulum_id`);
 
 --
 -- Indexes for table `mata_kuliah`
 --
 ALTER TABLE `mata_kuliah`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `nilai`
 --
 ALTER TABLE `nilai`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `nomor_registrasi`
 --
 ALTER TABLE `nomor_registrasi`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  ADD UNIQUE KEY `id` (`id`);
+ ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `provinsi`
 --
 ALTER TABLE `provinsi`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ruangan`
 --
 ALTER TABLE `ruangan`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `syarat_matakuliah`
 --
 ALTER TABLE `syarat_matakuliah`
-  ADD PRIMARY KEY (`id_matakuliah`);
+ ADD PRIMARY KEY (`id_matakuliah`);
 
 --
 -- Indexes for table `tagihan`
 --
 ALTER TABLE `tagihan`
-  ADD UNIQUE KEY `id` (`id`);
+ ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Constraints for dumped tables
