@@ -1,0 +1,23 @@
+/********************************************
+Rules - BAU
+revisi	: 1
+tanggal	: 11 / 11 / 2015
+********************************************/
+1. Jika mau merevisi lagi, buat header dengan format diatas, tiga baris content diapit oleh dua line asteriks.
+2. isi content: Judul dari revisi saat itu (contoh: `Dokumentasi file laporan_beasiswa.php`).
+		Revisi untuk Judul yang sama (jika judul baru pertama kali diajukan, ya dimulai dari 1).
+		Tanggal dari revisi itu dibuat
+3. REVISI YANG SUDAH ADA SEBELUMNYA JANGAN PERNAH DIHAPUS. selalu append di line paling bawah dari file ini.
+
+/********************************************
+Format - Folder dan penempatan
+revisi	: 1
+tanggal	: 11 / 11 / 2015
+********************************************/
+1. base url berisikan folder : application, assets, documentation, system, user_guide
+2. pada folder assets, terdapat 3 subfolder : image, bootstrap, datatables, jquery.
+3. assets/image => berisikan image image yang diperlukan.
+4. assets/bootstrap => berisikan css, javascript dan font yang dipakai bootstrap.
+5. assets/datatables => berisikan css, javascript dan font yang dipakai untuk bootstrap table.
+6. assets/jquery => jquery.
+7. pada application/helpers terdapat file bernama assets_helper, merupakan helper untuk mendapatkan url url assets.
