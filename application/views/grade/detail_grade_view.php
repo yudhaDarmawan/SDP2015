@@ -4,30 +4,41 @@
 		<?php echo $this->table->generate();?>
 	  </div>
 	</div>
-	<button id='btnCetak' type='button' class='btn btn-primary'>Cetak</button>
-	<button id='btnRevisi' type='button' class='btn btn-primary' >Revisi</button>
-	<button id='btnProsentase' type='button' class='btn btn-primary' data-toggle="modal" data-target="#managePercentage">Atur Prosentase</button>
-	<button id='btnGrade' type='button' class='btn btn-primary' data-toggle="modal" data-target="#manageGrade">Grade</button>
-
-    <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <div class="row">
+        <div class="col-md-8">
+            <button id='btnCetak' type='button' class='btn btn-primary'>Cetak</button>
+            <button id='btnRevisi' type='button' class='btn btn-primary' >Revisi</button>
+            <button id='btnProsentase' type='button' class='btn btn-primary' data-toggle="modal" data-target="#managePercentage">Atur Prosentase</button>
+            <button id='btnGrade' type='button' class='btn btn-primary' data-toggle="modal" data-target="#manageGrade">Grade</button>
+        </div>
+        <div class="col-md-4 text-right">
+            <button id="btnEditAll" type='button' class="btn btn-primary">Edit All</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+    <table id="table_grade" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
         <tr>
             <th>No</th>
             <th>NRP</th>
             <th>Nama</th>
             <th>UTS</th>
-            <th>UAS</th>
-            <th>Tugas</th>
-            <th>NA</th>
-            <th>NA+</th>
-            <th>Grade</th>
+            <th >UAS</th>
+            <th >Tugas</th>
+            <th >NA</th>
+            <th >NA+</th>
+            <th >Grade</th>
             <th>Pengaturan</th>
         </tr>
         </thead>
         <tbody>
         </tbody>
-    </table>
+        </table>
+     </div>
     </div>
+
+    </div><!-- End of Container -->
   
   <script>
 	var statusGrade = <?php echo $class[10];?>;
@@ -41,7 +52,7 @@
 
         var table;
         $(document).ready(function() {
-            table = $('#table').DataTable({
+            table = $('#table_grade').DataTable({
                 "processing": true, //Feature control the processing indicator.
                 "serverSide": true, //Feature control DataTables' server-side processing mode.
                 "paging":   false,
@@ -60,6 +71,31 @@
                     },
                 ],
 
+            });
+            // Method untuk mengganti button Edit menjadi button Edit All
+            $('#table_grade').on('click', '.grade_edit', function(event){
+                // do something
+                event.preventDefault();
+                rowIndex = $(this).attr('data-value');
+                $('.nilai_'+rowIndex).removeAttr('disabled');
+                $('#btnEditAll').attr('disabled','');
+                $(this).parent().html('<button class="btn btn-primary grade_save btn-sm" data-value="'+rowIndex+'">Save</button> <button class="btn btn-default btn-sm grade_cancel" data-value="'+rowIndex+'">Cancel</button>');
+            });
+            // Method untuk button Cancel
+            $('#table_grade').on('click', '.grade_cancel', function(event){
+                // do something
+                event.preventDefault();
+                rowIndex = $(this).attr('data-value');
+                $('.nilai_'+rowIndex).attr('disabled','');
+                $('#btnEditAll').removeAttr('disabled');
+                $(this).parent().html('<button class="btn btn-primary grade_edit btn-sm" data-value="'+rowIndex+'">Edit</button>');
+            });
+            $('#btnEditAll').click(function(event){
+                event.preventDefault();
+                $('.nilai_uts').removeAttr('disabled');
+                $('.nilai_uas').removeAttr('disabled');
+                $('.nilai_tugas').removeAttr('disabled');
+                $('.grade_edit').attr('disabled','');
             });
         });
         function reload_table()

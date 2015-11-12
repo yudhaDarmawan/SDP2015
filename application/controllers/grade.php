@@ -57,7 +57,6 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  */
 class Grade extends CI_Controller {
 
-
     /**
      * Function : __construct()
      * dipanggil saat setiap kali inisialisasi controller Grade
@@ -69,7 +68,7 @@ class Grade extends CI_Controller {
 		$this->load->library('session');
 	}
     public function index(){
-        echo substr('213116267',-4);
+
     }
     /**
      * Function : ajax_class()
