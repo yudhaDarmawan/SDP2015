@@ -84,10 +84,11 @@ class Class_Model extends CI_Model {
 		$this->db->where('k.tahun_ajaran',$yearNow);
 		$this->db->where('mk.id = k.mata_kuliah_id');
 		$this->db->join('ruangan r', 'r.id = k.ruangan_id','left');
-		$this->db->where('k.status',1);		
+		$this->db->where('k.status',1);
 		foreach ($orders as $key => $value){
 			$this->db->order_by($key, $value);
 		}
+
 		$results = $this->db->get()->result();
 		return $results;
 	}
