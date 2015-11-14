@@ -1,0 +1,32 @@
+/***** Penamaan ID ****/
+Table `Kelas` 			 : K[YY]001
+Table `Nilai` 			 : N[4 Digit NRP]0001
+Table `log_penilaian`	 : NL[YYMMDD]001
+Table `hrevisi_penilaian`: NR[YYMM]001
+Table `drevisi_penilaian`: DNR[YYMM]001
+Table `notifikasi`		 : NO[YYMMDD]0001
+Table `beasiswa`		 : BPP[YYYYMMDD]0001	=> untuk Beasiswa yang memotong UPP (SPP & SKS)
+						   BSP[YYYYMMDD]0001	=> untuk Beasiswa yang memotong USP
+Table `dispensasi`		 : DPP[YYYYMMDD]0001
+						   DSP[YYYYMMDD]0001
+Table `dosen`			 : DOXXX
+Table `informasi_beasiswa`: [2huruf untuk program studi][3huruf untuk jurusan][2digit tahun angkatan][1digit kategori]
+							contoh: S1INF131 => S1 Informatika 2013/2014 kategori 1
+							contoh: S1DKV143 => S1 DKV 2014/2015 kategori 3
+Table `mahasiswa`		 : 9 digit nrp
+Table `mata_kuliah`		 : masih belum tahu, sementara di dummy data nya MKXXX
+Table `nomor_registrasi` : 6 digit[A-Z,a-z,0-9] random.
+Table `pembayaran`		 : UPP[YYYYMMDD]0001 
+						   USP[YYYYMMDD]0001
+						   XPP[YYYYMMDD]0001 => untuk pembayaran dispensasi tipe UPP (SPP & SKS)
+						   XSP[YYYYMMDD]0001 => untuk pembayaran dispensasi tipie USP.
+Table `ruangan`			 : masih belum tahu, sementara di dummy data nya RXXXX
+Table `tagihan`			 : UPP[YYYYMMDD]0001 
+						   USP[YYYYMMDD]0001
+						   XPP[YYYYMMDD]0001
+						   XSP[YYYYMMDD]0001
+Table `user`			 : id bisa nrp mahasiswa, bisa nip dosen, atau custom id untuk karyawan.
+							ada field peran nanti untuk membedakan.
+							
+/**** Permintaan Tulung ****/
+harap diisikan ya data data yang berhubungan dengan table yang dibuat. daripada nanti idnya ga sesuai, terpaksa ganti lagi satu satu.

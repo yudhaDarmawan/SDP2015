@@ -1,0 +1,18 @@
+#table td, #table_grade td {
+    vertical-align: baseline;
+}
+#table_grade input[type="number"] {
+    width: 100% !important;
+    min-width: 50px;
+}
+#table_grade td:nth-child(3) {
+    width: 500px;
+}
+#table_grade td:nth-child(n+5) {
+    width: 100px;
+    text-align: right;
+}
+#table_grade td:last-child {
+    width: 200px;
+    text-align: left;
+}
