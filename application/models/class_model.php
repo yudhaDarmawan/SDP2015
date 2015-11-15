@@ -212,6 +212,7 @@ class Class_Model extends CI_Model {
 			$class[] = $result->persen_uas;
 			$class[] = $result->persen_tugas;
 			$class[] = $result->tanggal_update;
+            $class[] = $result->id;
 			return $class;
 		}
 		return false;
@@ -265,25 +266,71 @@ class Class_Model extends CI_Model {
 	}
 	public function updateAdditionalGrade($class_id, $updatedValue){
 		$this->db->where('id',$class_id);
+        $this->db->where('status_konfirmasi <',3);
 		$this->db->set('tambahan_grade',$updatedValue);
 		$this->db->set('tanggal_update','now()',false);
 		$this->db->update('kelas');
-		
-		// Update Seluruh Nilai Mahasiswa
-		
-		return $this->db->affected_rows();
+        $success = $this->db->affected_rows();
+        if ($success == 0){
+            return 0;
+        }
+        // Update Seluruh Nilai Mahasiswa
+        $classes = $this->getAllClassConnected($class_id);
+        $this->db->select('nilai_id');
+        $this->db->where_in('kelas_id',$classes);
+        $this->db->where('(status_ambil = "A" or status_ambil = "r")');
+        $results = $this->db->get('kelas_mahasiswa')->result();
+        // Untuk setiap Mahasiswa
+        $this->load->model('grade_model');
+        foreach ($results as $result){
+            $gradeId = $result->nilai_id;
+            $this->db->select('uts,uas,tugas');
+            $this->db->where('id',$gradeId);
+            $grade = $this->db->get('nilai')->row();
+            // update
+            $mark = $this->grade_model->countTotalGrade($grade->uts,$grade->uas,$grade->tugas,$class_id);
+            $this->db->where('id',$gradeId);
+            $this->db->set('nilai_akhir',$mark[0]);
+            $this->db->set('nilai_akhir_grade',$mark[1]);
+            $this->db->set('nilai_grade',$mark[2]);
+            $this->db->update('nilai');
+        }
+		return $success;
 	}
 	public function updateGradePercentage($class_id,$percentUTS, $percentUAS, $percentHomework){
 		$this->db->where('id',$class_id);
+        $this->db->where('status_konfirmasi <',3);
 		$this->db->set('persentase_uts',$percentUTS);
 		$this->db->set('persentase_uas',$percentUAS);
 		$this->db->set('persentase_tugas',$percentHomework);
 		$this->db->set('tanggal_update','now()',false);
 		$this->db->update('kelas');
-
+        $success = $this->db->affected_rows();
+        if ($success == 0){
+            return 0;
+        }
 		// Update Seluruh Nilai Mahasiswa
-		
-		return  $this->db->affected_rows();
+        $classes = $this->getAllClassConnected($class_id);
+        $this->db->select('nilai_id');
+		$this->db->where_in('kelas_id',$classes);
+        $this->db->where('(status_ambil = "A" or status_ambil = "r")');
+        $results = $this->db->get('kelas_mahasiswa')->result();
+        // Untuk setiap Mahasiswa
+        $this->load->model('grade_model');
+        foreach ($results as $result){
+            $gradeId = $result->nilai_id;
+            $this->db->select('uts,uas,tugas');
+            $this->db->where('id',$gradeId);
+            $grade = $this->db->get('nilai')->row();
+            // update
+            $mark = $this->grade_model->countTotalGrade($grade->uts,$grade->uas,$grade->tugas,$class_id);
+            $this->db->where('id',$gradeId);
+            $this->db->set('nilai_akhir',$mark[0]);
+            $this->db->set('nilai_akhir_grade',$mark[1]);
+            $this->db->set('nilai_grade',$mark[2]);
+            $this->db->update('nilai');
+        }
+		return  $success;
 	}
     public function getAllClassConnected($classId){
         $classes = [];

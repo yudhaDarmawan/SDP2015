@@ -17,40 +17,50 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-    <table id="table_grade" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-        <tr>
-            <th>No</th>
-            <th>NRP</th>
-            <th>Nama</th>
-            <th>UTS</th>
-            <th >UAS</th>
-            <th >Tugas</th>
-            <th >NA</th>
-            <th >NA+</th>
-            <th >Grade</th>
-            <th>Pengaturan</th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        </table>
-     </div>
+        <table id="table_grade" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>NRP</th>
+                <th>Nama</th>
+                <th>UTS</th>
+                <th >UAS</th>
+                <th >Tugas</th>
+                <th >NA</th>
+                <th >NA+</th>
+                <th >Grade</th>
+                <th>Pengaturan</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+
+            </table>
+            <?php echo form_open();?>
+            <div class="text-right">
+            <?php echo form_submit(['id'=>'btnSend','name'=>'btnSend','value'=>'Kirim','class'=>'btn btn-primary']);?>
+            </div>
+            <?php echo form_close();?>
+        </div>
+
     </div>
 
     </div><!-- End of Container -->
-  
-  <script>
-	var statusGrade = <?php echo $class[10];?>;
-	if (statusGrade < 3){
-		$('#btnRevisi').attr('disabled','');
-	}
-	else {
-		$('#btnProsentase').attr('disabled','');
-		$('#btnGrade').attr('disabled','');
-	}
 
+  <script>
+    	var statusGrade = <?php echo $class[10];?>;
+	    if (statusGrade < 3){
+		    $('#btnRevisi').attr('disabled','');
+        }
+        else {
+
+            $('#btnProsentase').attr('disabled','');
+            $('#btnGrade').attr('disabled','');
+        }
         var table;
+        var listGrade = []; // Menyimpan Nilai Sebelum di Edit
+        var open = 0; // Untuk Menyimpan Data Ke berapa yang dibuka
+        var logGrade = '';
         $(document).ready(function() {
             table = $('#table_grade').DataTable({
                 "processing": true, //Feature control the processing indicator.
@@ -77,18 +87,48 @@
                 // do something
                 event.preventDefault();
                 rowIndex = $(this).attr('data-value');
+                nrpIndex = $(this).attr('data-nrp');
+                arr = [];
                 $('.nilai_'+rowIndex).removeAttr('disabled');
+                $('.nilai_'+rowIndex).each( function(index){
+                    arr[index] = $(this).val();
+                });
+                listGrade[open] = arr;
                 $('#btnEditAll').attr('disabled','');
-                $(this).parent().html('<button class="btn btn-primary grade_save btn-sm" data-value="'+rowIndex+'">Save</button> <button class="btn btn-default btn-sm grade_cancel" data-value="'+rowIndex+'">Cancel</button>');
+                $(this).parent().html('<button class="btn btn-primary grade_save btn-sm" data-nrp="'+nrpIndex+'" data-value="'+rowIndex+'">Save</button> <button class="btn btn-default btn-sm grade_cancel" data-value="'+rowIndex+'" data-open="'+(open++)+'">Cancel</button>');
             });
             // Method untuk button Cancel
             $('#table_grade').on('click', '.grade_cancel', function(event){
                 // do something
                 event.preventDefault();
                 rowIndex = $(this).attr('data-value');
+                openIndex= $(this).attr('data-open');
+                nrpIndex = $(this).parent().find('.grade_save').attr('data-nrp');
                 $('.nilai_'+rowIndex).attr('disabled','');
+                $('.nilai_'+rowIndex).each( function(index){
+                     $(this).val(listGrade[openIndex][index]);
+                });
                 $('#btnEditAll').removeAttr('disabled');
-                $(this).parent().html('<button class="btn btn-primary grade_edit btn-sm" data-value="'+rowIndex+'">Edit</button>');
+                $(this).parent().html('<button class="btn btn-primary grade_edit btn-sm" data-nrp="'+nrpIndex+'" data-value="'+rowIndex+'">Edit</button>');
+            });
+            $('#table_grade').on('click','.grade_save', function(event){
+                event.preventDefault();
+                rowIndex = $(this).attr('data-value');
+                midTerm = $('.nilai_'+rowIndex+'.nilai_uts').val();
+                finalTerm = $('.nilai_'+rowIndex+'.nilai_uas').val();
+                homework = $('.nilai_'+rowIndex+'.nilai_tugas').val();
+                nrpStudent = $(this).attr('data-nrp');
+                $.post('<?php echo site_url('grade/saveGrade');?>', {uts:midTerm,uas:finalTerm,tugas:homework,class_id:'<?php echo $class[17];?>', nrp:nrpStudent, log:logGrade}, function(data){
+                    arrNilai = data.split(' ');
+                    logGrade = arrNilai[0];
+                    $('.nilai_'+rowIndex+'.nilai_akhir').html(arrNilai[1]);
+                    $('.nilai_'+rowIndex+'.nilai_akhir_grade').html(arrNilai[2]);
+                    $('.nilai_'+rowIndex+'.nilai_grade').html(arrNilai[3]);
+                });
+                $('#btnEditAll').removeAttr('disabled');
+                $('.nilai_'+rowIndex).attr('disabled','');
+                $(this).parent().html('<button class="btn btn-primary grade_edit btn-sm"  data-nrp="'+nrpStudent+'"data-value="'+rowIndex+'">Edit</button>');
+
             });
             $('#btnEditAll').click(function(event){
                 event.preventDefault();
