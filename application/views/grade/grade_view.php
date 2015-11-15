@@ -1,4 +1,4 @@
-
+<div class="container">
     <h1>List Mata Kuliah yang Diajar</h1>
 	<?php echo 'Tahun Ajaran : '.form_dropdown('ddYear',$ddYear, $selectedDdYear,"id='ddYear'")."<br/>";?>
     <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">

@@ -1,4 +1,5 @@
-	<div class="panel panel-info">
+<div class="container">
+<div class="panel panel-info">
 	  <div class="panel-heading"><?php echo $title;?></div>
 	  <div class="panel-body">
 		<?php echo $this->table->generate();?>
@@ -46,7 +47,7 @@
     </div>
 
     </div><!-- End of Container -->
-
+</div>
   <script>
     	var statusGrade = <?php echo $class[10];?>;
 	    if (statusGrade < 3){
