@@ -55,7 +55,7 @@
     {
 		table.ajax.url("<?php echo site_url('grade/ajax_class/')?>"+"/"+$("#ddYear").val());
 		table.ajax.reload(null,false); //reload datatable ajax
-        $.get( "<?php echo site_url('grade/ajax_totalSKS/')?>"+"/"+$("#ddYear").val(), function( data ) {
+		$.get( "<?php echo site_url('grade/ajax_totalSKS/')?>"+"/"+$("#ddYear").val(), function( data ) {
             $( "#table_wrapper > .row:last-child .col-sm-7 .dataTables_info ").html('Total Beban SKS : '+data +' SKS');
         });
     }

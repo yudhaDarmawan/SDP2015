@@ -138,6 +138,16 @@ class Grade extends CI_Controller {
         // Print Output Berupa JSON
         echo json_encode($output);
     }
+    public function saveGrade(){
+        $this->load->model('grade_model');
+        $log = $this->input->post('log');
+        $logNext = $this->grade_model->updateStudentGrade($this->input->post('class_id'),
+            $this->input->post('nrp'),
+            $this->input->post('uts'),
+            $this->input->post('uas'),
+            $this->input->post('tugas'), $log);
+        echo $logNext;
+    }
     /**
      * Function : all()
      * Mengeload Halaman Mata Kuliah Yang Diajar milik Dosen
@@ -173,7 +183,22 @@ class Grade extends CI_Controller {
 			$this->session->set_flashdata('alert','Tidak ditemukan kelas dengan ID tersebut!');
 			redirect('grade/all');
 		}
-		
+
+        // Kirim
+        if ($this->input->post('btnSend')){
+            $this->load->model('grade_model');
+            $success = $this->grade_model->changeConfirmationStatus($class_id,'1');
+            if ($success) {
+                $this->session->set_flashdata('alert_level', 'success');
+                $this->session->set_flashdata('alert', 'Berhasil Mengirim Data Nilai ke kajur!');
+                redirect('grade/view/'.$class_id);
+            }
+            else {
+                $this->session->set_flashdata('alert_level','danger');
+                $this->session->set_flashdata('alert','Tidak bisa mengirim data nilai ke kajur.');
+                redirect('grade/view/'.$class_id);
+            }
+        }
 		
 		$data['title'] = "Detail ".$class[1];
 		$data['class'] = $class;
