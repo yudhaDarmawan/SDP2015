@@ -3,11 +3,16 @@
 /**
  * Class Grade
  * Nama   				: grade.php
- * Pembuat 			: Stefanie Tanujaya
+ * Pembuat 			    : Stefanie Tanujaya
  * Tanggal Pembuatan 	: 6 Januari 2015
  * Version Control		:
  * v0.1 - 7 Januari 2015
  * Menambahkan fungsi all, ajax_class, dan view.
+ * v0.2 - 11 Januari 2015
+ * Menambah fungsi ajax_totalSKS, ajax_grade, saveGrade
+ * v0.3 - 18 Januari 2015
+ * Menambah fungsi ajax_percentage, saveAllGrade
+ *
  */
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -64,11 +69,12 @@ class Grade extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('class_model');
+        $this->load->model('grade_model');
 		$this->load->helper('url');
 		$this->load->library('session');
 	}
     public function index(){
-
+        redirect('grade/all');
     }
     /**
      * Function : ajax_class()
@@ -118,18 +124,20 @@ class Grade extends CI_Controller {
         // Print Output Berupa JSON
         echo json_encode($output);
     }
-	
+	public function ajax_percentage($classId){
+        $percentage =$this->grade_model->getPercentageClass($classId);
+        echo $percentage["A"].' '.$percentage["B"].' '.$percentage["C"].' '.$percentage["D"].' '.$percentage["E"];
+    }
     public function ajax_grade($classId){
 
         // Load Data Kelas
         if(isset($_POST['order'])){
-            $column = ["nrp","nrp","nama","uts","uas","tugas","nilai_akhir","nilai_akhir_grade","nilai_grade"];
+            $column = ["nrp","nrp","nama","uts","tugas","uas","nilai_akhir","nilai_akhir_grade","nilai_grade"];
             $orders = array ($column[$_POST['order']['0']['column']] => $_POST['order']['0']['dir']);
         }
         else {
             $orders = null;
         }
-        $this->load->model('grade_model');
         $students = $this->grade_model->getDatatableGradeOfClass($classId,$orders);
         $output = array("recordsTotal" => $this->grade_model->countAllStudentInClass($classId),
             "recordsFiltered" => $this->grade_model->countAllStudentInClass($classId),
@@ -138,15 +146,33 @@ class Grade extends CI_Controller {
         // Print Output Berupa JSON
         echo json_encode($output);
     }
-    public function saveGrade(){
-        $this->load->model('grade_model');
+    public function saveAllGrade(){
+        $midTerm = $this->input->post('uts');
+        $finalTerm = $this->input->post('uas');
+        $homework = $this->input->post('tugas');
+        $nrp = $this->input->post('nrp');
         $log = $this->input->post('log');
-        $logNext = $this->grade_model->updateStudentGrade($this->input->post('class_id'),
+        for ($ctr = 0; $ctr < count($midTerm); $ctr++) {
+            $log = $this->grade_model->updateStudentGrade($this->input->post('class_id'),
+                $nrp[$ctr],
+                $midTerm[$ctr],
+                $finalTerm[$ctr],
+                $homework[$ctr], $log);
+        }
+        $this->session->set_userdata('logClass',$this->input->post('class_id'));
+        $this->session->set_userdata('logGrade',$log);
+        echo $log;
+    }
+    public function saveGrade(){
+        $log = $this->input->post('log');
+        $log = $this->grade_model->updateStudentGrade($this->input->post('class_id'),
             $this->input->post('nrp'),
             $this->input->post('uts'),
             $this->input->post('uas'),
             $this->input->post('tugas'), $log);
-        echo $logNext;
+        $this->session->set_userdata('logClass',$this->input->post('class_id'));
+        $this->session->set_userdata('logGrade',$log);
+        echo $log;
     }
     /**
      * Function : all()
@@ -187,7 +213,6 @@ class Grade extends CI_Controller {
 
         // Kirim
         if ($this->input->post('btnSend')){
-            $this->load->model('grade_model');
             $success = $this->grade_model->changeConfirmationStatus($class_id,'1');
             if ($success) {
                 $this->session->set_flashdata('alert_level', 'success');
@@ -207,7 +232,7 @@ class Grade extends CI_Controller {
 		
 		// Jika Button Update Grade ditekan
 		if ($this->input->post('btnInputGrade')){
-			$success = $this->class_model->updateAdditionalGrade($class_id, $this->input->post('inputGrade'));
+			$success = $this->grade_model->updateAdditionalGrade($class_id, $this->input->post('inputGrade'));
 			if ($success){
 				$this->session->set_flashdata('alert_level','success');
 				$this->session->set_flashdata('alert','Berhasil Mengupdate Tambahan Grade!');
@@ -226,7 +251,7 @@ class Grade extends CI_Controller {
 				$this->session->set_flashdata('alert','Total Prosentase tidak boleh lebih dari 100%!');
 			}
 			else {			
-				$success = $this->class_model->updateGradePercentage($class_id, $this->input->post('inputUTS'),$this->input->post('inputUAS'),$this->input->post('inputHomework'));
+				$success = $this->grade_model->updateGradePercentage($class_id, $this->input->post('inputUTS'),$this->input->post('inputUAS'),$this->input->post('inputHomework'));
 				
 				if ($success){
 					$this->session->set_flashdata('alert_level','success');
@@ -247,7 +272,7 @@ class Grade extends CI_Controller {
 		$this->table->add_row('Tahun Ajaran : ', $class[11]);
 		$this->table->add_row('Status Penilaian :', $class[6]);
 		$this->table->add_row('Terakhir Update :', $class[16]);
-
+        $this->load->library('encrypt');
 		$this->load->view('includes/headerdosen', $data);
         $this->load->view('nav/navbardosen');
 		$this->load->view('grade/detail_grade_view', $data);

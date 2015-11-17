@@ -1,10 +1,9 @@
 <html>
 <!--JUDUL DAN ICON UNTUK WEB STTS-->
 	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/datatables/css/dataTables.bootstrap.css')?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/css/style.css')?>" rel="stylesheet">
@@ -23,11 +22,13 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 	</head>
-<body>
+    <body>
 		
 <!--LOGO STTS-->
 	<div class="headerDosen">
 		<!--<p class="navbar-text">Sistem Informasi Mahasiswa</p>--><!-- <a class="navbar-brand" rel="home" href="#"-->
-    <a href="#"><img src="<?php echo base_url('assets/images/logodosen.png');?>"/></a></div>
-	
-	</div>
+    <a href="#">
+        <img src="<?php echo base_url('assets/images/logodosen.png');?>"/>
+    </a>
+    </div>
+

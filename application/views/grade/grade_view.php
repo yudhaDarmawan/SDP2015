@@ -1,4 +1,7 @@
 <div class="container">
+    <?php if($this->session->flashdata('alert')){
+        echo '<div class="alert alert-'.$this->session->flashdata('alert_level').'" role="alert">'.$this->session->flashdata('alert').'</div>';
+    }?>
     <h1>List Mata Kuliah yang Diajar</h1>
 	<?php echo 'Tahun Ajaran : '.form_dropdown('ddYear',$ddYear, $selectedDdYear,"id='ddYear'")."<br/>";?>
     <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
