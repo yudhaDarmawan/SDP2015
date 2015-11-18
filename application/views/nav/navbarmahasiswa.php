@@ -1,5 +1,5 @@
 <?php
-	echo form_open('home/mahasiswa');
+	echo form_open('perwalian/mahasiswa');
 ?>
 
 <!--MENU BAR-->

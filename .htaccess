@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /sdp2015
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ /sdp2015/index.php/$1 [L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+	ErrorDocument 404 /sdp2015/index.php
+</IfModule>
