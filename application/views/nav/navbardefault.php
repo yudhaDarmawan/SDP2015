@@ -1,4 +1,4 @@
-<?php echo form_open('home/index');
+<?php echo form_open('home/login');
 ?>
 
 <!--MENU BAR-->
@@ -10,11 +10,6 @@
 	</div>
 </div>
 
-<script>
-$('#login').on('hidden.bs.modal', function() {
-  this.modal('show');
-});
-</script>
 <!--ROLE MODEL POP UP-->
 <div class="modal fade" id = "loginmodal" role="dialog">
 	<div class="modal-dialog">
