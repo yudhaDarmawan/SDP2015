@@ -7,25 +7,26 @@ Version Control		:
 v0.1 - 7 Januari 2015
 	
 ----------------------------------------------------- */
-
-
 class Confirmation extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('confirmation_model');
+		$this->load->model('class_model');
 		$this->load->helper('url');
 		$this->load->library('session');
+		
+		// Mengecek session kalau yang bisa akses hanya login
 	}
 	public function index(){
+	
         redirect('confirmation/all');
     }
     public function ajax_class($yearNow =null)
     {
-		// Mengambil Lecturer Login dari Session Yang Ada
-        $lecturer_login = 'DO001';
+		
 		if ($yearNow == null){
-			$yearNow  = $this->confirmation_model->getActiveTermYear();
+			$yearNow  = $this->class_model->getActiveTermYear();
 		}
 		else {
 			$yearNow  = str_replace('_',' ',$yearNow);
@@ -33,17 +34,19 @@ class Confirmation extends CI_Controller {
 		}
 		// Load Data Kelas
 		if(isset($_POST['order'])){
-			$column = ["kode_mk","sks","nama_mk","nama_dosen", "hari","jam", "nama_ruang", "status_k",];
+			$column = ["nama_mk","nama_dosen", "sks", "hari", "nama_ruang", "status_k", "tanggal_update"];
 			$orders = array ($column[$_POST['order']['0']['column']] => $_POST['order']['0']['dir']);
         }
 		else {
 			$orders = null;
 		}
 		
-		$classes = $this->confirmation_model->getDataTableByLecturer($lecturer_login, $orders, $yearNow );
+		$limit = $this->input->post('length');
+		$start = $this->input->post('start');
+		$classes = $this->confirmation_model->getDataTableByLecturer($orders, $yearNow,$limit,$start);
 		
-        $output = array("recordsTotal" => $this->confirmation_model->countAll($lecturer_login), 
-						"recordsFiltered" => $this->confirmation_model->countFiltered($lecturer_login, $orders , $yearNow),
+        $output = array("recordsTotal" => $this->confirmation_model->countAll($yearNow), 
+						"recordsFiltered" => $this->confirmation_model->countAll($yearNow),
 						"data" => $classes);
 		
         // Print Output Berupa JSON
@@ -79,8 +82,8 @@ class Confirmation extends CI_Controller {
     public function all(){
 		$data['title'] = "Mata Kuliah yang Diajar";
 		$this->load->helper('form');
-		$data['ddYear'] = $this->confirmation_model->getComboBoxAllYear();
-		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->confirmation_model->getActiveTermYear()));
+		$data['ddYear'] = $this->class_model->getComboBoxAllYear();
+		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->class_model->getActiveTermYear()));
 		$this->load->view('header',$data);
 		$this->load->view('confirmation/confirmation_portal_view', $data);
 		$this->load->view('footer');
@@ -100,17 +103,10 @@ class Confirmation extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('table');
 		
-		$class = $this->confirmation_model->getClassInfoById($class_id, $lecturer_login);
+		$class = $this->class_model->getClassInfoById($class_id, $lecturer_login);
 		
-	
-		/*
-		if ($class == false){
-			$this->session->set_flashdata('alert_level','danger');
-			$this->session->set_flashdata('alert','Tidak ditemukan kelas dengan ID tersebut!');
-			redirect('grade/all');
-		}*/
 		
-		$data['title'] = "Detail ".$class[1];
+		$data['title'] = "Detail ".$class[0];
 		$data['class'] = $class;
         $data['classId'] = $class_id;
 		// Siapkan Data Kelas
@@ -143,14 +139,14 @@ class Confirmation extends CI_Controller {
 		class[17]:40
 		class[18]:2015-11-12 21:56:58
 		*/
-		
-		$this->table->add_row('Mata Kuliah / Semester / SKS :&nbsp;&nbsp;',$class[2].' / '. $class[10]. ' / '. $class[1].' SKS');
-		$this->table->add_row('Ruang / Hari / Jam : ', $class[6].' / '.$class[4].' / '.$class[5]);
-		$this->table->add_row('Kelas / Dosen : ', $class[8].' / '.$class[3]);
-		$this->table->add_row('Tahun Ajaran : ', $class[13]);
-		$this->table->add_row('Status Penilaian :', $class[7]);
-		$this->table->add_row('Terakhir Update :', $class[18]);
-		
+
+        $this->table->add_row('Mata Kuliah / Kelas / SKS :&nbsp;&nbsp;',':',$class[0].' / '.$class[3].' / '. $class[8].' SKS');
+        $this->table->add_row('Jurusan / Semester &nbsp;&nbsp;',':', $class[1].' / '. $class[9]);
+        $this->table->add_row('Ruang / Hari, Jam  ',':', $class[5].' / '.$class[4]);
+        $this->table->add_row('Dosen  ',':', $class[7]);
+        $this->table->add_row('Tahun Ajaran  ',':', $class[11]);
+        $this->table->add_row('Status Penilaian ',':', $class[6]);
+        $this->table->add_row('Terakhir Update ',':', $class[16]);
 		$this->load->view('header', $data);
 		$this->load->view('confirmation/confirmation_detail_view', $data);
 		$this->load->view('footer');

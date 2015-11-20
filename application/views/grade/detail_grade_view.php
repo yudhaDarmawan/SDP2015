@@ -12,7 +12,6 @@
         <div class="col-md-8 col-sm-6">
             <?php
                 echo form_open();
-                echo form_hidden(['name'=>'classID' , 'value' => $this->encrypt->encode($classId)]);
                 echo form_submit(['name' => 'btnCetak','value' => 'Cetak' , 'class'=>'btn btn-primary btn-sm']).' ';
                 echo form_submit(['name' => 'btnRevisi','value' => 'Revisi' , 'class'=>'btn btn-primary btn-sm','id'=>'btnRevisi']);
             ?>
@@ -43,7 +42,7 @@
                 <th>NRP</th>
                 <th>Nama</th>
                 <th>UTS (<?php echo $class[13];?>%)</th>
-                <th >Tugas <?php echo $class[15];?>%)</th>
+                <th >Tugas (<?php echo $class[15];?>%)</th>
                 <th >UAS (<?php echo $class[14];?>%)</th>
                 <th >NA</th>
                 <th >NA+</th>
@@ -144,6 +143,13 @@
                         "orderable": false, //set not orderable
                     },
                 ],
+                "createdRow": function ( row, data, index ) {
+                    var temp = $(data[8]).html();
+                    if (temp.charCodeAt(0) > <?php echo ord($class[18]);?>){
+                        $(row).addClass('danger');
+                    }
+
+                }
 
             });
 
