@@ -84,9 +84,9 @@ class Confirmation extends CI_Controller {
 		$this->load->helper('form');
 		$data['ddYear'] = $this->class_model->getComboBoxAllYear();
 		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->class_model->getActiveTermYear()));
-		$this->load->view('header',$data);
+        $this->load->view('includes/headerdosen', $data);
 		$this->load->view('confirmation/confirmation_portal_view', $data);
-		$this->load->view('footer');
+		$this->load->view('includes/footer');
 	}
 	
 	
@@ -147,9 +147,9 @@ class Confirmation extends CI_Controller {
         $this->table->add_row('Tahun Ajaran  ',':', $class[11]);
         $this->table->add_row('Status Penilaian ',':', $class[6]);
         $this->table->add_row('Terakhir Update ',':', $class[16]);
-		$this->load->view('header', $data);
+		$this->load->view('includes/headerdosen', $data);
 		$this->load->view('confirmation/confirmation_detail_view', $data);
-		$this->load->view('footer');
+		$this->load->view('includes/footer');
 		
 	}
 

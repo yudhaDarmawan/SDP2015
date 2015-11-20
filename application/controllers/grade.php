@@ -309,9 +309,6 @@ class Grade extends CI_Controller {
 		$header =$this->load->view('report/includes/headerReport',$data,true);
 		//generate the PDF!
 		$pdf->WriteHTML($header.$html);
-        //$pdf->SetHTMLFooter('<div style="font-weight: bold;">{PAGENO}</div>','O');
-        //$pdf->SetHTMLFooter('<div style="text-align: right;">{PAGENO}</div>','E');
-        //offer it to user via browser download! (The PDF won't be saved on your server HDD)
 		$pdf->Output($pdfFilePath, "I");
 
 		

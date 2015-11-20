@@ -8,6 +8,7 @@ v0.1 - 7 Januari 2015
 	
 ----------------------------------------------------- */
 ?>
+<div class="container">
 	<div class="panel panel-info">
 	  <div class="panel-heading"><?php echo $title;?></div>
 	  <div class="panel-body">
@@ -92,6 +93,7 @@ v0.1 - 7 Januari 2015
 
 	
 	</div><!-- End of Container -->
+</div>
   <script>
 
         var table;

@@ -8,6 +8,7 @@ v0.1 - 7 Januari 2015
 	
 ----------------------------------------------------- */
 ?>
+<div class="container">
 		<h1>Konfirmasi Dosen</h1>
 		<br />
 		
@@ -32,7 +33,7 @@ v0.1 - 7 Januari 2015
 		  <tbody>
 		  </tbody>
 		</table>
-
+</div>
 	<script type="text/javascript">
 		var table;
 		$(document).ready(function() {
