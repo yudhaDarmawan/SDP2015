@@ -40,7 +40,7 @@
 				{
 					$data['title'] = 'Sistem Informasi Mahasiswa STTS';
 					$this->load->view('includes/header',$data);
-					if($this->input->post('home'))
+					if($this->input->post('home_x'))
 					{
 						$this->session->set_userdata('currentPage','home');
 						$this->load->view('nav/navbarmahasiswa');
@@ -50,13 +50,21 @@
 					{
 						$this->session->set_userdata('currentPage','frs');
 						$this->load->view('nav/navbarmahasiswa');
-						$data['totalSksAkanDiambil'] = 0;
+						$data['countSKS']=0;
+						if($this->session->userdata('countSKS')){
+							$data['countSKS'] = $this->session->userdata('countSKS');
+						}
+						$arr= array();
+						foreach($this->Matakuliah_model->getClassSemesterOpen() as $row){
+							array_push($arr,$row->semester);
+						}
+						$data['dataCombobox']=$arr;
 						$user = '';
-						$query = $this->db->query("SELECT * FROM mata_kuliah");
-						$data['semester1'] = $this->table->generate($query);
 						if($this->session->userdata('username')){$user = $this->session->userdata('username');}
 						if($this->input->cookie('username')){$user = get_cookie('username');}
 						$data['mahasiswa'] = $this->Mahasiswa_model->getDetailStudent($user);
+						$data['smtr'] = $this->getSemesterStudent($data['mahasiswa']->nrp);
+						$data['semester'] = $this->createTableCourse($data['smtr']);
 						$this->load->view('perwalian/perwalian',$data);
 					}
 					else if($this->input->post('batal'))
@@ -90,13 +98,21 @@
 						else if($this->session->userdata('currentPage') == 'frs'){
 							$this->session->set_userdata('currentPage','frs');
 							$this->load->view('nav/navbarmahasiswa');
-							$data['totalSksAkanDiambil'] = 0;
-							
-							$data['semester1'] = $this->createTableCourse();
+							$data['countSKS']=0;
+							if($this->session->userdata('countSKS')){
+								$data['countSKS'] = $this->session->userdata('countSKS');
+							}
+							$arr= array();
+							foreach($this->Matakuliah_model->getClassSemesterOpen() as $row){
+								array_push($arr,$row->semester);
+							}
+							$data['dataCombobox']=$arr;
 							$user = '';
 							if($this->session->userdata('username')){$user = $this->session->userdata('username');}
 							if($this->input->cookie('username')){$user = get_cookie('username');}
 							$data['mahasiswa'] = $this->Mahasiswa_model->getDetailStudent($user);
+							$data['smtr'] = $this->getSemesterStudent($data['mahasiswa']->nrp);
+							$data['semester'] = $this->createTableCourse($data['smtr']);
 							$this->load->view('perwalian/perwalian',$data);
 						}
 					}
@@ -116,7 +132,24 @@
 		//FUNCTION INI DIGUNAKAN OLEH AJAX 
 		//UNTUK MENDAPATKAN SKS SUATU MATA KULIAH
 		public function getTotalSks(){
-			echo 3;
+			$query = $this->Matakuliah_model->getSKS($this->input->post('name'));
+			if($this->session->userdata('getCourseNow')){
+				$array = $this->session->userdata('getCourseNow');
+				if($this->input->post('status')){
+					$count = (+$this->input->post('countSKS')) + (+3);
+					$this->session->set_userdata('countSKS',$count);
+					array_push($array,$this->input->post('name'));
+				}else{
+					$count = (+$this->input->post('countSKS')) - (+3);
+					$this->session->set_userdata('countSKS',$count);
+					array_diff($array, $this->input->post('name'));
+				}
+				$this->session->set_userdata('getCourseNow',$array);
+			}else{
+				$array = array($this->input->post('name'));
+				$this->session->set_userdata('getCourseNow',$array);
+			}
+			print $query->jumlah_sks;
 		}
 		
 		//FUNCTION INI UNTUK MEMBUAT SEBUAH DIV
@@ -129,30 +162,63 @@
 			return $code;
 		}
 
-		function createTableCourse(){
-			$matkul = $this->Matakuliah_model->createFRS();
-			$tmpl = array ( 'table_open'  => '<table class="table">' );
+		function createTableCourse($semester){
+			$matkul = $this->Matakuliah_model->createFRS($this->session->userdata('username'));
+			$tmpl = array ( 'table_open'  => '<table class="table">');
 			$this->table->set_template($tmpl);
 			$this->table->set_heading('Kode Matkul','Nama Matkul','Hari','Jam','SKS','Grade','Ambil');
 			foreach($matkul as $row)
-			{
-				if($row->semester == "1"){
-					$hari='-';
+			{	
+				$hari='-';
+				if($row->semester == $semester && $row->hari <> ''){
+					$class='info';
 					if($row->hari == "1"){
 						$hari='Senin';
-					}if($row->hari == "2"){
+					}else if($row->hari == "2"){
 						$hari='Selasa';
-					}if($row->hari == "3"){
+					}else if($row->hari == "3"){
 						$hari='Rabu';
-					}if($row->hari == "4"){
+					}else if($row->hari == "4"){
 						$hari='Kamis';
-					}if($row->hari == "5"){
+					}else if($row->hari == "5"){
 						$hari='Jumaat';
+					}else{
+						$class='';
 					}
-					$this->table->add_row($row->id,$row->nama,$hari, $row->jam_mulai,$row->jumlah_sks,$row->nilai_grade);
+					$checkbox = form_checkbox(array('class'=>'checkbox','value'=>$row->nama,'name'=>'cbx'));
+					if($this->session->userdata('getCourseNow')){
+						$array = $this->session->userdata('getCourseNow');
+						if(in_array($row->nama,$array)){
+							$checkbox = form_checkbox(array('class'=>'checkbox','value'=>$row->nama,'name'=>'cbx', 'checked'=>'true'));
+						}
+					}
+					if($row->nilai_grade=='A'){
+						$class='active';
+						$checkbox = '<fieldset disabled>' .  form_checkbox(array('class'=>'checkbox','value'=>$row->nama,'name'=>'cbx')) .  '</fieldset>';
+					}
+					$rowData = array($row->id,$row->nama,$hari, $row->jam_mulai,$row->jumlah_sks,$row->nilai_grade, $checkbox);
+					$this->table->add_row(array('data'=>$rowData,'class'=>$class));
 				}
 			}
 			return $this->table->generate();
+		}
+		
+		public function setSelectedDropDown(){
+			print $this->createTableCourse($this->input->post('index'));
+		}
+		
+		public function getSemesterStudent($nrp){			
+			$sql = $this->db->get_where('data_umum',array('index'=>'tahun_ajaran_sekarang'));
+			$now = $sql->row();
+			$addTahun = 0;
+			$tahun = substr($now->value,8,2);
+			if(substr($now->value,0,5) == "GASAL"){
+				$addTahun = 1;
+			}else{
+				$addTahun=2;
+			}
+			$smtr = (($tahun - substr($nrp,1,2)) * 2) + $addTahun;
+			return $smtr;
 		}
 	}
 

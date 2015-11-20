@@ -12,9 +12,18 @@
 		<link rel="icon" href="<?php echo base_url("assets/images/icon.png");?>">
 	</head>
 <!--LOGO STTS-->
+<?php
+	if($this->session->userdata('username')){
+		echo form_open('perwalian/mahasiswa');
+	}
+?>
 	<div class="header">
 		<!--<p class="navbar-text">Sistem Informasi Mahasiswa</p>--><!-- <a class="navbar-brand" rel="home" href="#"-->
-		<a href="#"><img src="<?php echo base_url("assets/images/logo.png");?>"/></a>
+		<?php $stylebutton=array('class'=>'customNavbar','name'=>'home','value'=>'echo '); ?>
+		<!-- <input type='image' src='<?php echo base_url("assets/images/logo.png");?>'  onFocus='form.submit' name='home'/>-->
+		<!-- <input type="submit" name="home" class="customNavbar" value=""><img src="<?php echo base_url("assets/images/logo.png");?>"/></input>-->
+		<input type="image" src='<?php echo base_url("assets/images/logo.png");?>' name="home" onChange='form.submit'/> 
+		<!-- <a href=""> <input type="submit" class="customNavbar" name="home"><img src="<?php echo base_url("assets/images/logo.png");?>"/></input> </a>-->
 		
 	</div>
 <!-- javascript -->
