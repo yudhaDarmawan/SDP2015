@@ -17,21 +17,22 @@ v0.1 - 7 Januari 2015
 		<table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 		  <thead>
 			<tr>
-			  <th width="70">Kode MK</th>
+			 <th>Nama MK</th>
+			 <th>Dosen</th>
 			  <th width="20">SKS</th>
-			  <th>Nama MK</th>
-			  <th>Dosen</th>
-			  <th>Hari</th>
-			  <th>Jam</th>
+			 
+			  
+			  <th>Hari, Jam</th>
 			  <th>Ruang</th>
 			  <th>Status</th>
+			  <th>Terakhir Update</th>
 			  <th>Pengaturan</th>
 			</tr>
 		  </thead>
 		  <tbody>
 		  </tbody>
 		</table>
-	
+
 	<script type="text/javascript">
 		var table;
 		$(document).ready(function() {
@@ -39,7 +40,6 @@ v0.1 - 7 Januari 2015
 			
 			"processing": true, //Feature control the processing indicator.
 			"serverSide": true, //Feature control DataTables' server-side processing mode.
-			"paging":   false,
 			"bFilter": false,
 			// Load data for the table's content from an Ajax source
 			"ajax": {

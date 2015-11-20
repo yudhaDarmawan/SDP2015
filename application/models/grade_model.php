@@ -310,8 +310,8 @@ class Grade_model extends CI_Model{
             $student[] = $result->nrp;
             $student[] = $result->nama;
             $student[] = $result->uts;
-            $student[] =  $result->uas;
             $student[] = $result->tugas;
+			$student[] = $result->uas;
             $student[] = $result->nilai_akhir;
             $student[] = $result->nilai_akhir_grade;
             $student[] = $result->nilai_grade;
@@ -336,6 +336,58 @@ class Grade_model extends CI_Model{
         return $this->db->count_all_results();
     }
 
+    public function countIPSforClass($classId){
+        $curYear = $this->class_model->getActiveTermYear();
+        $class = $this->class_model->getAllClassConnected($classId);
+        $this->db->select('km.nrp as nrp, m.semester');
+        $this->db->where('km.mahasiswa_nrp = m.nrp');
+        $this->db->where('m.status',1);
+        $this->db->where('km.nilai_id = n.id');
+        $this->db->where('(km.status_ambil = "A" or km.status_ambil = "r")');
+        $this->db->where_in('km.kelas_id', $class);
+        $this->db->from('kelas_mahasiswa km, mahasiswa m, nilai n');
+        $results = $this->db->get()->result();
+        foreach ($results as $result){
+            // Cari pada tabel nilai_semester apakah nrp tersebut ada
+            $this->db->select('kelas_id');
+            $this->db->where('mahasiswa_nrp','nrp');
+            $this->db->where_in('kelas_id', $class);
+            $this->db->from('nilai_semester');
+            $semesterGrade = $this->db->get()->row();
+
+            if ($this->db->affected_rows() == 0){
+                // Make New One
+                $data = ['mahasiswa_nrp' => $result->nrp, 'semester' => $result->semester, 'ips' => '0.00' , 'tahun_ajaran' => $curYear];
+                $this->db->insert('nilai_mahasiswa',$data);
+            }
+
+            // Ambil dari semua nilai_grade pada curYear untuk nrp tersebut
+            $this->db->select('n.nilai_grade as grade, mk.jumlah_sks as sks');
+            $this->db->from('kelas_mahasiswa km, nilai n, kelas k, mata_kuliah mk');
+            $this->db->where('(km.status_ambil = "A" or km.status_ambil = "r")');
+            $this->db->where('km.nilai_id = n.id');
+            $this->db->where('k.id = km.kelas_id');
+            $this->db->where('mk.id = k.mata_kuliah_id');
+            $this->db->where('k.status_konfirmasi',3); // Kelas sudah terkonfirmasi
+            $this->db->where('km.mahasiswa_nrp',$result->nrp);
+            $gradedClasses = $this->db->get()->result;
+
+            // Ambil Value GRADE > IP dari data_umum
+
+
+            // Hitung IPS
+
+            // Hitung IPK kembali
+
+            // Ambil Semester Mahasiswa
+
+            // Update pada tabel nilai_semester
+
+            // Update pada tabel ipk
+
+        }
+
+    }
     /**
      * @param $classId
      * @param $status
@@ -351,6 +403,8 @@ class Grade_model extends CI_Model{
         $this->db->update('kelas');
 
         // Insert Notifikasi
+
+        // Kalau misalnya $status = confirmed maka hitung lagi IPS semua nilai
 
         return $this->db->affected_rows();
     }
@@ -380,6 +434,7 @@ class Grade_model extends CI_Model{
         return $percentage;
     }
 
+
     /**
      * @param $classId
      * @param null $orders
@@ -388,7 +443,7 @@ class Grade_model extends CI_Model{
     public function getAllScoreOfClass($classId, $orders=null){
         // Ambil Class Yang mereference $classId
         $this->load->model('confirmation_model');
-        $class = $this->confirmation_model->getAllClassConnected($classId);
+        $class = $this->class_model->getAllClassConnected($classId);
 
         // Ambil Semua mahasiswa yang ada
         $this->db->select("km.mahasiswa_nrp as nrp, m.nama as nama, n.uts as uts, n.uas as uas, n.tugas as tugas, n.nilai_akhir as nilai_akhir, n.nilai_akhir_grade as nilai_akhir_grade, n.nilai_grade as nilai_grade");
@@ -490,5 +545,6 @@ class Grade_model extends CI_Model{
         }
         return  $success;
     }
+
 
 }

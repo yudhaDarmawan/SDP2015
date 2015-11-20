@@ -1,7 +1,3 @@
-<?php
-	echo form_open('home/mahasiswa');
-?>
-
 <!--MENU BAR-->
 <div class="nav navbar navbar-inverse"  style="border-radius:0px;">
 	<div class="container-fluid">
@@ -15,8 +11,6 @@
 		</div>
 		<div class="navbar-collapse collapse" id="navbar">
 			<ul class="nav navbar-nav">
-				<?php $stylebutton=array('class'=>'customNavbar','name'=>'home','value'=>'Home'); ?>
-				<li <?php if($this->session->userdata('currentPage') == "home"){echo "class='active'";} ?> ><a href=""> <?php echo form_submit($stylebutton) ?></a></li>
 				<?php $stylebutton=array('class'=>'customNavbar','name'=>'perwalian','value'=>'FRS Online'); ?>
 				<li <?php if($this->session->userdata('currentPage') == "frs"){echo "class='active'";} ?>><a href=""><?php echo form_submit($stylebutton) ?></a></li>
 				<?php $stylebutton=array('class'=>'customNavbar','name'=>'batal','value'=>'Batal Tambah Drop'); ?>
@@ -96,7 +90,7 @@
 					</ul>
 				</li>
 				<?php $stylebutton=array('class'=>'customNavbar','name'=>'logout','value'=>'Logout'); ?>
-				<li><a href="#"> <span class="glyphicon glyphicon-log-out"></span><?php echo form_submit($stylebutton);?></a></li>
+				<li><a href=""> <span class="glyphicon glyphicon-log-out"></span><?php echo form_submit($stylebutton);?></a></li>
 			</ul>
 			
 		</div>
