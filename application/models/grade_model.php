@@ -429,7 +429,9 @@ class Grade_model extends CI_Model{
             $this->db->where('km.nilai_id = n.id');
             $this->db->like('n.nilai_grade',$key);
             $num = $this->db->get()->num_rows();
-            $percentage[$key] = round($num/$total*100,2);
+            if ($num != 0) {
+                $percentage[$key] = round($num / $total * 100, 2);
+            }
         }
         return $percentage;
     }
