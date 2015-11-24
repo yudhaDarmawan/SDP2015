@@ -12,7 +12,6 @@
 			</div>
 			<div class="navbar-collapse collapse" id="navbar">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="index.html">Home</a></li>
 					<li><a href="perwalian.html">Perwalian</a></li>
 					<li><a href="perwalian.html">Nilai Matakuliah</a></li>
 					<li><a href="perwalian.html">Jadwal Dosen</a></li>

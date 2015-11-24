@@ -2,7 +2,7 @@
 <footer class="footer nav-fixed-bottom">
 	<div class="container-fluit">
 		<div class="col-sm-6">
-			<p class="navbar-text">©Copyright 2013     Sekolah Tinggi Teknik Surabaya
+			<p class="navbar-text">©Copyright 2015     Sekolah Tinggi Teknik Surabaya
 			<br>web_admin@stts.edu
 			</p>
 		</div>
@@ -15,4 +15,5 @@
 		</div>
 	</div>
 </footer>
+</body>
 </html>
