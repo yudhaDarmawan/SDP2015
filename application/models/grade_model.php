@@ -255,7 +255,7 @@ class Grade_model extends CI_Model{
         $this->db->where('km.mahasiswa_nrp = m.nrp');
         $this->db->where('m.status',1);
         $this->db->where('km.nilai_id = n.id');
-        $this->db->where('(km.status_ambil = "A" or km.status_ambil = "r")');
+        $this->db->where('(km.status_ambil = "A" or km.status_ambil = "d")');
         $this->db->where_in('km.kelas_id', $class);
         $this->db->from('kelas_mahasiswa km, mahasiswa m, nilai n');
         if ($orders== null){
@@ -330,62 +330,14 @@ class Grade_model extends CI_Model{
         $this->db->where('km.mahasiswa_nrp = m.nrp');
         $this->db->where('m.status',1);
         $this->db->where('km.nilai_id = n.id');
-        $this->db->where('(km.status_ambil = "A" or km.status_ambil = "r")');
+        $this->db->where('(km.status_ambil = "A" or km.status_ambil = "d")');
         $this->db->where_in('km.kelas_id', $class);
         $this->db->from('kelas_mahasiswa km, mahasiswa m, nilai n');
         return $this->db->count_all_results();
     }
 
     public function countIPSforClass($classId){
-        $curYear = $this->class_model->getActiveTermYear();
-        $class = $this->class_model->getAllClassConnected($classId);
-        $this->db->select('km.nrp as nrp, m.semester');
-        $this->db->where('km.mahasiswa_nrp = m.nrp');
-        $this->db->where('m.status',1);
-        $this->db->where('km.nilai_id = n.id');
-        $this->db->where('(km.status_ambil = "A" or km.status_ambil = "r")');
-        $this->db->where_in('km.kelas_id', $class);
-        $this->db->from('kelas_mahasiswa km, mahasiswa m, nilai n');
-        $results = $this->db->get()->result();
-        foreach ($results as $result){
-            // Cari pada tabel nilai_semester apakah nrp tersebut ada
-            $this->db->select('kelas_id');
-            $this->db->where('mahasiswa_nrp','nrp');
-            $this->db->where_in('kelas_id', $class);
-            $this->db->from('nilai_semester');
-            $semesterGrade = $this->db->get()->row();
-
-            if ($this->db->affected_rows() == 0){
-                // Make New One
-                $data = ['mahasiswa_nrp' => $result->nrp, 'semester' => $result->semester, 'ips' => '0.00' , 'tahun_ajaran' => $curYear];
-                $this->db->insert('nilai_mahasiswa',$data);
-            }
-
-            // Ambil dari semua nilai_grade pada curYear untuk nrp tersebut
-            $this->db->select('n.nilai_grade as grade, mk.jumlah_sks as sks');
-            $this->db->from('kelas_mahasiswa km, nilai n, kelas k, mata_kuliah mk');
-            $this->db->where('(km.status_ambil = "A" or km.status_ambil = "r")');
-            $this->db->where('km.nilai_id = n.id');
-            $this->db->where('k.id = km.kelas_id');
-            $this->db->where('mk.id = k.mata_kuliah_id');
-            $this->db->where('k.status_konfirmasi',3); // Kelas sudah terkonfirmasi
-            $this->db->where('km.mahasiswa_nrp',$result->nrp);
-            $gradedClasses = $this->db->get()->result;
-
-            // Ambil Value GRADE > IP dari data_umum
-
-
-            // Hitung IPS
-
-            // Hitung IPK kembali
-
-            // Ambil Semester Mahasiswa
-
-            // Update pada tabel nilai_semester
-
-            // Update pada tabel ipk
-
-        }
+        // NANCY
 
     }
     /**
@@ -452,7 +404,7 @@ class Grade_model extends CI_Model{
         $this->db->where('km.mahasiswa_nrp = m.nrp');
         $this->db->where('m.status',1);
         $this->db->where('km.nilai_id = n.id');
-        $this->db->where('(km.status_ambil = "A" or km.status_ambil = "r")');
+        $this->db->where('(km.status_ambil = "A" or km.status_ambil = "d")');
         $this->db->where_in('km.kelas_id', $class);
         $this->db->from('kelas_mahasiswa km, mahasiswa m, nilai n');
         if ($orders== null){
@@ -484,7 +436,7 @@ class Grade_model extends CI_Model{
         $classes = $this->class_model->getAllClassConnected($class_id);
         $this->db->select('nilai_id');
         $this->db->where_in('kelas_id',$classes);
-        $this->db->where('(status_ambil = "A" or status_ambil = "r")');
+        $this->db->where('(status_ambil = "A" or status_ambil = "d")');
         $results = $this->db->get('kelas_mahasiswa')->result();
 
         // Untuk setiap Mahasiswa
@@ -528,7 +480,7 @@ class Grade_model extends CI_Model{
         $classes = $this->class_model->getAllClassConnected($class_id);
         $this->db->select('nilai_id');
         $this->db->where_in('kelas_id',$classes);
-        $this->db->where('(status_ambil = "A" or status_ambil = "r")');
+        $this->db->where('(status_ambil = "A" or status_ambil = "d")');
         $results = $this->db->get('kelas_mahasiswa')->result();
 
         // Untuk setiap Mahasiswa
