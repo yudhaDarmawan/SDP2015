@@ -307,48 +307,42 @@ Class Revision_model extends CI_Model {
     	$this->db->select('sks');
     	$this->db->where('nrp', $nrp);
 		$hasil = $this->db->get('mahasiswa')->row_array();
-		
 		return $hasil['sks'];
 	}
-	
-	/**
-	* Ambil informasi kelas berdasarkan id nya
-	* 
-	* @param string $class_id
-	* @param string $lecturer_id
-	* 
-	* @return
-	*/
-	public function getClassInfoById($class_id, $lecturer_id){
-		$this->db->select('k.id as id, mk.id as kode_mk, mk.nama as nama_mk, k.hari as hari, k.jam_mulai as jam, r.nama as nama_ruang, k.status_konfirmasi as status_k, mk.jumlah_sks as sks, k.nama as nama_kelas, d.nama as nama_dosen, mk.semester as semester, k.tahun_ajaran as tahun_ajaran, k.tambahan_grade as grade, k.persentase_uas as persen_uas, k.persentase_uts as persen_uts, k.persentase_tugas as persen_tugas, k.tanggal_update as tanggal_update, ik.jurusan, mk.lulus_minimal as lulus_minimal, k.komentar_kajur as komentar_kajur');
-		$this->db->from('mata_kuliah mk, kelas k, dosen d,informasi_kurikulum ik');
-		$this->db->where('mk.id = k.mata_kuliah_id');
-		$this->db->where('d.nip = k.dosen_nip');
-		$this->db->where('mk.informasi_kurikulum_id = ik.id');
-		$this->db->where('k.status',1);
-		$this->db->where('k.dosen_nip',$lecturer_id);
-		$this->db->where('k.id',$class_id);
-		$this->db->join('ruangan r', 'r.id = k.ruangan_id','left');
-		$result = $this->db->get()->row();
-		if ($this->db->affected_rows() > 0){
-			$class = $this->Class_model->processClassData($result);
-			$class[] = $result->nama_dosen;
-			$class[] = $result->sks;
-			$class[] = $result->semester;
-			$class[] = $result->status_k;
-			$class[] = $result->tahun_ajaran;
-			$class[] = $result->grade;
-			$class[] = $result->persen_uts;
-			$class[] = $result->persen_uas;
-			$class[] = $result->persen_tugas;
-			$class[] = $result->tanggal_update;
-            $class[] = $result->id;
-            $class[] = $result->lulus_minimal;
-            $class[] = $result->komentar_kajur;
-			return $class;
-		}
-		return false;
-	}
+
+    public function getRevisionByClass($class_id){
+        $this->db->where('kelas_id',$class_id);
+        $this->db->order_by('id','asc');
+        $results =$this->db->get('hrevisi_penilaian')->result();
+        $revisions = [];
+        foreach ($results as $result){
+            $revision =[];
+            $revision["id"] = $result->id;
+            $revision["tanggal_create"] = $result->tanggal_create;
+            $revision["catatan"] = $result->catatan;
+            $revision["status_revisi"] = $result->status_revisi;
+            // Cari Perubahan Muridnyas
+            $this->db->select('m.nrp as nrp, m.nama as nama, d.nilai_akhir_sebelum as nilai_akhir_sebelum, d.nilai_akhir_sesudah as nilai_akhir_sesudah');
+            $this->db->where('d.hrevisi_penilaian_id',$result->id);
+            $this->db->where('m.nrp = d.mahasiswa_nrp');
+            $this->db->order_by('m.nrp','asc');
+            $this->db->from('drevisi_penilaian d, mahasiswa m');
+            $resultStudents = $this->db->get()->result();
+            $students = [];
+            foreach ($resultStudents as $resultStudent){
+                $student = [];
+                $student["nrp"] = $resultStudent->nrp;
+                $student["nama"]= $resultStudent->nama;
+                $student["nilai_akhir_sebelum"]= $resultStudent->nilai_akhir_sebelum;
+                $student["nilai_akhir_sesudah"]= $resultStudent->nilai_akhir_sesudah;
+                $students[] = $student;
+            }
+            $revision["mahasiswa"] = $students;
+            $revisions[] = $revision;
+        }
+        return $revisions;
+    }
+
 }
 
 ?>

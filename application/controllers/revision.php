@@ -56,8 +56,8 @@ Class Revision extends CI_Controller {
 		$data['lecturer_login'] = $this->input->post('lecturer_login');
 		
 		// get class' information from database
-		$data['class'] = $this->revision_model->getClassInfoById($data['class_id'], $data['lecturer_login']);
-		
+        $this->load->model('class_model');
+		$data['class'] = $this->class_model->getClassInfoById($data['class_id'], $data['lecturer_login']);
 		// insert input from dosen (from form) into variables
 		for ($i = 0; $i < $data['how_many']; $i++){
 			$nrp = "combo_nrp_" . $i;
