@@ -112,13 +112,6 @@ class Grade_model extends CI_Model{
             $gradeId = $result->nilai_id;
             // Hitung Nilai pada nilai_id
             $grade = $this->countTotalGrade($midTest,$finalTest,$homework,$classId);
-            // Update Nilai pada nilai_id
-            if ($grade[0] > 100){
-                $grade[0] = 100;
-            }
-            if ($grade[1] > 100){
-                $grade[1] = 100;
-            }
             $dataGrade = ['uts'=>$midTest, 'uas'=>$finalTest,'tugas'=>$homework, "nilai_akhir" => $grade[0], "nilai_akhir_grade" => $grade[1], "nilai_grade" => $grade[2]];
             $this->db->where('id',$gradeId);
             $this->db->update('nilai',$dataGrade);
@@ -160,19 +153,25 @@ class Grade_model extends CI_Model{
             $finalGrade = 'A';
         }
         else if($finalMarkAfterGrade > 74){
-            $finalGrade = 'B+';
+            $finalGrade = 'B';
         }
         else if($finalMarkAfterGrade > 69){
-            $finalGrade = 'C+';
-        }
-        else if($finalMarkAfterGrade > 60){
             $finalGrade = 'C';
         }
-        else if($finalMarkAfterGrade > 55){
+        else if($finalMarkAfterGrade > 60){
             $finalGrade = 'D';
         }
-        else {
+        else if($finalMarkAfterGrade > 55){
             $finalGrade = 'E';
+        }
+        else {
+            $finalGrade = 'F';
+        }
+        if ($finalMark > 100){
+            $finalMark = 100;
+        }
+        if ($finalMarkAfterGrade > 100){
+            $finalMarkAfterGrade = 100;
         }
         // Kembalikan Array[3] dimana ke-0 adalah nilai akhir angka, nilai akhir grade dan
         // ke-2 adalah nilai huruf dari nilai akhir grade.
@@ -369,22 +368,34 @@ class Grade_model extends CI_Model{
 
         $this->db->where('kelas_id',$classId);
         $total = $this->db->get('kelas_mahasiswa')->num_rows();
+        $totalIPS = 0;
         $percentage = [];
         $percentage["A"] = 0;
         $percentage["B"] = 0;
         $percentage["C"] = 0;
         $percentage["D"] = 0;
         $percentage["E"] = 0;
+        $ipdosen = 0;
         foreach ($percentage as $key => $value){
             $this->db->from('kelas_mahasiswa km , nilai  n');
             $this->db->where('km.kelas_id',$classId);
             $this->db->where('km.nilai_id = n.id');
             $this->db->like('n.nilai_grade',$key);
             $num = $this->db->get()->num_rows();
+
+            $this->db->select('value as nilai');
+            $this->db->where('index','valnilai_'.$key.'_to_IPK');
+            $this->db->from('data_umum');
+            $convert = $this->db->get()->row()->nilai;
             if ($num != 0) {
-                $percentage[$key] = round($num / $total * 100, 2);
+                $percentage[$key] = round($num / $total * 100, 1);
             }
+            $ipdosen += $num * $convert;
         }
+        if($ipdosen != 0) {
+            $ipdosen = round($ipdosen / $total, 2);
+        }
+        $percentage["IP Dosen"] = $ipdosen;
         return $percentage;
     }
 

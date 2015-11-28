@@ -127,7 +127,7 @@ class Grade extends CI_Controller {
     }
 	public function ajax_percentage($classId){
         $percentage =$this->grade_model->getPercentageClass($classId);
-        echo $percentage["A"].' '.$percentage["B"].' '.$percentage["C"].' '.$percentage["D"].' '.$percentage["E"];
+        echo $percentage["A"].' '.$percentage["B"].' '.$percentage["C"].' '.$percentage["D"].' '.$percentage["E"].' '.$percentage["IP Dosen"];
     }
     public function ajax_grade($classId){
 
@@ -254,17 +254,23 @@ class Grade extends CI_Controller {
 				$this->session->set_flashdata('alert_level','warning');
 				$this->session->set_flashdata('alert','Total Prosentase tidak boleh lebih dari 100%!');
 			}
-			else {			
+			else {
+
 				$success = $this->grade_model->updateGradePercentage($classId, $this->input->post('inputUTS'),$this->input->post('inputUAS'),$this->input->post('inputHomework'));
 				
 				if ($success){
 					$this->session->set_flashdata('alert_level','success');
 					$this->session->set_flashdata('alert','Berhasil Mengupdate Prosentase Nilai!');
+                    if($sumOfAll < 100){
+                        $this->session->set_flashdata('alert_level','warning');
+                        $this->session->set_flashdata('alert','Berhasil mengupdate prosentase nilai tetapi jumlah prosentase tidak sampai 100.');
+                    }
 				}
 				else {
 					$this->session->set_flashdata('alert_level','danger');
 					$this->session->set_flashdata('alert','Gagal Mengupdate Prosentase Nilai!');
 				}
+
 			}
 			redirect('grade/view/'.$classId);
 		}

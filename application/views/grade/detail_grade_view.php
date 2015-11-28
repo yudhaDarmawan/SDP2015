@@ -26,13 +26,18 @@
         </div>
         <div class="col-md-4 col-sm-6 text-right">
             <div class="btn-group" role="group" aria-label="...">
-                <button id="btnEditUTS" type='button' class="btn btn-default btn-sm">Edit UTS</button>
-                <button id="btnEditTugas" type='button' class="btn btn-default btn-sm">Edit Tugas</button>
-                <button id="btnEditUAS" type='button' class="btn btn-default btn-sm">Edit UAS</button>
+                <button id="btnEditUTS" type='button' class="btn btn-default btn-sm">Enable Edit UTS</button>
+                <button id="btnEditTugas" type='button' class="btn btn-default btn-sm">Enable Edit Tugas</button>
+                <button id="btnEditUAS" type='button' class="btn btn-default btn-sm">Enable Edit UAS</button>
             </div>
 
         </div>
     </div>
+    <?php if($class[9] != ""){ ?>
+    <div class="row">
+        <div class="alert alert-default"><?php echo $class[19];?></div>
+    </div>
+    <?php } ?>
     <div class="row">
         <div class="col-md-12">
         <table id="table_grade" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -63,46 +68,51 @@
             </tr>
             </tfoot>
             </table>
-
         </div>
-
     </div>
     </br.>
     <div class="row">
         <div class="col-md-offset-8 col-md-4 col-sm-offset-6 col-sm-6">
             <div class="row">
                 <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase A :
+                    A :
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-4 percentA text-right">0%
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase B :
+                    B :
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-4 percentB text-right">0%
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase C :
+                    C :
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-4 percentC text-right">0%
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase D :
+                    D :
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-4 percentD text-right">0%
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase E :
+                    E :
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-4 percentE text-right">0%
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-8 col-xs-8 text-right">
+                    IP Dosen :
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4 ipdosen text-right">0.00
                 </div>
             </div>
             <div class="row">
@@ -212,6 +222,7 @@
                     event.preventDefault();
                     if ($(this).hasClass('active')){
                         $(this).removeClass('active');
+                        $(this).html('Enable Edit UTS');
                         $('.nilai_uts').attr('disabled','');
                         if (!$('#btnEditUAS').hasClass('active') && !$('#btnEditTugas').hasClass('active')){
                             $('.grade_edit').removeAttr('disabled');
@@ -221,6 +232,7 @@
                     }
                     else {
                         $(this).addClass('active');
+                        $(this).html('Disable Edit UTS');
                         $('.nilai_uts').removeAttr('disabled');
                         $('.grade_edit').attr('disabled','');
                         $('#btnSaveAll').removeAttr('disabled');
@@ -232,6 +244,7 @@
                     event.preventDefault();
                     if ($(this).hasClass('active')){
                         $(this).removeClass('active');
+                        $(this).html('Enable Edit UAS');
                         $('.nilai_uas').attr('disabled','');
                         if (!$('#btnEditUTS').hasClass('active') && !$('#btnEditTugas').hasClass('active')){
                             $('.grade_edit').removeAttr('disabled');
@@ -241,6 +254,7 @@
                     }
                     else {
                         $(this).addClass('active');
+                        $(this).html('Disable Edit UAS');
                         $('.nilai_uas').removeAttr('disabled');
                         $('.grade_edit').attr('disabled','');
                         $('#btnSaveAll').removeAttr('disabled');
@@ -251,6 +265,7 @@
                     event.preventDefault();
                     if ($(this).hasClass('active')){
                         $(this).removeClass('active');
+                        $(this).html('Enable Edit Tugas');
                         $('.nilai_tugas').attr('disabled','');
                         if (!$('#btnEditUTS').hasClass('active') && !$('#btnEditUAS').hasClass('active')){
                             $('.grade_edit').removeAttr('disabled');
@@ -260,6 +275,7 @@
                     }
                     else {
                         $(this).addClass('active');
+                        $(this).html('Disable Edit Tugas');
                         $('.nilai_tugas').removeAttr('disabled');
                         $('.grade_edit').attr('disabled','');
                         $('#btnSaveAll').removeAttr('disabled');
@@ -297,6 +313,9 @@
                     $('#btnEditUAS').removeClass('active');
                     $('#btnEditUTS').removeClass('active');
                     $('#btnEditTugas').removeClass('active');
+                    $('#btnEditUAS').html('Enable Edit UAS');
+                    $('#btnEditUTS').html('Enable Edit UTS');
+                    $('#btnEditTugas').html('Enable Edit Tugas');
                 });
                 $('#btnCancelAll').click(function(event) {
                     event.preventDefault();
@@ -309,6 +328,9 @@
                     $('#btnEditUAS').removeClass('active');
                     $('#btnEditUTS').removeClass('active');
                     $('#btnEditTugas').removeClass('active');
+                    $('#btnEditUAS').html('Enable Edit UAS');
+                    $('#btnEditUTS').html('Enable Edit UTS');
+                    $('#btnEditTugas').html('Enable Edit Tugas');
                 });
             }
             else {
@@ -334,6 +356,7 @@
                 $('.percentC').html(arrPercent[2]+"%");
                 $('.percentD').html(arrPercent[3]+"%");
                 $('.percentE').html(arrPercent[4]+"%");
+                $('.ipdosen').html(arrPercent[5]);
             });
 
         });
@@ -347,6 +370,7 @@
                 $('.percentC').html(arrPercent[2]+"%");
                 $('.percentD').html(arrPercent[3]+"%");
                 $('.percentE').html(arrPercent[4]+"%");
+                $('.ipdosen').html(arrPercent[5]);
             });
         }
     </script>
