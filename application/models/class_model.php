@@ -285,6 +285,14 @@ class Class_Model extends CI_Model {
         }
         return $classes;
     }
-	
+    public function isClassExist($class_id){
+        $this->db->where('id',$class_id);
+        return $this->db->get('kelas')->num_rows();
+    }
+	public function getLecturerIdByClass($class_id){
+        $this->db->select('dosen_nip');
+        $this->db->where('id',$class_id);
+        return $this->db->get('kelas')->row()->dosen_nip;
+    }
 
 }

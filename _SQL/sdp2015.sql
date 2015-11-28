@@ -327,7 +327,7 @@ CREATE TABLE IF NOT EXISTS `kelas_mahasiswa` (
   `kelas_id` varchar(6) NOT NULL,
   `mata_kuliah_id` varchar(6) NOT NULL,
   `status_ambil` varchar(10) NOT NULL,
-  `semester_ambil` tinyint(2) unsigned NOT NULL,
+  `semester` tinyint(2) unsigned NOT NULL,
   `nilai_id` varchar(9) DEFAULT NULL COMMENT 'nilai sebenarnya'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mahasiswa mengambil kelas';
 

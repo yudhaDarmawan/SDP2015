@@ -149,6 +149,19 @@ class Grade_model extends CI_Model{
 
         $finalMark = round(($midTest*$percentUTS/100) + ($finalTest*$percentUAS/100) + ($homework*$percentHomework/100));
         $finalMarkAfterGrade = $finalMark + $addGrade;
+        $finalGrade = $this->countGrade($finalMarkAfterGrade);
+        if ($finalMark > 100){
+            $finalMark = 100;
+        }
+        if ($finalMarkAfterGrade > 100){
+            $finalMarkAfterGrade = 100;
+        }
+        // Kembalikan Array[3] dimana ke-0 adalah nilai akhir angka, nilai akhir grade dan
+        // ke-2 adalah nilai huruf dari nilai akhir grade.
+        return [$finalMark,$finalMarkAfterGrade,$finalGrade];
+    }
+
+    public function countGrade($finalMarkAfterGrade){
         if ($finalMarkAfterGrade > 79){
             $finalGrade = 'A';
         }
@@ -167,17 +180,8 @@ class Grade_model extends CI_Model{
         else {
             $finalGrade = 'F';
         }
-        if ($finalMark > 100){
-            $finalMark = 100;
-        }
-        if ($finalMarkAfterGrade > 100){
-            $finalMarkAfterGrade = 100;
-        }
-        // Kembalikan Array[3] dimana ke-0 adalah nilai akhir angka, nilai akhir grade dan
-        // ke-2 adalah nilai huruf dari nilai akhir grade.
-        return [$finalMark,$finalMarkAfterGrade,$finalGrade];
+        return $finalGrade;
     }
-
     /**
      * Membuat Header dari Log Penilaian
      * @param $classId ID Kelas
@@ -510,6 +514,7 @@ class Grade_model extends CI_Model{
         }
         return  $success;
     }
+
 
 
 }
