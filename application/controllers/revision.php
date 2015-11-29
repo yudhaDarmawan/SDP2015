@@ -33,8 +33,8 @@ Class Revision extends CI_Controller {
 	}
 	
 	public function index(){
-		$this->revisi('K15001');
-		//$this->student_transcript('213116256');
+		//$this->revisi('K15001');
+		$this->student_transcript('213116256');
 		//$this->student_grade('213116256');
 	}
 	

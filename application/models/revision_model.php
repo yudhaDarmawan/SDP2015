@@ -270,19 +270,13 @@ Class Revision_model extends CI_Model {
 	* @return 
 	*/
     public function getStudentCourse($nrp){
-    	$this->db->select('informasi_kurikulum_id');
+    	$this->db->select('ik.jurusan as jurusan');
     	$this->db->where('nrp', $nrp);
-		$hasil = $this->db->get('mahasiswa')->row_array();
+		$this->db->where('m.informasi_kurikulum_id = ik.id');
+		$this->db->from('informasi_kurikulum ik, mahasiswa m');
+		$result = $this->db->get()->row_array();
 		
-		$jurusan = substr($hasil['informasi_kurikulum_id'], 2, 3);
-		
-		if ($jurusan == "INF") $jurusan = "S1-TEKNIK INFORMATIKA";
-		else if ($jurusan == "SIB") $jurusan = "S1-SISTEM INFORMASI BISNIS";
-		else if ($jurusan == "DKV") $jurusan = "S1-DESAIN KOMUNIKASI VISUAL";
-		else if ($jurusan == "DSP") $jurusan = "S1-DESAIN PRODUK";
-		else if ($jurusan == "IND") $jurusan = "S1-TEKNIK INDUSTRI";
-		
-		return $jurusan;
+		return $result['jurusan'];
 	}
 	
 	/**
