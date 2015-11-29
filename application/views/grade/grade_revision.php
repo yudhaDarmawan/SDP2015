@@ -1,6 +1,7 @@
 <style>
 	.combobox{display:block;width:100%;height:34px;padding:6px 12px;font-size:14px;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;-o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s}
 	.combobox:focus{border-color:#66afe9;outline:0;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)}
+	p { margin-top: 5px; }
 </style>
 
 <div class="container">
@@ -67,10 +68,10 @@
 	    <table id="table_revision" class="table table-striped table-bordered" cellspacing="0" width="100%">
 	      	<thead>
 		        <tr>
-		          	<th> # </th>
-		          	<th> NRP </th>
-		            <th> Nilai Akhir Lama </th>
-		          	<th> Nilai Akhir Baru </th>
+		          	<th><p align='center'> No. </p></th>
+		          	<th><p align='center'> NRP </p></th>
+		            <th><p align='center'> Nilai Akhir Lama </p></th>
+		          	<th><p align='center'> Nilai Akhir Baru </p></th>
 		        </tr>
 	      	</thead>
 	      	<tbody>
@@ -78,15 +79,15 @@
 	      			// create for how many rows
 					for($i = 0; $i < $how_many; $i++) {
 						echo "<tr>";
-							echo "<th> <label>" . ($i + 1) . "</label> </th>";
+							echo "<th> <p align='center' style='font-weight:normal;'>" . ($i + 1) . "</p> </th>";
 							
 							$id = "combo_nrp_" . $i; 
 							$attr = "id='" . $id . "' class='combobox'";
 							echo "<th> " . form_dropdown($id, $arrStudents, $input[$id], $attr) . " </th>";
 							
 							$id = "old_score_" . $i;
-							echo "<input type='hidden' id='" . $id . "' name='" . $id . "' value='" . $input[$id] . "' />";
-							echo "<th> <label id='label_old_score_" . $i . "' class='form-control width='20'>" . $input[$id] . "</label> </th>";
+							echo "<th><input type='hidden' id='" . $id . "' name='" . $id . "' value='" . $input[$id] . "' />";
+							echo "<p align='center' style='font-weight:normal;' id='label_old_score_" . $i . "'>" . $input[$id] . "</p> </th>";
 							
 							$id = "new_score_" . $i;
 							echo "<th> <input type='number' id='" . $id . "' name='" . $id . "' value='" . $input[$id] . "' min='0' max='100' class='form-control'/> </th>";
@@ -96,8 +97,8 @@
 	      	</tbody>
 	    </table>
 	    
-	    <br> Komentar: <br>
-	    <?php echo form_textarea('comment', $comment, 'class=form-control'); ?>
+	    <br> Komentar : <br>
+	    <?php echo form_textarea('comment', $comment, 'class="form-control"'); ?>
 	    
 	    <br><br>
 	    
@@ -106,6 +107,7 @@
 		    <?php echo form_submit(['id'=>'add_row','name'=>'add_row','value'=>'Tambah','class'=>'btn btn-primary','style'=>'margin-left:80%;']); ?>
 			<!--input type="submit" name="sendRevision" value="Send Revision" class="btn btn-primary"/-->
 			<?php echo form_submit(['id'=>'send_revision','name'=>'send_revision','value'=>'Kirim','class'=>'btn btn-primary']); ?>
+			<?php echo form_submit(['id'=>'print','name'=>'print','value'=>'Cetak','class'=>'btn btn-primary']); ?>
 		</div>
 	<?php echo form_close(); ?>
 </div> <!-- End of Container -->

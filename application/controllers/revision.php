@@ -25,7 +25,7 @@ Class Revision extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('table');
-		$this->load->library('encrypt');
+		$this->load->library('m_pdf');
 		
 		$this->load->model('class_model');
 		$this->load->model('grade_model');
@@ -44,9 +44,7 @@ Class Revision extends CI_Controller {
 		
 		$data['title'] = "Revisi Penilaian";
 		
-		if (! $data['class_id'] = $this->input->post('class_id')){
-			$data['class_id'] = $this->session->flashdata('class_id');
-		}
+		$data['class_id'] = $this->session->userdata('class_id');
 		
 		// get data from form
 		$data['how_many'] = $this->input->post('how_many');
@@ -109,6 +107,24 @@ Class Revision extends CI_Controller {
 			
 			$done = TRUE;
 		} 
+		
+		else if ($this->input->post('print')){
+			//load the view, pass the variable and do not show it but "save" the output into variable
+			$html = $this->load->view('report/report_revision', $data, TRUE);
+			$header =$this->load->view('report/includes/headerReport', $data, TRUE);
+			
+			// you can pass mPDF parameter on this load() function
+			$pdf = $this->m_pdf->load();
+			
+			// generate the PDF
+			$pdf->WriteHTML($header.$html);
+			
+			// this the the PDF filename that user will get to download
+			$pdf_filename = "Revisi Penilaian " . $data['class_id'] . ".pdf";
+			
+			// offer to user via browser download (PDF won't be saved on your server)
+			$pdf->Output($pdf_filename, "I");
+		}
 		
 		// the controller loads for the first time
 		else {
@@ -229,7 +245,6 @@ Class Revision extends CI_Controller {
 		
 		return $jumlah_semester;
 	}
-	
 }
 
 ?>

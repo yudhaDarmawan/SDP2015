@@ -28,8 +28,8 @@
  * 		- getStudentCourse
  * 		- getStudentIPK
  * 		- getStudentIPK
- * v0.4 - 24 November 2015
- * - Menambahkan fungsi 
+ * v0.4 - 26 November 2015 (Stefanie)
+ * - Menambahkan fungsi getRevisionByClass
  */
  
 Class Revision_model extends CI_Model {

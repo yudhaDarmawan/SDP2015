@@ -59,10 +59,4 @@
 		} ?>
 	</table>
 	
-	<?php echo form_open('revision/student_transcript'); ?>
-		<div class="text-right">
-		    <?php echo form_submit(['id'=>'print','name'=>'print','value'=>'Cetak Transkip','class'=>'btn btn-primary','style'=>'margin-left:80%;']); ?>
-		</div>
-	<?php echo form_close(); ?>
-	
 </div> <!-- End of Container -->
