@@ -130,8 +130,10 @@ v0.1 - 7 Januari 2015
 
 	</div>
 
-    <?php if (isset($revisions) && count($revisions) > 0){
+    <?php
         $ctrRevisi = 0;
+    if (isset($revisions) && count($revisions) > 0){
+
         $statusRevisi = ["0" => "<span class='label label-warning'>Menunggu</span>",
             "1" => "<span class='label label-danger'>Ditolak</span>",
             "2" => "<span class='label label-success'>Disetujui</span>"]
