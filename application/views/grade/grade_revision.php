@@ -60,7 +60,7 @@
 			$arrStudents[""] = "";
 			foreach($students as $student){
 				$arrStudents[$student->nrp] = $student->nrp . " - ". $student->nama;
-				echo "<input type='hidden' id='" . $student->nrp . "' name='" . $student->nrp . "' value='" . $student->nilai_akhir . "' />";
+				echo "<input type='hidden' id='" . $student->nrp . "' name='" . $student->nrp . "' value='" . $student->nilai_akhir_grade . "' />";
 			}
 		?>
     	
