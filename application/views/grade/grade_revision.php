@@ -5,32 +5,43 @@
 
 <div class="container">
 	<div class="panel panel-info">
-		<div class="panel-heading">Detail <?php echo $class[1]; ?></div>
+		<div class="panel-heading">Detail <?php echo $class[0]; ?></div>
 			<div class="panel-body">
 				<table border="0" cellpadding="4" cellspacing="0">
 					<tbody>
 						<tr>
-							<td>Mata Kuliah / Semester / SKS :&nbsp;&nbsp;</td>
-							<td><?php echo $class[1].' / '. $class[9]. ' / '. $class[8].' SKS'; ?></td>
+							<td>Mata Kuliah / Semester / SKS &nbsp;&nbsp;</td>
+                            <td>:</td>
+							<td><?php echo $class[0].' / '. $class[3]. ' / '. $class[8].' SKS'; ?></td>
 						</tr>
 						<tr>
-							<td>Ruang / Hari, Jam : </td>
-							<td><?php echo $class[5].' / '.$class[3].', '.$class[4]; ?></td>
+							<td>Jurusan / Semester &nbsp;&nbsp;  </td>
+                            <td>:</td>
+							<td><?php echo $class[1].' / '.$class[9].', '.$class[4]; ?></td>
+						</tr>
+                        <tr>
+                            <td>Ruang / Hari, Jam </td>
+                            <td>:</td>
+                            <td><?php echo  $class[5].' / '.$class[4];?></td>
+                        </tr>
+						<tr>
+							<td>Dosen  </td>
+                            <td>:</td>
+							<td><?php echo $class[7]; ?></td>
 						</tr>
 						<tr>
-							<td>Kelas / Dosen : </td>
-							<td><?php echo $class[2].' / '.$class[7]; ?></td>
-						</tr>
-						<tr>
-							<td>Tahun Ajaran : </td>
+							<td>Tahun Ajaran  </td>
+                            <td>:</td>
 							<td><?php echo $class[11]; ?></td>
 						</tr>
 						<tr>
-							<td>Status Penilaian :</td>
+							<td>Status Penilaian </td>
+                            <td>:</td>
 							<td><?php echo $class[6]; ?></td>
 						</tr>
 						<tr>
-							<td>Terakhir Update :</td>
+							<td>Terakhir Update </td>
+                            <td>:</td>
 							<td><?php echo $class[16]; ?></td>
 						</tr>
 					</tbody>

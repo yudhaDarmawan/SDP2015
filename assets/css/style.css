@@ -19,3 +19,6 @@
 .headerDosen{
     background:url('../images/bgdosen.jpg') repeat;
 }
+.panel-info table td{
+    padding-bottom:5pt;
+}
