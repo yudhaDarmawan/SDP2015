@@ -179,7 +179,8 @@ class Grade extends CI_Controller {
 			redirect('grade/all');
 		}
 	    if($this->input->post('btnRevisi')){
-	    	$this->session->set_userdata('class_id', $classId);
+	    	$array_items = array('class_id' => $classId, 'lecturer_login' => $lecturer_login);
+	    	$this->session->set_userdata('to_revision', $array_items);
             redirect('revision/revisi/');
         }
         if ($this->input->post('btnSend')){

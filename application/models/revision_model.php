@@ -68,7 +68,7 @@ Class Revision_model extends CI_Model {
         	'id' => $id,
         	'kelas_id' => $kelas_id,
         	'catatan' => $catatan,
-        	'status_revisi' => '2',
+        	'status_revisi' => '0',
         	'tanggal_create' => date('Y-m-d')
         );
         

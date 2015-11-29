@@ -33,18 +33,23 @@ Class Revision extends CI_Controller {
 	}
 	
 	public function index(){
-		//$this->revisi('K15001');
-		//$this->student_transcript('213116256');
-		//$this->student_grade('213116256');
+		$array_items = array('nrp' => '213116256', 'nama' => 'Raymond Wongso Hartanto');
+	    $this->session->set_userdata('student_information', $array_items);
+	    
+	    redirect('revision/student_transcript/');
 	}
 	
 	public function revisi(){
 		// to indicate if revision is done and you should move to other page
 		$done = FALSE;
 		
+		// set head title
 		$data['title'] = "Revisi Penilaian";
 		
-		$data['class_id'] = $this->session->userdata('class_id');
+		// get dosen information from session
+		$sess_result = $this->session->userdata('to_revision');
+		$data['class_id'] = $sess_result['class_id'];
+		$data['lecturer_login'] = $sess_result['lecturer_login'];
 		
 		// get data from form
 		$data['how_many'] = $this->input->post('how_many');
@@ -53,12 +58,10 @@ Class Revision extends CI_Controller {
 		// get all students
 		$data['students'] = $this->revision_model->getComboBoxStudents($data['class_id']);
 		
-		// Cek SESSION lecturer_login dengan pemilik kelas
-		$data['lecturer_login'] = $this->input->post('lecturer_login');
-		
 		// get class' information from database
         $this->load->model('class_model');
 		$data['class'] = $this->class_model->getClassInfoById($data['class_id'], $data['lecturer_login']);
+		
 		// insert input from dosen (from form) into variables
 		for ($i = 0; $i < $data['how_many']; $i++){
 			$nrp = "combo_nrp_" . $i;
@@ -99,9 +102,6 @@ Class Revision extends CI_Controller {
 				if ($data['input'][$nrp] != "") $this->revision_model->insertDataToDrevisi($hrevisi_id, $data['input'][$nrp], $data['input'][$old_score], $data['input'][$new_score]);
 			}
 			
-			// change class' status into waiting -> 2
-			$this->grade_model->changeConfirmationStatus($data['class_id'], '2');
-			
 			// send notification to kajur -> insert into table notification
 			//$this->revision_model->insertDataToNotifikasi($data['class_id'], $data['lecturer_login']);
 			
@@ -126,13 +126,13 @@ Class Revision extends CI_Controller {
 			$pdf->Output($pdf_filename, "I");
 		}
 		
+		
 		// the controller loads for the first time
 		else {
 			// set default value
 			$data['how_many'] = 3;
 			$data['comment'] = NULL;
 			$data['input'] = NULL;
-			$data['lecturer_login'] = 'DO001';
 		}
 		
 		if (!$done){
@@ -142,34 +142,28 @@ Class Revision extends CI_Controller {
 			$this->load->view('grade/grade_revision', $data);
 			$this->load->view('includes/footer');
 		} else {
-			$this->success();
+			redirect('grade/view/' . $data['class_id']);
 		}
 	}
 	
-	public function success() {
-		$data['title'] = "Success";
+	public function student_transcript(){
+		// set head title
+		$data['title'] = "Transkip nilai sementara";
 		
-		$this->load->view('includes/headerdosen', $data);
-        $this->load->view('nav/navbardosen');
-		$this->load->view('grade/success');
-		$this->load->view('includes/footer');
-	}
-	
-	public function student_transcript($nrp){
-		$data['title'] = "Transkrip nilai sementara";
+		// get student information from session
+		$sess_result = $this->session->userdata('student_information');
+		$data['nrp'] = $sess_result['nrp'];
+		$data['nama'] = $sess_result['nama'];
 		
-		$data['nrp'] = $nrp;
-		$data['nama'] = "Raymond Wongso Hartanto";
-		
+		// get information from database
 		$data['ipk'] = $this->revision_model->getStudentIPK($data['nrp']);
 		$data['total_sks'] = $this->revision_model->getStudentSKS($data['nrp']);
-		
 		$data['angkatan'] = $this->revision_model->getStudentYear($data['nrp']);
 		$data['tahun_ajaran_sekarang'] = $this->revision_model->getCurrentSchoolYear();
-		
-		$data['jumlah_semester'] = $this->get_jumlah_semester($data['angkatan']);
-		
 		$taken_classes = $this->revision_model->getTakenClasses($data['nrp']);
+		
+		// count how many semester the student has
+		$data['jumlah_semester'] = $this->get_jumlah_semester($data['angkatan']);
 		
 		for ($i = 1; $i <= $data['jumlah_semester']; $i++){
 			$data['semester'][$i] = NULL;
@@ -186,28 +180,48 @@ Class Revision extends CI_Controller {
 			}
 		}
 		
+		if ($this->input->post('print')){
+			//load the view, pass the variable and do not show it but "save" the output into variable
+			$html = $this->load->view('report/report_transcript', $data, TRUE);
+			$header =$this->load->view('report/includes/headerReport', $data, TRUE);
+			
+			// you can pass mPDF parameter on this load() function
+			$pdf = $this->m_pdf->load();
+			
+			// generate the PDF
+			$pdf->WriteHTML($header.$html);
+			
+			// this the the PDF filename that user will get to download
+			$pdf_filename = "Transkip Nilai.pdf";
+			
+			// offer to user via browser download (PDF won't be saved on your server)
+			$pdf->Output($pdf_filename, "I");
+		}
+		
 		$this->load->view('includes/header', $data);
         $this->load->view('nav/navbarmahasiswa');
 		$this->load->view('grade/student_transcript', $data);
 		$this->load->view('includes/footer');
 	}
 	
-	public function student_grade($nrp){
+	public function student_grade(){
+		// set head title
 		$data['title'] = "Nilai Semester";
 		
-		$data['nrp'] = $nrp;
-		$data['nama'] = "Raymond Wongso Hartanto";
+		// get student information from session
+		$sess_result = $this->session->userdata('student_information');
+		$data['nrp'] = $sess_result['nrp'];
+		$data['nama'] = $sess_result['nama'];
 		
+		// get information from database
 		$data['ipk'] = $this->revision_model->getStudentIPK($data['nrp']);
 		$data['total_sks'] = $this->revision_model->getStudentSKS($data['nrp']);
-		
 		$data['angkatan'] = $this->revision_model->getStudentYear($data['nrp']);
-		$data['tahun_ajaran_sekarang'] = substr($this->revision_model->getCurrentSchoolYear(), 11, 4);
-		
-		$data['jurusan'] = $this->revision_model->getStudentCourse($data['nrp']);
-		$data['jumlah_semester'] = $this->get_jumlah_semester($data['angkatan']);
-		
+		$data['tahun_ajaran_sekarang'] = $this->revision_model->getCurrentSchoolYear();
 		$taken_classes = $this->revision_model->getTakenClasses($data['nrp']);
+		
+		// count how many semester the student has
+		$data['jumlah_semester'] = $this->get_jumlah_semester($data['angkatan']);
 		
 		for ($i = 1; $i <= $data['jumlah_semester']; $i++){
 			$data['semester'][$i] = NULL;
