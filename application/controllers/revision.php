@@ -34,18 +34,21 @@ Class Revision extends CI_Controller {
 	
 	public function index(){
 		//$this->revisi('K15001');
-		$this->student_transcript('213116256');
+		//$this->student_transcript('213116256');
 		//$this->student_grade('213116256');
 	}
 	
-	public function revisi($class_id){
+	public function revisi(){
 		// to indicate if revision is done and you should move to other page
 		$done = FALSE;
 		
 		$data['title'] = "Revisi Penilaian";
 		
+		if (! $data['class_id'] = $this->input->post('class_id')){
+			$data['class_id'] = $this->session->flashdata('class_id');
+		}
+		
 		// get data from form
-		$data['class_id'] = $this->input->post('class_id');
 		$data['how_many'] = $this->input->post('how_many');
 		$data['comment'] = $this->input->post('comment');
 		
@@ -110,13 +113,10 @@ Class Revision extends CI_Controller {
 		// the controller loads for the first time
 		else {
 			// set default value
-			$data['class_id'] = $class_id;
 			$data['how_many'] = 3;
 			$data['comment'] = NULL;
-			
-			$data['lecturer_login'] = 'DO001';
-			
 			$data['input'] = NULL;
+			$data['lecturer_login'] = 'DO001';
 		}
 		
 		if (!$done){

@@ -51,7 +51,7 @@
 
     <h1> Revisi Penilaian </h1>
 	
-    <?php echo form_open('revision'); ?>
+    <?php echo form_open('revision/revisi'); ?>
 		<input type="hidden" id="how_many" name="how_many" value="<?php echo $how_many; ?>" />
 		<input type="hidden" id="class_id" name="class_id" value="<?php echo $class_id; ?>" />
 		

@@ -179,7 +179,8 @@ class Grade extends CI_Controller {
 			redirect('grade/all');
 		}
 	    if($this->input->post('btnRevisi')){
-            redirect('revision/revisi/'.$classId);
+	    	$this->session->set_flashdata('class_id', $classId);
+            redirect('revision/revisi/');
         }
         if ($this->input->post('btnSend')){
             $success = $this->grade_model->changeConfirmationStatus($classId,'1');
