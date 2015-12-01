@@ -40,6 +40,10 @@ class Grade extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->library('session');
 
+        if($this->session->userdata('user_role') != 'dosen'){
+            redirect('/');
+        }
+
 	}
     public function index(){
         redirect('grade/all');
@@ -54,7 +58,7 @@ class Grade extends CI_Controller {
      */
     public function ajax_totalSKS($yearNow=null){
         //Mengambil Lecturer Login dari Session yang Ada sekaligus pengecekan
-        $lecturer_login = 'DO001';
+        $lecturer_login = $this->session->userdata('username');
 
         if ($yearNow == null){
             $yearNow  = $this->class_model->getActiveTermYear();
@@ -68,7 +72,7 @@ class Grade extends CI_Controller {
     public function ajax_class($yearNow =null)
     {
 		// Mengambil Lecturer Login dari Session Yang Ada
-        $lecturer_login = 'DO001';
+        $lecturer_login = $this->session->userdata('username');
 		if ($yearNow == null){
 			$yearNow  = $this->class_model->getActiveTermYear();
 		}
@@ -151,8 +155,7 @@ class Grade extends CI_Controller {
 		$this->load->helper('form');
 		$data['ddYear'] = $this->class_model->getComboBoxAllYear();
 		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->class_model->getActiveTermYear()));
-		$this->load->view('includes/headerdosen',$data);
-		$this->load->view('nav/navbardosen');
+		$this->load->view('includes/header',$data);
 		$this->load->view('grade/grade_view', $data);
 		$this->load->view('includes/footer');
 	}
@@ -168,7 +171,7 @@ class Grade extends CI_Controller {
 		$this->load->library('table');
 		
 		// Cek SESSION lecturer_login dengan pemilik kelas
-		$lecturer_login = 'DO001';
+		$lecturer_login = $this->session->userdata('username');
 		$class = $this->class_model->getClassInfoById($classId, $lecturer_login);
 		
 		// Jika tidak cocok dengan lecturer_login atau tidak ditemukan class_id
@@ -254,8 +257,7 @@ class Grade extends CI_Controller {
         $this->table->add_row('Tahun Ajaran  ',':', $class[11]);
         $this->table->add_row('Status Penilaian ',':', $class[6]);
         $this->table->add_row('Terakhir Update ',':', $class[16]);
-		$this->load->view('includes/headerdosen', $data);
-        $this->load->view('nav/navbardosen');
+		$this->load->view('includes/header', $data);
 		$this->load->view('grade/detail_grade_view', $data);
 		$this->load->view('includes/footer');
 	}
