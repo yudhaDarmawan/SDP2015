@@ -20,58 +20,35 @@
 			</ul>
 			
 			<ul class="nav navbar-nav navbar-right">
-				<li><a id="notif" data-toggle="dropdown" data-target="#" href="#"><span class="glyphicon glyphicon-bell"></span><span class="badge">4</span>
+				<li><a id="notif" data-toggle="dropdown" data-target="#" href="#"><span class="glyphicon glyphicon-bell"></span><span class="badge"><?php echo $countNewNotif; ?></span>
 				<!-- FROM HERE -->
 				
 				<ul class="dropdown-menu notifications" role="menu" aria-labelledby="notif">
-		
 					<div class="notification-heading"><h4 class="menu-title">Notifications</h4><h4 class="menu-title pull-right">View all<i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
 					</div>
 					<li class="divider"></li>
 					<div class="notifications-wrapper">
-						<a class="content" href="#">				  
-							<div class="notification-item">
-								<h4 class="item-title">Evaluation Deadline 1 · day ago</h4>
-								<p class="item-info">Marketing 101, Video Assignment</p>
-							</div>
+						<a class="content" id="contentNotif" href="#">		
+						<?php 
+							foreach($notifikasi as $row){
+								if($row->status_baca == 1)
+								{
+									echo '<div class="notification-item">';
+								}
+								else
+								{
+									echo '<div class="notification-item2">';
+								}
+								echo '<h4 class="item-title">'. $row->judul .' - ' . $this->Dosen_Model->getNameLecture($row->dosen_nip) . '</h4>';
+								echo '<p class="item-info">' . $row->isi . '</p>';
+								echo '</div>';
+							}
+						?>
 						</a>
-					<a class="content" href="#">
-						<div class="notification-item">
-							<h4 class="item-title">Evaluation Deadline 1 · day ago</h4>
-							<p class="item-info">Marketing 101, Video Assignment</p>
-						</div>
-					</a>
-					<a class="content" href="#">
-						<div class="notification-item">
-							<h4 class="item-title">Evaluation Deadline 1 • day ago</h4>
-							<p class="item-info">Marketing 101, Video Assignment</p>
-						</div>
-					</a>
-					<a class="content" href="#">
-						<div class="notification-item">
-							<h4 class="item-title">Evaluation Deadline 1 • day ago</h4>
-							<p class="item-info">Marketing 101, Video Assignment</p>
-						</div>
-					</a>
-					<a class="content" href="#">
-						<div class="notification-item">
-							<h4 class="item-title">Evaluation Deadline 1 • day ago</h4>
-							<p class="item-info">Marketing 101, Video Assignment</p>
-						</div>
-					</a>
-					<a class="content" href="#">
-						<div class="notification-item">
-							<h4 class="item-title">Evaluation Deadline 1 • day ago</h4>
-							<p class="item-info">Marketing 101, Video Assignment</p>
-						</div>
-					</a>
 					</div>
 				</ul>
 				</li>
-					
-					
-				
-				<li><a id="user" data-toggle="dropdown" data-target="#" href="#"><span class="glyphicon glyphicon-user"></span> Lukas </a>
+				<li><a id="user" data-toggle="dropdown" data-target="#" href="#"><span class="glyphicon glyphicon-user"></span> <?php echo $nameStudent; ?> </a>
 				<ul class="dropdown-menu users" role="menu" aria-labelledby="user">
 						<div class="notifications-wrapper">
 							<a class="content" href="#">				  
@@ -96,4 +73,17 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	$('a#notif').on("click",function(){
+		$.ajax({
+			type: "POST",
+			url: "<?php echo base_url();?>" + "perwalian/readMessage",
+			success: function(msg)
+			{
+				
+			}
+		})
+	});
+</script>
 <?php echo form_close();?>

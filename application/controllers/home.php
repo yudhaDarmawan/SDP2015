@@ -9,11 +9,11 @@
 		public function index()
 		{
 			if($this->session->userdata('username')){
-				if($this->Mahasiswa_model->isStudent($this->session->userdata('username')))
+				if($this->Mahasiswa_Model->isStudent($this->session->userdata('username')))
 				{
 					redirect('perwalian/mahasiswa');
 				}
-				else if($this->Dosen_model->isLecture($this->session->userdata('username')))
+				else if($this->Dosen_Model->isLecture($this->session->userdata('username')))
 				{
 					redirect('perwalian/dosen');
 				}
@@ -38,11 +38,11 @@
 			//MENGECEK APAKAH USER PERNAH LOGIN ATAU TIDAK
 			//JIKA PERNAH MAKA AKAN TERDAPAT DISESSION
 			if($this->session->userdata('username')){
-				if($this->Mahasiswa_model->isStudent($this->session->userdata('username')))
+				if($this->Mahasiswa_Model->isStudent($this->session->userdata('username')))
 				{
 					redirect('perwalian/mahasiswa');
 				}
-				else if($this->Dosen_model->isLecture($this->session->userdata('username')))
+				else if($this->Dosen_Model->isLecture($this->session->userdata('username')))
 				{
 					redirect('perwalian/dosen');
 				}
@@ -50,11 +50,11 @@
 			else if(get_cookie('username')){
 				//MENGECEK APAKAH USER PERNAH MENGGUNAKAN FITUR REMEMBER ME
 				//JIKA PERNAH MAKA AKAN TERDAPAT DISESSION
-				if($this->Mahasiswa_model->isStudent(get_cookie('username')))
+				if($this->Mahasiswa_Model->isStudent(get_cookie('username')))
 				{
 					redirect('perwalian/mahasiswa');	
 				}
-				else if(  $this->Dosen_model->isLecture(get_cookie('username')))
+				else if(  $this->Dosen_Model->isLecture(get_cookie('username')))
 				{
 					redirect('perwalian/dosen');
 				}				
@@ -69,7 +69,7 @@
 				//MAKA DIKELUARKAN MESSEGEBOX BAHWA LOGIN SUKSES
 				//echo '<script>alert("You Have Successfully updated this Record!");</script>';
 				//MENGECEK LAGI APAKAH YG LOGIN ADALAH DOSEN
-				if($this->Dosen_model->isLecture($this->input->post('username')))
+				if($this->Dosen_Model->isLecture($this->input->post('username')))
 				{
 					//DAN DILOMPATKAN KE DOSEN
 					//MENYIMPAN DATA LOGIN KE SESSION
@@ -122,11 +122,11 @@
 					$data['showModal']=true;
 					
 					//DICEK APAKAH USERNAME TIDAK ADA DALAM DATABASE, JIKA TIDAK ADA, MAKA FORM INPUT AKAN BERWARNA MERAH
-					if($this->Mahasiswa_model->isStudent($this->input->post('username')) == false and $this->Dosen_model->isLecture($this->input->post('username')) == false){
+					if($this->Mahasiswa_Model->isStudent($this->input->post('username')) == false and $this->Dosen_Model->isLecture($this->input->post('username')) == false){
 						$styleErrorUser = 'form-group has-error';
 					}
 					//DICEK APAKAH PASSWORD SALAH ATAU TIDAK, JIKA SALAH, MAKA FORM INPUT AKAN BERWARNA MERAH
-					if($this->Mahasiswa_model->isPassword($this->input->post('username'), $this->input->post('pass')) == false and $this->Dosen_model->isPassword($this->input->post('username'),$this->input->post('pass')) == false){
+					if($this->Mahasiswa_Model->isPassword($this->input->post('username'), $this->input->post('pass')) == false and $this->Dosen_Model->isPassword($this->input->post('username'),$this->input->post('pass')) == false){
 						$styleErrorPass = 'form-group has-error';
 					}
 				}else if($this->input->post('close')){
@@ -220,11 +220,11 @@
 		
 		function getId($str)
 		{
-			if($this->Dosen_model->isLecture($str))
+			if($this->Dosen_Model->isLecture($str))
 			{
 				return true;
 			}
-			else if($this->Mahasiswa_model->isStudent($str))
+			else if($this->Mahasiswa_Model->isStudent($str))
 			{
 				return true;
 			}
@@ -237,11 +237,11 @@
 		
 		function getPass($str)
 		{
-			if($this->Dosen_model->isPassword($this->input->post('username'), $str))
+			if($this->Dosen_Model->isPassword($this->input->post('username'), $str))
 			{
 				return true;
 			}
-			else if($this->Mahasiswa_model->isPassword($this->input->post('username'),$str))
+			else if($this->Mahasiswa_Model->isPassword($this->input->post('username'),$str))
 			{
 				return true;
 			}

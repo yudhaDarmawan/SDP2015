@@ -196,6 +196,12 @@ footer{
  background:#ccc;
  border-radius:4px;
  }
+ .notification-item2 {
+ padding:10px;
+ margin:5px;
+ background:#abf;
+ border-radius:4px;
+ }
 .users a.content {
  text-decoration:none;
  background:#ccc;
@@ -214,6 +220,17 @@ footer{
 	height:25px;
 	float:left;
 	margin-right:10px;
+}
+
+#info > .table th, .table td { 
+     border-top: none !important; 
+ }
+ .table td, .table th {
+    border: none;
+}
+
+table.table.table-condensed {
+    border: 1px solid silver;
 }
 
 @media screen and (min-width: 768px) {
