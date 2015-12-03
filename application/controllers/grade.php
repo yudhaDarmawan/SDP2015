@@ -40,7 +40,7 @@ class Grade extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->library('session');
 
-        if($this->session->userdata('user_role') != 'dosen'){
+        if($this->session->userdata('user_role') != 'dosen' && $this->session->userdata('user_role') != 'kajur'){
             redirect('/');
         }
 
