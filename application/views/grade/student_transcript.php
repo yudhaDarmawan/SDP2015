@@ -3,7 +3,7 @@
 </style>
 
 <div class="container">
-	<h1 style="text-align: center;">Transkrip Nilai Sementara</h1>
+	<h1 style="text-align: center;">Transkip Nilai Sementara</h1>
 	
 	<hr>
 	
@@ -40,23 +40,33 @@
 			echo "	</thead> \n";
 			echo "	<tbody> \n";
 			
-			for($j = 0; $j < count($semester[$i]); $j++) {
-				echo "		<tr> \n";
-				
-				echo "			<th><p align='center' style='font-weight:normal;'><label>" . $semester[$i]['data']['id'] . " </label></p></th> \n";
-				echo "			<th><p align='center' style='font-weight:normal;'><label>" . $semester[$i]['data']['nama'] . " </label></p></th> \n";
-				echo "			<th><p align='center' style='font-weight:normal;'><label>" . $semester[$i]['data']['jumlah_sks'] . " </label></p></th> \n";
-				echo "			<th><p align='center' style='font-weight:normal;'><label>" . $semester[$i]['data']['nilai_grade'] . " </label></p></th> \n";
-				
-				echo "		</tr> \n \n";
+			if (count($semester[$i]) == 0){
+				echo "<tr><th colspan='4'><p align='center' style='font-weight:normal;'>Tidak ada mata kuliah yang diambil</p></th></tr>";
+			} else {
+				for($j = 0; $j < count($semester[$i]); $j++) {
+					echo "		<tr> \n";
+					echo "			<th><p align='center' style='font-weight:normal;'>" . $semester[$i]['data']['id'] . " </p></th> \n";
+					echo "			<th><p align='center' style='font-weight:normal;'>" . $semester[$i]['data']['nama'] . " </p></th> \n";
+					echo "			<th><p align='center' style='font-weight:normal;'>" . $semester[$i]['data']['jumlah_sks'] . " </p></th> \n";
+					echo "			<th><p align='center' style='font-weight:normal;'>" . $semester[$i]['data']['nilai_grade'] . " </p></th> \n";
+					echo "		</tr> \n \n";
+				}
 			}
+			
 			echo "	</tbody> \n";
 			echo "</table> \n";
 			
+			// set spacing
 			if ($i % 2 == 0){
 				echo "\n </td></tr> <br><br>\n"; 
 			} else echo "</td> \n\n";
 		} ?>
 	</table>
+	
+	<div class="text-right">
+		<?php echo form_open('revision/student_transcript'); ?>
+		<?php echo form_submit(['id'=>'print','name'=>'print','value'=>'Cetak Transkip','class'=>'btn btn-primary']); ?>
+		<?php echo form_close(); ?>
+	</div>
 	
 </div> <!-- End of Container -->
