@@ -50,3 +50,4 @@ application/cache/*
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
+aplication/library/CI_phpStorm.php
