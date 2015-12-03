@@ -25,7 +25,7 @@ Pada header sudah ada bootstrap.min.css dll. Yang dibutuhkan.
 ----------
 
  1. Untuk mendapatkan username yang login  :`$this->session->userdata('username')`
- 2. Untuk mendapatkan role yang login : $this->session->userdata('user_role')
+ 2. Untuk mendapatkan role yang login : `$this->session->userdata('user_role')`
  3. Berikut merupakan contoh pengecekan yang aku taruh di method `__construct()`
 
 
