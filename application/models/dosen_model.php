@@ -1,5 +1,5 @@
 <?php
-	class Dosen_model extends CI_Model
+	class Dosen_Model extends CI_Model
 	{
 		/* -----------------------------------------------------
 		Function __construct()
@@ -56,6 +56,12 @@
 			{
 				return false;
 			}
+		}
+		
+		public function getNameLecture($nip)
+		{
+			$result = $this->db->get_where('dosen',array('nip'=>$nip))->row();
+			return $result->nama;
 		}
 	}
 ?>
