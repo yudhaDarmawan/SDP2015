@@ -46,7 +46,7 @@
 		----------------------------------------------------- */
 		public function isPassword($nrp,$pass)
 		{
-			$result = $this->db->get_where('mahasiswa',array('nrp'=>$nrp));
+			$result = $this->db->get_where('user',array('id'=>$nrp));
 			$row = $result->row();
 			if($this->db->affected_rows()>0){
 				if($row->password == $pass)

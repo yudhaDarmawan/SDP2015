@@ -10,6 +10,9 @@ v0.1 - 7 Januari 2015
 	getComboBoxAllYear, getDataTableByLecturer,
 	countAll,countFiltered,updateAdditionalGrade,
 	updateGradePercentage.
+v0.2 - 18 Januari 2015
+    - Memindahkan updateAdditionalGrade dan
+    updateGradePercentage pada grade_model
 ----------------------------------------------------- */
 /**
  * @property CI_DB_active_record $db
@@ -78,16 +81,18 @@ class Class_Model extends CI_Model {
 	----------------------------------------------------- */
 	public function getAllClassByLecturer($lecturer_id, $orders , $yearNow){				
 		// Mengambil Data Kelas yang di ajar oleh lecturer
-		$this->db->select('k.id as id, mk.id as kode_mk, mk.nama as nama_mk, k.hari as hari, k.jam_mulai as jam, r.nama as nama_ruang, k.status_konfirmasi as status_k, mk.jumlah_sks as sks, k.nama as nama_kelas');
-		$this->db->from('mata_kuliah mk, kelas k');
+		$this->db->select('k.id as id, mk.id as kode_mk, mk.nama as nama_mk, k.hari as hari, k.jam_mulai as jam, r.nama as nama_ruang, k.status_konfirmasi as status_k, mk.jumlah_sks as sks, k.nama as nama_kelas, ik.jurusan as jurusan, k.tanggal_update as tanggal_update');
+		$this->db->from('mata_kuliah mk, kelas k,informasi_kurikulum ik');
 		$this->db->where('k.dosen_nip',$lecturer_id);
 		$this->db->where('k.tahun_ajaran',$yearNow);
 		$this->db->where('mk.id = k.mata_kuliah_id');
+		$this->db->where('mk.informasi_kurikulum_id = ik.id');
 		$this->db->join('ruangan r', 'r.id = k.ruangan_id','left');
-		$this->db->where('k.status',1);		
+		$this->db->where('k.status',1);
 		foreach ($orders as $key => $value){
 			$this->db->order_by($key, $value);
 		}
+
 		$results = $this->db->get()->result();
 		return $results;
 	}
@@ -190,10 +195,11 @@ class Class_Model extends CI_Model {
         return $this->db->get()->row()->jumlah_sks;
     }
 	public function getClassInfoById($class_id, $lecturer_id){
-		$this->db->select('k.id as id, mk.id as kode_mk, mk.nama as nama_mk, k.hari as hari, k.jam_mulai as jam, r.nama as nama_ruang, k.status_konfirmasi as status_k, mk.jumlah_sks as sks, k.nama as nama_kelas, d.nama as nama_dosen, mk.semester as semester, k.tahun_ajaran as tahun_ajaran, k.tambahan_grade as grade, k.persentase_uas as persen_uas, k.persentase_uts as persen_uts, k.persentase_tugas as persen_tugas, k.tanggal_update as tanggal_update');
-		$this->db->from('mata_kuliah mk, kelas k, dosen d');
+		$this->db->select('k.id as id, mk.id as kode_mk, mk.nama as nama_mk, k.hari as hari, k.jam_mulai as jam, r.nama as nama_ruang, k.status_konfirmasi as status_k, mk.jumlah_sks as sks, k.nama as nama_kelas, d.nama as nama_dosen, mk.semester as semester, k.tahun_ajaran as tahun_ajaran, k.tambahan_grade as grade, k.persentase_uas as persen_uas, k.persentase_uts as persen_uts, k.persentase_tugas as persen_tugas, k.tanggal_update as tanggal_update, ik.jurusan, mk.lulus_minimal as lulus_minimal,k.komentar_kajur as komentar');
+		$this->db->from('mata_kuliah mk, kelas k, dosen d,informasi_kurikulum ik');
 		$this->db->where('mk.id = k.mata_kuliah_id');
 		$this->db->where('d.nip = k.dosen_nip');
+		$this->db->where('mk.informasi_kurikulum_id = ik.id');
 		$this->db->where('k.status',1);
 		$this->db->where('k.dosen_nip',$lecturer_id);
 		$this->db->where('k.id',$class_id);
@@ -211,6 +217,9 @@ class Class_Model extends CI_Model {
 			$class[] = $result->persen_uas;
 			$class[] = $result->persen_tugas;
 			$class[] = $result->tanggal_update;
+            $class[] = $result->id;
+            $class[] = $result->lulus_minimal;
+            $class[] = $result->komentar;
 			return $class;
 		}
 		return false;
@@ -223,8 +232,9 @@ class Class_Model extends CI_Model {
             "3" =>'<span class="label label-success">Completed</span>',];
 
         $class = [];
-		$class[] = $result->kode_mk;
-		$class[] = $result->nama_mk;
+		
+		$class[] =$result->nama_mk;
+		$class[] = $result->jurusan;
         // Pengaturan SKS
         $class[] = $result->sks;
 		$class[] = $result->nama_kelas;
@@ -262,41 +272,20 @@ class Class_Model extends CI_Model {
 		$this->db->where('index','tahun_ajaran_sekarang');
 		return $this->db->get('data_umum')->row()->value;
 	}
-	public function updateAdditionalGrade($class_id, $updatedValue){
-		$this->db->where('id',$class_id);
-		$this->db->set('tambahan_grade',$updatedValue);
-		$this->db->set('tanggal_update','now()',false);
-		$this->db->update('kelas');
-		
-		// Update Seluruh Nilai Mahasiswa
-		
-		return $this->db->affected_rows();
-	}
-	public function updateGradePercentage($class_id,$percentUTS, $percentUAS, $percentHomework){
-		$this->db->where('id',$class_id);
-		$this->db->set('persentase_uts',$percentUTS);
-		$this->db->set('persentase_uas',$percentUAS);
-		$this->db->set('persentase_tugas',$percentHomework);
-		$this->db->set('tanggal_update','now()',false);
-		$this->db->update('kelas');
-
-		// Update Seluruh Nilai Mahasiswa
-		
-		return  $this->db->affected_rows();
-	}
     public function getAllClassConnected($classId){
         $classes = [];
         $classes[] = $classId;
         $this->db->select('id');
         $this->db->where('kelas_id', $classId);
         $this->db->where('status','1');
-        $results = $this->db->get('kelas')->result();
+        $this->db->from('kelas');
+        $results = $this->db->get()->result();
         foreach ($results as $result){
             $classes[] = $result->id;
         }
         return $classes;
     }
-	
+
 	
 	public function getClass($name)
 	{
@@ -319,4 +308,16 @@ class Class_Model extends CI_Model {
 		$this->db->or_where('status_ambil','a');
 		return $this->db->count_all_results();
 	}
+
+    public function isClassExist($class_id){
+        $this->db->where('id',$class_id);
+        return $this->db->get('kelas')->num_rows();
+    }
+	public function getLecturerIdByClass($class_id){
+        $this->db->select('dosen_nip');
+        $this->db->where('id',$class_id);
+        return $this->db->get('kelas')->row()->dosen_nip;
+    }
+
+
 }
