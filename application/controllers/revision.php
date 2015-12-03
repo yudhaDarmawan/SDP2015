@@ -35,8 +35,6 @@ Class Revision extends CI_Controller {
 	public function index(){
 		$array_items = array('nrp' => '213116256', 'nama' => 'Raymond Wongso Hartanto');
 	    $this->session->set_userdata('student_information', $array_items);
-	    
-	    redirect('revision/student_transcript/');
 	}
 	
 	public function revisi(){
@@ -216,9 +214,18 @@ Class Revision extends CI_Controller {
 		// get information from database
 		$data['ipk'] = $this->revision_model->getStudentIPK($data['nrp']);
 		$data['total_sks'] = $this->revision_model->getStudentSKS($data['nrp']);
+		$data['jurusan'] = $this->revision_model->getStudentCourse($data['nrp']);
 		$data['angkatan'] = $this->revision_model->getStudentYear($data['nrp']);
 		$data['tahun_ajaran_sekarang'] = $this->revision_model->getCurrentSchoolYear();
 		$taken_classes = $this->revision_model->getTakenClasses($data['nrp']);
+		
+		// get information from form
+		if (! $this->input->post('selected_semester')){
+			$data['selected_semester'] = "none";
+		} else { 
+			$data['selected_semester'] = explode('_', $this->input->post('selected_semester'));
+			$data['selected_semester'] = $data['selected_semester'][2]; echo $data['selected_semester'];
+		}
 		
 		// count how many semester the student has
 		$data['jumlah_semester'] = $this->get_jumlah_semester($data['angkatan']);
@@ -239,6 +246,26 @@ Class Revision extends CI_Controller {
 					$data['semester'][$i]['data']['nilai_grade'] = $taken_classes[$j]['nilai_grade'];
 				}
 			}
+		}
+		
+		if ($this->input->post('print') && $data['selected_semester'] != "none"){
+			$data['title'] = "Nilai Semester " . $data['selected_semester'];
+			
+			//load the view, pass the variable and do not show it but "save" the output into variable
+			$html = $this->load->view('report/report_student_grade', $data, TRUE);
+			$header =$this->load->view('report/includes/headerReport', $data, TRUE);
+			
+			// you can pass mPDF parameter on this load() function
+			$pdf = $this->m_pdf->load();
+			
+			// generate the PDF
+			$pdf->WriteHTML($header.$html);
+			
+			// this the the PDF filename that user will get to download
+			$pdf_filename = "Nilai Semester.pdf";
+			
+			// offer to user via browser download (PDF won't be saved on your server)
+			$pdf->Output($pdf_filename, "I");
 		}
 		
 		$this->load->view('includes/header', $data);
