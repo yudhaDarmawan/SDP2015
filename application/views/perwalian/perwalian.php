@@ -1,47 +1,76 @@
-<?php echo form_open('perwalian/frs');?>
+<?php echo form_open('perwalian/mahasiswa');?>
 <!--CONTENT-->
 	
-	<h2 class="text-center">Tahun Ajaran 2015/2016</h2>
+	<h2 class="text-center"><?php echo $nowSemester;?></h2>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-offset-1 col-md-10">
+			<div class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">Form Konfirmasi Perwalian</div>
 					<div class="panel-body">
 						<?php
-						echo 'Nama = ' . $mahasiswa->nama . '<br>';
-						echo 'Nrp = ' . $mahasiswa->nrp . '<br>';
-						echo 'Semester = ' . $smtr . '<br>';
-						echo 'IP Semester lalu = ' . '<br>';
-						echo 'IPK = ' . $mahasiswa->ipk . '<br>';
-						echo 'Total SKS yang sudah diambil = ' . $mahasiswa->sks . '<br>';
-						echo 'Jumlah pengambilan SKS maksimal = 22';
+						echo '<div class="table-responsive">';
+						echo '<table class="table" id="info">';
+						echo '<tbody><tr><td class="span5">Nama:</td><td>' . $mahasiswa->nama . '</td></tr>';
+						echo '<tr><td class="col-md-2">NRP:</td><td>' . $mahasiswa->nrp . '</td></tr>';
+						echo '<tr><td class="col-md-2">Semester:</td><td>' . $smtr . '</td></tr>';
+						echo '<tr><td class="col-md-2">IP semester lalu:</td><td>' . '' . '</td></tr>';
+						echo '<tr><td class="col-md-2">IPK:</td><td>' . $mahasiswa->ipk . '</td></tr>';
+						echo '<tr><td class="col-md-2">Total SKS:</td><td>' . $mahasiswa->sks . '</td></tr>';
+						echo '</table></div>';
 						?>
 					</div>
 					<!--GARIS PENUTUP HEADER-->
 					<hr class="endHeaderTable"></hr>
-										
-					<!-- SEMESTER 1 SAMPAI 2 -->
-					<div class="col-sm-12" style="background:white">
-						<div class = "col-sm-4 col-sm-offset-4">
-							<h3 class="text-center">Pilih Semester</h3>
-							<div id="courseDropdown"><b><?php echo form_dropdown('chooseCourse',$dataCombobox,$smtr-1,'class="form-control"'); ?></b></div>
-						<br></div>
-						<div class="col-md-10 col-md-offset-1" style="background:transparent">
-							<div class="panel panel-default">
-						  <!-- Default panel contents -->
-								<div class="panel-heading">Semester <b id="semesterSelected"><?php$semesterSelected?></b></div>
-								<div class="panel-body" id="courseTable">
-									<?php echo $semester;?>
+					
+					<?php 
+					if($this->session->flashdata('error')){
+					?>
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+						</button>
+						<?php echo $this->session->flashdata('error');?>
+					</div>					
+					<?php
+					}
+					
+					for($i=0;$i<count($table);$i+=2){
+						echo '
+						<div class="col-sm-12" style="background:white">
+							<div class="col-sm-6" style="background:transparent">
+								<div class="panel panel-default">
+							  <!-- Default panel contents -->
+									<div class="panel-heading">Semester ' . $dataCombobox[$i] . '</div>
+									<div class="panel-body" id="courseTable">
+										'. $table[$i] .'
+									</div>
 								</div>
-							</div>
-						</div>
-					</div>
+							</div>';
+						if($i+1 < count($table)){
+							echo '
+								<div class="col-sm-6" style="background:transparent">
+									<div class="panel panel-default">
+								  <!-- Default panel contents -->
+										<div class="panel-heading">Semester '. $dataCombobox[$i+1] . '</div>
+										<div class="panel-body" id="courseTable">
+											'. $table[$i+1] .'
+										</div>
+									</div>
+								</div>
+							';
+						}
+						echo '</div>';
+					}
+					?>
 					
 					<!--KONFIRMASI-->
 					<div id="konfirmasi" >
 						<pre class="bg-info">
-							<p class="pull-right"><b>Jumlah Beban SKS yang akan diambil : <b id="totalSKS"><?php echo $countSKS ?></b></b></p>
+							<?php $sumSKS = 0;
+								if($this->session->userdata('countSKS'))$sumSKS = $this->session->userdata('countSKS');
+							?>
+							<p class="pull-right"><b>Jumlah Beban SKS yang akan diambil : <b id="totalSKS"><?php echo $sumSKS; ?></b></b></p>
+							
 							<?php $stylebutton=array('class'=>'btn btn-primary ','name'=>'submit','value'=>'Konfirmasi'); ?>
 							<div class="pull-right"><?php echo form_submit($stylebutton);?></div>
 						</pre>
@@ -50,10 +79,10 @@
 					<div class="panel-footer">
 						<div class="row" style="padding-left:20px">
 							<legend>Legend: </legend>
-							<div class="col-xs-12"><pre class="bg-active mylegend"></pre><label> = Matakuliah telah lulus dan tidak bisa diambil</label></div>
+							<div class="col-xs-12"><pre class="bg-active mylegend"></pre><label> = Matakuliah telah lulus atau Belum menyelesaikan syarat pengambilan</label></div>
 							<div class="col-xs-12"><pre class="bg-info mylegend"></pre><label> = Matakuliah bisa diambil</label></div>
+							<div class="col-xs-12"><label><b>Untuk tulisan bercetak tebal merupakan matakuliah berpraktikum</b></label></div>
 						</div>
-						
 					</div>
 				</div>
 			</div>
@@ -64,9 +93,9 @@
 		var val = $("#totalSKS").text();
 		var id=this.value;
 		var target= this;
-		var check = false;
+		var check = 'false';
 		if(this.checked){
-			check=true;
+			check='true';
 		}
 		$.ajax({
 			type: "POST",
@@ -75,14 +104,20 @@
 			data: {name:id,status:check,countSKS:val},
 			success: function(msg)
 			{
-				if(target.checked){
-					if(val<= 22){
-						val = (+val) + (+msg);
+				//alert('here');
+				if(msg == "1"){
+					target.checked = false;	
+					alert('Anda tidak bisa mengambil matakuliah ini dikarenakan jadwal kuliah bentrok');
+				}else{
+					if(target.checked){
+						if(val<= 22){
+							val = (+val) + (+msg);
+							$('#totalSKS').text(val);
+						}
+					}else{
+						val = (+val) - (+msg);
 						$('#totalSKS').text(val);
 					}
-				}else{
-					val = (+val) - (+msg);
-					$('#totalSKS').text(val);
 				}
 			}
 		})
@@ -91,19 +126,11 @@
 			this.checked = false;
 		}
 	});
+	$("a.hovertabel").on("mouseover", function () {
+		$('[data-toggle="popover"]').popover();
+	});
+	
 	$(document).ready(function(){
-		$('#courseDropdown select').change(function(){
-			var selCourse =  $(this).find(':selected').text();
-			$.ajax({
-				type: "POST",
-				url: "<?php echo site_url('perwalian/setSelectedDropDown'); ?>", 
-				data:{index:selCourse},
-				dataType:"html",//return type expected as json
-				success: function(states){
-					$('#courseTable').html(states);
-				},
-			});
-		});
 	});
 </script>
 <?php echo form_close(); ?>

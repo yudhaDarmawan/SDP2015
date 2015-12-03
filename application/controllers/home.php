@@ -1,6 +1,6 @@
 <?php
 /**
- * Class Auth
+ * Class Home
  * Author : Lukas K. , Stefanie Tanujaya
  */
 class Home extends CI_Controller
@@ -215,5 +215,6 @@ class Home extends CI_Controller
         }
     }
 }
+
 
 ?>

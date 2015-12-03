@@ -285,6 +285,30 @@ class Class_Model extends CI_Model {
         }
         return $classes;
     }
+
+	
+	public function getClass($name)
+	{
+		$this->db->select('kelas.id, mata_kuliah.id as idmakul');
+		$this->db->from('kelas, mata_kuliah');
+		$this->db->where('kelas.status = 1');
+		$this->db->where('kelas.mata_kuliah_id = mata_kuliah.id');
+		$this->db->where('mata_kuliah.nama',$name);
+		$this->db->order_by('kelas.id');
+		$result = $this->db->get();
+		return $result->result_array();
+	}
+	
+	public function getStudent($classID, $courseID)
+	{
+		$this->db->from('kelas_mahasiswa');
+		$this->db->where('kelas_id',$classID);
+		$this->db->where('mata_kuliah_id',$courseID);
+		$this->db->where('status_ambil','A');
+		$this->db->or_where('status_ambil','a');
+		return $this->db->count_all_results();
+	}
+
     public function isClassExist($class_id){
         $this->db->where('id',$class_id);
         return $this->db->get('kelas')->num_rows();
@@ -294,5 +318,6 @@ class Class_Model extends CI_Model {
         $this->db->where('id',$class_id);
         return $this->db->get('kelas')->row()->dosen_nip;
     }
+
 
 }
