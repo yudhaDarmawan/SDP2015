@@ -195,7 +195,7 @@ class Class_Model extends CI_Model {
         return $this->db->get()->row()->jumlah_sks;
     }
 	public function getClassInfoById($class_id, $lecturer_id){
-		$this->db->select('k.id as id, mk.id as kode_mk, mk.nama as nama_mk, k.hari as hari, k.jam_mulai as jam, r.nama as nama_ruang, k.status_konfirmasi as status_k, mk.jumlah_sks as sks, k.nama as nama_kelas, d.nama as nama_dosen, mk.semester as semester, k.tahun_ajaran as tahun_ajaran, k.tambahan_grade as grade, k.persentase_uas as persen_uas, k.persentase_uts as persen_uts, k.persentase_tugas as persen_tugas, k.tanggal_update as tanggal_update, ik.jurusan, mk.lulus_minimal as lulus_minimal');
+		$this->db->select('k.id as id, mk.id as kode_mk, mk.nama as nama_mk, k.hari as hari, k.jam_mulai as jam, r.nama as nama_ruang, k.status_konfirmasi as status_k, mk.jumlah_sks as sks, k.nama as nama_kelas, d.nama as nama_dosen, mk.semester as semester, k.tahun_ajaran as tahun_ajaran, k.tambahan_grade as grade, k.persentase_uas as persen_uas, k.persentase_uts as persen_uts, k.persentase_tugas as persen_tugas, k.tanggal_update as tanggal_update, ik.jurusan, mk.lulus_minimal as lulus_minimal,k.komentar_kajur as komentar');
 		$this->db->from('mata_kuliah mk, kelas k, dosen d,informasi_kurikulum ik');
 		$this->db->where('mk.id = k.mata_kuliah_id');
 		$this->db->where('d.nip = k.dosen_nip');
@@ -219,6 +219,7 @@ class Class_Model extends CI_Model {
 			$class[] = $result->tanggal_update;
             $class[] = $result->id;
             $class[] = $result->lulus_minimal;
+            $class[] = $result->komentar;
 			return $class;
 		}
 		return false;
@@ -277,12 +278,46 @@ class Class_Model extends CI_Model {
         $this->db->select('id');
         $this->db->where('kelas_id', $classId);
         $this->db->where('status','1');
-        $results = $this->db->get('kelas')->result();
+        $this->db->from('kelas');
+        $results = $this->db->get()->result();
         foreach ($results as $result){
             $classes[] = $result->id;
         }
         return $classes;
     }
+
 	
+	public function getClass($name)
+	{
+		$this->db->select('kelas.id, mata_kuliah.id as idmakul');
+		$this->db->from('kelas, mata_kuliah');
+		$this->db->where('kelas.status = 1');
+		$this->db->where('kelas.mata_kuliah_id = mata_kuliah.id');
+		$this->db->where('mata_kuliah.nama',$name);
+		$this->db->order_by('kelas.id');
+		$result = $this->db->get();
+		return $result->result_array();
+	}
+	
+	public function getStudent($classID, $courseID)
+	{
+		$this->db->from('kelas_mahasiswa');
+		$this->db->where('kelas_id',$classID);
+		$this->db->where('mata_kuliah_id',$courseID);
+		$this->db->where('status_ambil','A');
+		$this->db->or_where('status_ambil','a');
+		return $this->db->count_all_results();
+	}
+
+    public function isClassExist($class_id){
+        $this->db->where('id',$class_id);
+        return $this->db->get('kelas')->num_rows();
+    }
+	public function getLecturerIdByClass($class_id){
+        $this->db->select('dosen_nip');
+        $this->db->where('id',$class_id);
+        return $this->db->get('kelas')->row()->dosen_nip;
+    }
+
 
 }

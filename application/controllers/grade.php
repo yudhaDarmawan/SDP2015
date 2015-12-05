@@ -17,41 +17,6 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * @property CI_DB_active_record $db
- * @property CI_DB_forge $dbforge
- * @property CI_Benchmark $benchmark
- * @property CI_Calendar $calendar
- * @property CI_Cart $cart
- * @property CI_Config $config
- * @property CI_Controller $controller
- * @property CI_Email $email
- * @property CI_Encrypt $encrypt
- * @property CI_Exceptions $exceptions
- * @property CI_Form_validation $form_validation
- * @property CI_Ftp $ftp
- * @property CI_Hooks $hooks
- * @property CI_Image_lib $image_lib
- * @property CI_Input $input
- * @property CI_Loader $load
- * @property CI_Log $log
- * @property CI_Model $model
- * @property CI_Output $output
- * @property CI_Pagination $pagination
- * @property CI_Parser $parser
- * @property CI_Profiler $profiler
- * @property CI_Router $router
- * @property CI_Session $session
- * @property CI_Sha1 $sha1
- * @property CI_Table $table
- * @property CI_Trackback $trackback
- * @property CI_Typography $typography
- * @property CI_Unit_test $unit_test
- * @property CI_Upload $upload
- * @property CI_URI $uri
- * @property CI_User_agent $user_agent
- * @property CI_Xmlrpc $xmlrpc
- * @property CI_Xmlrpcs $xmlrpcs
- * @property CI_Zip $zip
  * @property m_pdf $m_pdf
  *
  * Add additional libraries you wish
@@ -59,6 +24,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  *
  * @property Class_model $class_model
  * @property Grade_model $grade_model
+ * @property Revision_model $revision_model
  *
  */
 class Grade extends CI_Controller {
@@ -73,6 +39,11 @@ class Grade extends CI_Controller {
         $this->load->model('grade_model');
 		$this->load->helper('url');
 		$this->load->library('session');
+
+        if($this->session->userdata('user_role') != 'dosen' && $this->session->userdata('user_role') != 'kajur'){
+            redirect('/');
+        }
+
 	}
     public function index(){
         redirect('grade/all');
@@ -87,7 +58,7 @@ class Grade extends CI_Controller {
      */
     public function ajax_totalSKS($yearNow=null){
         //Mengambil Lecturer Login dari Session yang Ada sekaligus pengecekan
-        $lecturer_login = 'DO001';
+        $lecturer_login = $this->session->userdata('username');
 
         if ($yearNow == null){
             $yearNow  = $this->class_model->getActiveTermYear();
@@ -101,7 +72,7 @@ class Grade extends CI_Controller {
     public function ajax_class($yearNow =null)
     {
 		// Mengambil Lecturer Login dari Session Yang Ada
-        $lecturer_login = 'DO001';
+        $lecturer_login = $this->session->userdata('username');
 		if ($yearNow == null){
 			$yearNow  = $this->class_model->getActiveTermYear();
 		}
@@ -127,7 +98,7 @@ class Grade extends CI_Controller {
     }
 	public function ajax_percentage($classId){
         $percentage =$this->grade_model->getPercentageClass($classId);
-        echo $percentage["A"].' '.$percentage["B"].' '.$percentage["C"].' '.$percentage["D"].' '.$percentage["E"];
+        echo $percentage["A"].' '.$percentage["B"].' '.$percentage["C"].' '.$percentage["D"].' '.$percentage["E"].' '.$percentage["IP Dosen"];
     }
     public function ajax_grade($classId){
 
@@ -184,8 +155,7 @@ class Grade extends CI_Controller {
 		$this->load->helper('form');
 		$data['ddYear'] = $this->class_model->getComboBoxAllYear();
 		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->class_model->getActiveTermYear()));
-		$this->load->view('includes/headerdosen',$data);
-		$this->load->view('nav/navbardosen');
+		$this->load->view('includes/header',$data);
 		$this->load->view('grade/grade_view', $data);
 		$this->load->view('includes/footer');
 	}
@@ -201,7 +171,7 @@ class Grade extends CI_Controller {
 		$this->load->library('table');
 		
 		// Cek SESSION lecturer_login dengan pemilik kelas
-		$lecturer_login = 'DO001';
+		$lecturer_login = $this->session->userdata('username');
 		$class = $this->class_model->getClassInfoById($classId, $lecturer_login);
 		
 		// Jika tidak cocok dengan lecturer_login atau tidak ditemukan class_id
@@ -211,11 +181,11 @@ class Grade extends CI_Controller {
 			$this->session->set_flashdata('alert','Tidak ditemukan kelas dengan ID tersebut!');
 			redirect('grade/all');
 		}
-		
-		if ($this->input->post('btnCetak')){
-			redirect('grade/printPdf/'.$classId);
-		}
-	
+	    if($this->input->post('btnRevisi')){
+	    	$array_items = array('class_id' => $classId, 'lecturer_login' => $lecturer_login);
+	    	$this->session->set_userdata('to_revision', $array_items);
+            redirect('revision/revisi/');
+        }
         if ($this->input->post('btnSend')){
             $success = $this->grade_model->changeConfirmationStatus($classId,'1');
             if ($success) {
@@ -232,6 +202,10 @@ class Grade extends CI_Controller {
 		
 		$data['title'] = "Detail ".$class[0];
 		$data['class'] = $class;
+        if ($class[10] == "3") {
+            $this->load->model('revision_model');
+            $data['revisions'] = $this->revision_model->getRevisionByClass($classId);
+        }
         $data['classId'] = $classId;
 		
 		// Jika Button Update Grade ditekan
@@ -254,17 +228,23 @@ class Grade extends CI_Controller {
 				$this->session->set_flashdata('alert_level','warning');
 				$this->session->set_flashdata('alert','Total Prosentase tidak boleh lebih dari 100%!');
 			}
-			else {			
+			else {
+
 				$success = $this->grade_model->updateGradePercentage($classId, $this->input->post('inputUTS'),$this->input->post('inputUAS'),$this->input->post('inputHomework'));
 				
 				if ($success){
 					$this->session->set_flashdata('alert_level','success');
 					$this->session->set_flashdata('alert','Berhasil Mengupdate Prosentase Nilai!');
+                    if($sumOfAll < 100){
+                        $this->session->set_flashdata('alert_level','warning');
+                        $this->session->set_flashdata('alert','Berhasil mengupdate prosentase nilai tetapi jumlah prosentase tidak sampai 100.');
+                    }
 				}
 				else {
 					$this->session->set_flashdata('alert_level','danger');
 					$this->session->set_flashdata('alert','Gagal Mengupdate Prosentase Nilai!');
 				}
+
 			}
 			redirect('grade/view/'.$classId);
 		}
@@ -277,15 +257,15 @@ class Grade extends CI_Controller {
         $this->table->add_row('Tahun Ajaran  ',':', $class[11]);
         $this->table->add_row('Status Penilaian ',':', $class[6]);
         $this->table->add_row('Terakhir Update ',':', $class[16]);
-		$this->load->view('includes/headerdosen', $data);
-        $this->load->view('nav/navbardosen');
+		$this->load->view('includes/header', $data);
 		$this->load->view('grade/detail_grade_view', $data);
 		$this->load->view('includes/footer');
 	}
 	
 	public function printPdf($classId){
 		$this->load->library('table');
-		$lecturer_login = 'DO001';
+        // Cek Berdasarkan session
+		$lecturer_login = $this->class_model->getLecturerIdByClass($classId);
 		$class = $this->class_model->getClassInfoById($classId, $lecturer_login);
 		$data['title'] = "Penilaian ".$class[0].' / '.$class[3];
 		$data['class'] = $class;
@@ -297,10 +277,34 @@ class Grade extends CI_Controller {
         $this->table->add_row('Tahun Ajaran  ',':', $class[11]);
         $this->table->add_row('Status Penilaian ',':', $class[6]);
         $this->table->add_row('Terakhir Update ',':', $class[16]);
-		
+
+        $allow_print = ['uts' => true,'uas' => true, 'tugas' => true, 'nilai_akhir' => true, 'nilai_akhir_grade' => true, 'nilai_grade' => true];
 		$data['students'] = $this->grade_model->getDatatableScoreOfClass($classId);
         $data['minGrade'] = $class[18];
         $data['percentage'] = $this->grade_model->getPercentageClass($classId);
+        $data['tahun_ajaran']= $class[11];
+
+        if ($this->input->post('btnCetak')){
+            if (!$this->input->post('uts')){
+               $allow_print['uts'] = false;
+            }
+            if (!$this->input->post('uas')){
+               $allow_print['uas'] = false;
+            }
+            if (!$this->input->post('tugas')){
+               $allow_print['tugas'] = false;
+            }
+            if (!$this->input->post('nilai_akhir')){
+               $allow_print['nilai_akhir'] = false;
+            }
+            if (!$this->input->post('nilai_akhir_grade')){
+               $allow_print['nilai_akhir_grade'] = false;
+            }
+            if (!$this->input->post('nilai_grade')){
+               $allow_print['nilai_grade'] = false;
+            }
+        }
+        $data['allow_data'] = $allow_print;
 		$html=$this->load->view('report/report_grade', $data, true);
 		$pdfFilePath = "print".$classId.".pdf";
 		$this->load->library('m_pdf');
@@ -310,9 +314,11 @@ class Grade extends CI_Controller {
 		//generate the PDF!
 		$pdf->WriteHTML($header.$html);
 		$pdf->Output($pdfFilePath, "I");
-
-		
 	}
+
+
+
+
 
 	
 }
