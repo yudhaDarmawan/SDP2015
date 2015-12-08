@@ -161,6 +161,11 @@ class Grade_model extends CI_Model{
         return [$finalMark,$finalMarkAfterGrade,$finalGrade];
     }
 
+    /**
+     * Menghitung Grade Mahasiswa berdasarkan nilai akhir setelah grade
+     * @param $finalMarkAfterGrade
+     * @return string grade mahasiswa [A-F]
+     */
     public function countGrade($finalMarkAfterGrade){
         if ($finalMarkAfterGrade > 79){
             $finalGrade = 'A';
@@ -224,9 +229,10 @@ class Grade_model extends CI_Model{
     }
 
     /**
-     * @param $logId
-     * @param $gradeId
-     * @param $kelasId
+     * Menambhkan detail log penilaian
+     * @param $logId log_penilaian_id
+     * @param $gradeId nilai_id
+     * @param $kelasId pada kelas_id
      */
     public function insertDetailLog($logId,$gradeId,$kelasId){
         $this->db->where('log_penilaian_id',$logId);
@@ -271,8 +277,8 @@ class Grade_model extends CI_Model{
     }
 
     /**
-     * Menyiapkan data lengkap berda
-     * @param $classId
+     * Menyiapkan data lengkap mahasiswa dengan form input
+     * @param $classId class_id
      * @param null $orders
      * @return array
      */
@@ -299,6 +305,7 @@ class Grade_model extends CI_Model{
     }
 
     /**
+     *  Menyiapkan data lengkap mahasiswa tanpa form
      * @param $classId
      * @param null $orders
      * @return array
@@ -324,8 +331,9 @@ class Grade_model extends CI_Model{
     }
 
     /**
-     * @param $classId
-     * @return string
+     * Menghitung jumlah mahasiswa yang ada pada suatu kelas
+     * @param $classId kelas_id
+     * @return int banyak mahasiswa yang ada pada suatu kelas
      */
     public function countAllStudentInClass($classId){
         $this->load->model('class_model');
@@ -339,11 +347,8 @@ class Grade_model extends CI_Model{
         return $this->db->count_all_results();
     }
 
-    public function countIPSforClass($classId){
-        // NANCY
-
-    }
     /**
+     * Menganti status konfirmasi kajur
      * @param $classId
      * @param $status
      * @param null $comment
@@ -365,6 +370,8 @@ class Grade_model extends CI_Model{
     }
 
     /**
+     * Mengambil persentase A-B-C-D-E-F dari suatu kelas
+     * dengan IP dosen
      * @param $classId
      * @return array
      */
@@ -405,9 +412,10 @@ class Grade_model extends CI_Model{
 
 
     /**
-     * @param $classId
+     * Megemablikan seluruh nilai mahasiswa pada suatu kelas
+     * @param $classId kelas_id
      * @param null $orders
-     * @return mixed
+     * @return mixed array result() CI
      */
     public function getAllScoreOfClass($classId, $orders=null){
         // Ambil Class Yang mereference $classId
@@ -432,9 +440,10 @@ class Grade_model extends CI_Model{
     }
 
     /**
-     * @param $class_id
-     * @param $updatedValue
-     * @return mixed
+     * Update nilai Grade dari suatu kelas
+     * @param $class_id kelas_id
+     * @param $updatedValue nilai_grade
+     * @return bool true kalau sukses, false kalau tidak sukses
      */
     public function updateAdditionalGrade($class_id, $updatedValue){
         $this->db->where('id',$class_id);
@@ -472,11 +481,12 @@ class Grade_model extends CI_Model{
     }
 
     /**
-     * @param $class_id
-     * @param $percentUTS
-     * @param $percentUAS
-     * @param $percentHomework
-     * @return mixed
+     * Update Persentase Nilai pada suatu kelas
+     * @param $class_id kelas_id dari kelas yang ingin di edit
+     * @param $percentUTS persentase UTS
+     * @param $percentUAS persentase UAS
+     * @param $percentHomework persentase Tugas
+     * @return bool true jika sukses, false jika salah
      */
     public function updateGradePercentage($class_id,$percentUTS, $percentUAS, $percentHomework){
         $this->db->where('id',$class_id);

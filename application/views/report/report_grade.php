@@ -63,7 +63,9 @@
 
     echo "Total Mahasiswa : ".count($students)." <br><br>";
     foreach ($percentage as $key => $value){
-        echo $key." : ".$value."% <br/>";
+        if($key != 'IP Dosen') {
+            echo $key . " : " . $value . "% <br/>";
+        }
     }
 
 ?>

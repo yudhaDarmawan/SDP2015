@@ -135,8 +135,7 @@ Class Revision extends CI_Controller {
 		
 		if (!$done){
 			// load views
-			$this->load->view('includes/headerdosen', $data);
-	        $this->load->view('nav/navbardosen');
+			$this->load->view('includes/header', $data);
 			$this->load->view('grade/grade_revision', $data);
 			$this->load->view('includes/footer');
 		} else {
