@@ -43,3 +43,6 @@ public function __construct(){// Jika User bukan Dosen redirect lah ke halaman l
 ----------
 Masuk ke folder view/nav/navbar.php. Disana ada file navigasi kalian.
 Navigasi tidak perlu di load juga pada controller karena aku sudah include di header.php
+
+
+tambahan raymond
