@@ -81,7 +81,7 @@ class Class_Model extends CI_Model {
 		}		
 		if ($yearNow == null){
 			// Mengambil Tahun Ajaran Sekarang
-			$yearNow = $this->data_umum_model->getSemester();
+			$yearNow = $this->getActiveTermYear();
 		}
 		$this->getAllClassByLecturer($lecturer_id, $orders , $yearNow);
 		return $this->db->affected_rows();
@@ -124,7 +124,7 @@ class Class_Model extends CI_Model {
 		}		
 		if ($yearNow == null){
 			// Mengambil Tahun Ajaran Sekarang
-			$yearNow = $this->data_umum_model->getSemester();
+			$yearNow = $this->getActiveTermYear();
 		}
 		
 		//Mengambil Data Berdasarkan Lecturer
@@ -260,6 +260,17 @@ class Class_Model extends CI_Model {
 			$arrComboBox[$key] = $result->tahun_ajaran;
 		}
 		return $arrComboBox;
+	}
+
+    /**
+     * getActiveTermYear
+     * Mengembalikan tahun ajaran yang aktif sekarang.
+     * @return string tahun ajaran sekarang
+     */
+    public function getActiveTermYear(){
+		$this->db->select('value');
+		$this->db->where('index','tahun_ajaran_sekarang');
+		return $this->db->get('data_umum')->row()->value;
 	}
 
     /**

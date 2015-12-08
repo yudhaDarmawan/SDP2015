@@ -7,6 +7,7 @@ Edit 				: 27 November 2015
 
 Version Control		:
 v0.1 - 7 Januari 2015
+	
 ----------------------------------------------------- */
 class Confirmation extends CI_Controller {
 
@@ -84,7 +85,7 @@ class Confirmation extends CI_Controller {
 		$data['title'] = "Konfirmasi Penilaian";
 		$this->load->helper('form');
 		$data['ddYear'] = $this->class_model->getComboBoxAllYear();
-		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->data_umum_model->getSemester()));
+		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->class_model->getActiveTermYear()));
         $this->load->view('includes/header', $data);
 		$this->load->view('confirmation/confirmation_portal_view', $data);
 		$this->load->view('includes/footer');
@@ -123,18 +124,12 @@ class Confirmation extends CI_Controller {
             $this->confirmation_model->IPKCounting($class_id);
             $this->session->set_flashdata('alert_level','success');
             $this->session->set_flashdata('alert','Berhasil Menyetujui Revisi');
-            $nip = $this->class_model->getLecturerIdByClass($class_id);
-            $class = $this->class_model->getClassInfoById($class_id, $nip);
-            $this->notifikasi_model->sendNotification($this->session->userdata('username'),$nip, "Revisi untuk Penilaian ".$class[0].' / '.$class[3]." diterima.");
             redirect('confirmation/view/'.$class_id.'/'.$lecturer_login);
         }
         if ($this->input->post('btnRejectRevision')){
             $this->confirmation_model->rejectRevision($this->input->post('revision_id'));
             $this->session->set_flashdata('alert_level','success');
             $this->session->set_flashdata('alert','Berhasil Menolak Revisi');
-            $nip = $this->class_model->getLecturerIdByClass($class_id);
-            $class = $this->class_model->getClassInfoById($class_id, $nip);
-            $this->notifikasi_model->sendNotification($this->session->userdata('username'),$nip, "Revisi untuk Penilaian ".$class[0].' / '.$class[3]." ditolak.");
             redirect('confirmation/view/'.$class_id.'/'.$lecturer_login);
         }
 		$this->table->add_row('Mata Kuliah / Kelas / SKS :&nbsp;&nbsp;',':',$class[0].' / '.$class[3].' / '. $class[8].' SKS');
@@ -166,15 +161,9 @@ class Confirmation extends CI_Controller {
 			$statusConf = 3;
 			$this->confirmation_model->IPSCounting($classID, $termYear);
 			$this->confirmation_model->IPKCounting($classID);
-            $nip = $this->class_model->getLecturerIdByClass($classID);
-            $class = $this->class_model->getClassInfoById($classID, $nip);
-            $this->notifikasi_model->sendNotification($this->session->userdata('username'),$nip, "Penilaian ".$class[0].' / '.$class[3]." telah terkonfirmasi.");
 		}
 		else if($this->input->post('btnTidakSetuju') == true){
 			$statusConf = 2;
-            $nip = $this->class_model->getLecturerIdByClass($classID);
-            $class = $this->class_model->getClassInfoById($classID, $nip);
-            $this->notifikasi_model->sendNotification($this->session->userdata('username'),$nip, "Kajur tidak setuju atas penilaian ".$class[0].' / '.$class[3]);
 		}
 		//menyimpan commentar kajur ke database
 		$this->confirmation_model->sendComment($classID, $comments, $statusConf);

@@ -1,10 +1,12 @@
 ## Kerja Kelompok SDP ##
+----------
  
  1. Sebelum mengerjakan harap baca tutorial :  [Tutorial  SDP by Ste](https://www.dropbox.com/s/jcn2rio9g7rs1pp/Tutorial%20GITHUB%20untuk%20SDP.pdf?dl=0)
  2. SQL silakan update saja. Disana jika ada perubahan.
  
 
 ## Untuk Mengabungkan ##
+----------
 
  1. Untuk view kalian loadlah `$this->load->view('includes/header', $data)` dan `$this->load->view('includes/footer')`. 
  2. `$data` merupakan array dengan isi `['title' => 'nama_title_halaman']`
@@ -20,6 +22,7 @@
 Pada header sudah ada bootstrap.min.css dll. Yang dibutuhkan.
 
 ## Login Dosen + Kajur ##
+----------
 
  1. Untuk mendapatkan username yang login  :`$this->session->userdata('username')`
  2. Untuk mendapatkan role yang login : `$this->session->userdata('user_role')`
@@ -37,12 +40,6 @@ public function __construct(){// Jika User bukan Dosen redirect lah ke halaman l
 ```
 
 ##Edit Link Navigasi ##
+----------
 Masuk ke folder view/nav/navbar.php. Disana ada file navigasi kalian.
 Navigasi tidak perlu di load juga pada controller karena aku sudah include di header.php
-
-##Untuk Notifikasi##
-
-cukup pakai:
-```PHP
-   $this->notifikasi_model->sendNotification($this->session->userdata('username'),$kajur_id, $class[7]." telah menyelesaikan penilaian ".$class[0].' / '.$class[3]);
-```

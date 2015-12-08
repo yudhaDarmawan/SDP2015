@@ -1,5 +1,5 @@
 <?php
-	class Notifikasi_model extends CI_Model{
+	class Notifikasi_Model extends CI_Model{
 		/* -----------------------------------------------------
 		Function __construct()
 		Mengeload Inisialisasi Awal Model class_model
@@ -7,44 +7,38 @@
 		----------------------------------------------------- */
 		public function __construct(){
 			parent::__construct();
-            $this->load->database();
 		}
-		public function getNotification($limit, $start)
+		
+		
+		public function getNotification()
 		{
 			$name = $this->session->userdata('username');
-            $this->db->select('n.dari,n.tujuan,n.judul,d.nama as nama_asal, n.tanggal_create');
-            $this->db->from('notifikasi n, dosen d');
-            $this->db->where('d.nip = n.dari');
-            $this->db->where('n.tujuan',$name);
-			$this->db->limit($limit, $start);
-            $this->db->order_by('tanggal_create','desc');
-			$result = $this->db->get();
+			$this->db->limit(5);
+			$result = $this->db->get_where('notifikasi',array('mahasiswa_nrp'=>$name));
 			return $result->result();
 		}
-
+		
 		public function getCountNotification()
 		{
 			$name = $this->session->userdata('username');
-			$this->db->where('tujuan',$name);
-            $this->db->from('notifikasi');
-			return $this->db->count_all_results();
+			$this->db->where('mahasiswa_nrp',$name);
+			$this->db->where('status_baca = 0');
+			$result = $this->db->get('notifikasi');
+			return $this->db->affected_rows();
 		}
-
+		
+		public function readAll()
+		{
+			$this->db->update('notifikasi',array('status_baca'=>1));
+		}
+		
 		public function sendNotif()
 		{
-			$lectureId = $this->mahasiswa_model->getLecture();
+			$lectureId = $this->Mahasiswa_Model->getLecture();
 			$studentId = $this->session->userdata('username');
-			$isi = $this->mahasiswa_model->getNameStudent($studentId) . ' telah melakukan perwalian';
+			$isi = $this->Mahasiswa_Model->getNameStudent($studentId) . ' telah melakukan perwalian';
 			$data = array('mahasiswa_nrp'=>$studentId, 'dosen_nip'=>$lectureId,'judul'=>'Konfirmasi Perwalian','isi'=>$isi);
 			$this->db->insert('notifikasi',$data);
 		}
-
-        public function sendNotification($asal, $tujuan, $message){
-            $data = ['dari' => $asal, 'tujuan' => $tujuan,'judul' => $message];
-            $this->db->set('tanggal_create','now()',false);
-            $this->db->insert('notifikasi', $data);
-            return $this->db->affected_rows();
-        }
-
 	}
 ?>
