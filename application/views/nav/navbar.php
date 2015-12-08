@@ -68,23 +68,13 @@
 
                 <!--- Navbar Umum-->
 				<ul class="nav navbar-nav navbar-right">
-					<li><a id="notif" data-toggle="dropdown" data-target="#" href="#"><span class="glyphicon glyphicon-bell"></span><span class="badge">4</span>
-					<!-- FROM HERE -->
+					<li><a id="notif" data-toggle="dropdown" data-target="#" href="#"><span class="glyphicon glyphicon-bell"></span> Notification  </a>
+                            <ul class="dropdown-menu notifications" role="menu" aria-labelledby="notif">
+                                <div class="notifications-wrapper" id="notifikasi">
+                                </div>
+                                <div class="notification-footer"><button class="btn btn-primary btn-block" id="notifikasi-viewmore">View More</button></div>
+                            </ul>
 
-					<ul class="dropdown-menu notifications" role="menu" aria-labelledby="notif">
-
-						<div class="notification-heading"><h4 class="menu-title">Notifications</h4><h4 class="menu-title pull-right">View all<i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
-						</div>
-						<li class="divider"></li>
-						<div class="notifications-wrapper">
-							<a class="content" href="#">
-								<div class="notification-item">
-									<h4 class="item-title">Budi sudah melakukan perwalian</h4>
-									<p class="item-info"><div class="btn btn-primary">Lihat Detail</div></p>
-								</div>
-							</a>
-						</div>
-					</ul>
 					</li>
 
 
@@ -110,3 +100,27 @@ $this->session->userdata('username');?> <span class="caret"></span> </a>
 			</div>
 		</div>
 	</div>
+<script>
+    limit = 5;
+    start = 0;
+    batas = <?php echo $this->notifikasi_model->getCountNotification();?>;
+    $.post('<?php echo site_url('notification/get');?>',{limit:limit, start:start}, function(data){
+        $('#notifikasi').append(data);
+        start = start + limit;
+        if (start >= batas){
+            $('#notifikasi-viewmore').off('click');
+            $('#notifikasi-viewmore').remove();
+        }
+    });
+    $('#notifikasi-viewmore').on('click', function(){
+        $.post('<?php echo site_url('notification/get');?>',{limit:limit, start:start}, function(data){
+            $('#notifikasi').append(data);
+            start = start + limit;
+            if (start >= batas){
+                $('#notifikasi-viewmore').off('click');
+                $('#notifikasi-viewmore').remove();
+            }
+            $('#notif').dropdown('toggle');
+        });
+    });
+</script>
