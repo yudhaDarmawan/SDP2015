@@ -63,5 +63,19 @@
 			$result = $this->db->get_where('dosen',array('nip'=>$nip))->row();
 			return $result->nama;
 		}
+
+        public function getKajurId($kelas_id){
+            $this->db->select('m.informasi_kurikulum_id as value');
+            $this->db->from('mata_kuliah m, kelas k');
+            $this->db->where('m.id = k.mata_kuliah_id');
+            $this->db->where('k.id',$kelas_id);
+            $result = $this->db->get()->row()->value;
+            $id = substr($result,0,5);
+            $this->db->select('nip');
+            $this->db->from('dosen');
+            $this->db->like('kepala_jurusan_id',$id);
+            $kajur_id = $this->db->get()->row()->nip;
+            return $kajur_id;
+        }
 	}
 ?>

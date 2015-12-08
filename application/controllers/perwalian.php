@@ -13,11 +13,11 @@
 			//jika ada data2 tersebut maka tampilkan halaman sesuai keterangan
 			//untuk dosen keluarkan halaman dosen, dan mahasiswa tampilkan halaman mahasiswa
 			if($this->session->userdata('username')){
-				if($this->Mahasiswa_Model->isStudent($this->session->userdata('username')))
+				if($this->mahasiswa_model->isStudent($this->session->userdata('username')))
 				{
 					redirect('perwalian/mahasiswa');
 				}
-				else if($this->Dosen_Model->isLecture($this->session->userdata('username')))
+				else if($this->dosen_model->isLecture($this->session->userdata('username')))
 				{
 					redirect('perwalian/dosen');
 				}
@@ -27,11 +27,11 @@
 			//untuk dosen keluarkan halaman dosen, dan mahasiswa tampilkan halaman mahasiswa
 			else if(get_cookie('username'))
 			{
-				if($this->Mahasiswa_Model->isStudent(get_cookie('username')))
+				if($this->mahasiswa_model->isStudent(get_cookie('username')))
 				{
 					redirect('perwalian/mahasiswa');	
 				}
-				else if(  $this->Dosen_Model->isLecture(get_cookie('username')))
+				else if(  $this->dosen_model->isLecture(get_cookie('username')))
 				{
 					redirect('perwalian/dosen');
 				}				
@@ -52,19 +52,19 @@
 			{
 				//mengecek apakah user yang login merupakan mahasiswa STTS atau tidak
 				//jika benar maka masuk kedalam if ini
-				if($this->Mahasiswa_Model->isStudent($this->session->userdata('username')) or $this->Mahasiswa_Model->isStudent($this->input->cookie('username')))
+				if($this->mahasiswa_model->isStudent($this->session->userdata('username')) or $this->mahasiswa_model->isStudent($this->input->cookie('username')))
 				{
 					//Mengambil semua notifkasi yang terdapat dalam database
-					$data['notifikasi'] = $this->Notifikasi_Model->getNotification();
-					$data['countNewNotif'] = $this->Notifikasi_Model->getCountNotification();
+					$data['notifikasi'] = $this->notifikasi_model->getNotification();
+					$data['countNewNotif'] = $this->notifikasi_model->getCountNotification();
 					//Mengset judul web lewat variable data['title'] dengan isi
 					//Sistem informasi mahasiswa stts
 					$data['title'] = 'Sistem Informasi Mahasiswa STTS';
 					//mendapatkan nama mahasiswa, dan menyimpan kedalam variable
 					//data['nameStudent']
-					$data['nameStudent'] = $this->Mahasiswa_Model->getNameStudent($this->session->userdata('username'));
+					$data['nameStudent'] = $this->mahasiswa_model->getNameStudent($this->session->userdata('username'));
 					//mendapatkan semester atau tahun ajaran yang berjalan sekarang
-					$data['nowSemester'] = $this->Data_Umum_Model->getSemester();
+					$data['nowSemester'] = $this->data_umum_model->getSemester();
 					//meload view header dan memasukan title kedalam view;
 					$this->load->view('includes/header',$data);
 					//dicek apakah user menekan logo STTS
@@ -77,7 +77,7 @@
 					}
 					else if($this->input->post('perwalian'))
 					{
-						if($this->Mahasiswa_Model->getStatusConfirm())
+						if($this->mahasiswa_model->getStatusConfirm())
 						{
 							//jika menekan menu perwalian maka
 							//set posisi menu sekarang di frs
@@ -96,7 +96,7 @@
 							//data matakuliah yang dibuka dan diambil hanya semester saja
 							$arr= array();
 							//melakukan perulangan untuk mendapatkan matakuliah yang dibuka
-							foreach($this->Matakuliah_Model->getClassSemesterOpen() as $row)
+							foreach($this->matakuliah_model->getClassSemesterOpen() as $row)
 							{
 								//memasukan data semester ke dalam variable arr
 								array_push($arr,$row->semester);
@@ -114,7 +114,7 @@
 							//membuat variable mahasiswa didalam variable data
 							//mengset value variable tersebut dengan mengambil dari model
 							//Mahasiswa_model dan mendapatkan detail dari mahasiswa
-							$data['mahasiswa'] = $this->Mahasiswa_Model->getDetailStudent($user);
+							$data['mahasiswa'] = $this->mahasiswa_model->getDetailStudent($user);
 							//membuat variable smtr di dalam variable data
 							//kemudian memanggil function getSemesterStudent untuk mendapatkan semester sekarang
 							$data['smtr'] = $this->getSemesterStudent($data['mahasiswa']->nrp);
@@ -175,13 +175,13 @@
 						{
 							//membuat tabel jadwal kuliah
 							$this->setClass();
-							$data['nameStudent'] = $this->Mahasiswa_Model->getNameStudent($this->session->userdata('username'));
-							$data['nowSemester'] = $this->Data_Umum_Model->getSemester();
+							$data['nameStudent'] = $this->mahasiswa_model->getNameStudent($this->session->userdata('username'));
+							$data['nowSemester'] = $this->data_umum_model->getSemester();
 							$data['title'] = 'Sistem Informasi Mahasiswa STTS';
 							$data['table']=$this->getSchedule();
-							$this->Notifikasi_Model->sendNotif();
-							$this->Mahasiswa_Model->setAfterStudyPlan();
-							$data['nowSemester'] = $this->Data_Umum_Model->getSemester();
+							$this->notifikasi_model->sendNotif();
+							$this->mahasiswa_model->setAfterStudyPlan();
+							$data['nowSemester'] = $this->data_umum_model->getSemester();
 							//tampilkan navbar mahasiswa
 							$this->load->view('nav/navbarmahasiswa');
 							$this->load->view('perwalian/jadwal',$data);
@@ -212,7 +212,7 @@
 						//mengecek apakah currentPage itu di halaman frs
 						else if($this->session->userdata('currentPage') == 'frs')
 						{
-							if($this->Mahasiswa_Model->getStatusConfirm())
+							if($this->mahasiswa_model->getStatusConfirm())
 							{
 								//jika ya maka set halaman currentPage menjadi Frs
 								$this->session->set_userdata('currentPage','frs');
@@ -230,7 +230,7 @@
 								//membuat array baru
 								$arr= array();
 								//variable tersebut nanti digunakan untuk menampung semester berapa saja yang dibuka kelasnya
-								foreach($this->Matakuliah_Model->getClassSemesterOpen() as $row)
+								foreach($this->matakuliah_model->getClassSemesterOpen() as $row)
 								{
 									//masukan semester value ke dalam variable array
 									array_push($arr,$row->semester);
@@ -241,7 +241,7 @@
 								$user = '';
 								if($this->session->userdata('username')){$user = $this->session->userdata('username');}
 								if($this->input->cookie('username')){$user = get_cookie('username');}
-								$data['mahasiswa'] = $this->Mahasiswa_Model->getDetailStudent($user);
+								$data['mahasiswa'] = $this->mahasiswa_model->getDetailStudent($user);
 								$data['smtr'] = $this->getSemesterStudent($data['mahasiswa']->nrp);
 								$data['table'] = array();
 								for($i=0;$i<count($arr);$i++){
@@ -263,7 +263,7 @@
 					}
 					$this->load->view('includes/footer');
 				}
-				else if($this->Dosen_Model->isLecture($this->session->userdata('username')) or $this->Dosen_Model->isLecture($this->input->cookie('username')))
+				else if($this->dosen_model->isLecture($this->session->userdata('username')) or $this->dosen_model->isLecture($this->input->cookie('username')))
 				{
 					redirect('');
 				}
@@ -279,12 +279,12 @@
 			//jika sudah masuk kedalam if disini
 			if($this->session->userdata('username') or get_cookie('username'))
 			{
-				$data['nameStudent'] = $this->Mahasiswa_Model->getNameStudent($this->session->userdata('username'));
-				$data['nowSemester'] = $this->Data_Umum_Model->getSemester();
+				$data['nameStudent'] = $this->mahasiswa_model->getNameStudent($this->session->userdata('username'));
+				$data['nowSemester'] = $this->data_umum_model->getSemester();
 				$data['title'] = 'Sistem Informasi Mahasiswa STTS';
 					
 				$data['table']=$this->getSchedule();
-				$data['nowSemester'] = $this->Data_Umum_Model->getSemester();
+				$data['nowSemester'] = $this->data_umum_model->getSemester();
 				//$this->load->view('includes/header',$data );
 				$this->session->userdata('currentPage','jadwal');
 				$this->load->view('nav/navbarmahasiswa',$data);
@@ -302,13 +302,13 @@
 		//FUNCTION INI DIGUNAKAN OLEH AJAX 
 		//UNTUK MENDAPATKAN SKS SUATU MATA KULIAH
 		public function getTotalSks(){
-			$query = $this->Matakuliah_Model->getSKS($this->input->post('name'));
+			$query = $this->matakuliah_model->getSKS($this->input->post('name'));
 			if($this->session->userdata('getCourseNow'))
 			{
 				$array = $this->session->userdata('getCourseNow');
 				if($this->input->post('status') == 'true')
 				{
-					if($this->Matakuliah_Model->isEmpty($this->input->post('name')))
+					if($this->matakuliah_model->isEmpty($this->input->post('name')))
 					{
 						$count = (+$this->input->post('countSKS')) + (+$query->jumlah_sks);
 						$this->session->set_userdata('countSKS',$count);
@@ -349,11 +349,11 @@
 		}
 
 		function createTableCourse($semester){
-			$matkul = $this->Matakuliah_Model->createFRS($this->session->userdata('username'));
+			$matkul = $this->matakuliah_model->createFRS($this->session->userdata('username'));
 			$tmpl = array ( 'table_open'  => '<table class="table table-condensed" >');
 			$this->table->set_template($tmpl);
 			$this->table->set_heading('Nama Matkul','SKS','Grade','Ambil');
-			$semesterNow = $this->Data_Umum_Model->getSemester();
+			$semesterNow = $this->data_umum_model->getSemester();
 			foreach($matkul as $row)
 			{
 				$hari='-';
@@ -430,10 +430,10 @@
 		public function isPass($courseID)
 		{
 			$passed = 'true';
-			$requirementCourse = $this->Syarat_Matakuliah_Model->getRequirement($courseID);
+			$requirementCourse = $this->syarat_matakuliah_model->getRequirement($courseID);
 			foreach($requirementCourse as $row)
 			{
-				if($this->Kelas_Mahasiswa_Model->search($row->id_matakuliah) == 'false')
+				if($this->kelas_mahasiswa_model->search($row->id_matakuliah) == 'false')
 				{
 					$passed = 'false';
 					break;
@@ -447,9 +447,9 @@
 			$listClass = $this->session->userdata('getCourseNow');
 			for($i=0; $i<count($listClass); $i++)
 			{
-				$class = $this->Class_Model->getClass($listClass[$i]);
+				$class = $this->class_model->getClass($listClass[$i]);
 				if(count($class) >1){
-					$totalStudent = $this->Class_Model->getStudent($class[0]['id'],$class[0]['idmakul']);
+					$totalStudent = $this->class_model->getStudent($class[0]['id'],$class[0]['idmakul']);
 					
 					if($this->session->userdata('username'))
 					{
@@ -461,13 +461,13 @@
 					}
 					if($totalStudent < 35)
 					{
-						$scoreID = $this->Nilai_Model->insert($studentID);
-						$this->Kelas_Mahasiswa_Model->insert($studentID,$class[0]['id'],$class[0]['idmakul'],'a',$scoreID);
+						$scoreID = $this->nilai_model->insert($studentID);
+						$this->kelas_mahasiswa_model->insert($studentID,$class[0]['id'],$class[0]['idmakul'],'a',$scoreID);
 					}
 					else
 					{
-						$scoreID = $this->Nilai_Model->insert($studentID);
-						$this->Kelas_Mahasiswa_Model->insert($studentID,$class[0]['id'],$class[0]['idmakul'],'a',$scoreID);
+						$scoreID = $this->nilai_model->insert($studentID);
+						$this->kelas_mahasiswa_model->insert($studentID,$class[0]['id'],$class[0]['idmakul'],'a',$scoreID);
 					}
 				}
 				else
@@ -480,8 +480,8 @@
 					{
 						$studentID = get_cookie('username');
 					}
-					$scoreID = $this->Nilai_Model->insert($studentID);
-					$this->Kelas_Mahasiswa_Model->insert($studentID,$class[0]['id'],$class[0]['idmakul'],'a',$scoreID);
+					$scoreID = $this->nilai_model->insert($studentID);
+					$this->kelas_mahasiswa_model->insert($studentID,$class[0]['id'],$class[0]['idmakul'],'a',$scoreID);
 				}
 			}
 		}
@@ -489,11 +489,11 @@
 		public function getSchedule()
 		{
 			$studentID = $this->session->userdata('username');
-			$schedule = $this->Kelas_Mahasiswa_Model->getSchedule($studentID);
+			$schedule = $this->kelas_mahasiswa_model->getSchedule($studentID);
 			$tmpl = array ( 'table_open'  => '<table class="table">');
 			$this->table->set_template($tmpl);
 			$this->table->set_heading('Kode Matkul','Nama Matkul','Dosen Pengajar','Hari','Jam Mulai','Ruangan');
-			$semesterNow = $this->Data_Umum_Model->getSemester();
+			$semesterNow = $this->data_umum_model->getSemester();
 			foreach($schedule as $row)
 			{
 				$hari='-';
@@ -531,12 +531,12 @@
 		
 		public function readMessage()
 		{
-			$this->Notifikasi_Model->readAll();
+			$this->notifikasi_model->readAll();
 			$code='';
-			foreach($this->Notifikasi_Model->getNotification() as $row)
+			foreach($this->notifikasi_model->getNotification() as $row)
 			{
 				$code .= '<div class="notification-item">';
-				$code .= '<h4 class="item-title">'. $row->judul .' - ' . $this->Dosen_Model->getNameLecture($row->dosen_nip) . '</h4>';
+				$code .= '<h4 class="item-title">'. $row->judul .' - ' . $this->dosen_model->getNameLecture($row->dosen_nip) . '</h4>';
 				$code .= '<p class="item-info">' . $row->isi . '</p>';
 				$code .= '</div>';
 			}
