@@ -1,4 +1,4 @@
-<?=form_open('perwalian/frs')?>
+<?php echo form_open('perwalian/mahasiswa');?>
 <!--CONTENT-->
 	
 	<h2 class="text-center"><?php echo $nowSemester;?></h2>
@@ -133,4 +133,4 @@
 	$(document).ready(function(){
 	});
 </script>
-<?=form_close()?>
+<?php echo form_close(); ?>
