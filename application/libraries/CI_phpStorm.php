@@ -68,6 +68,9 @@
  * @property CI_Security $security                Security Class, xss, csrf, etc...
  * @property CI_Driver_Library $driver            CodeIgniter Driver Library Class
  * @property CI_Cache $cache                      CodeIgniter Caching Class
+ * @property Grade $grade
+ * @property Grade_model $grade_model
+ * @property Class_model $class_model
  */
 class CI_Controller extends my_models
 {
@@ -118,6 +121,9 @@ class CI_Controller extends my_models
  * @property CI_Security $security                Security Class, xss, csrf, etc...
  * @property CI_Driver_Library $driver            CodeIgniter Driver Library Class
  * @property CI_Cache $cache                      CodeIgniter Caching Class
+ * @property Grade $grade
+ * @property Grade_model $grade_model
+ * @property Class_model $class_model
  */
 class CI_Model
 {
