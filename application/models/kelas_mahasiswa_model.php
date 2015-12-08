@@ -109,5 +109,12 @@
 			$result = $this->db->get();
 			return $result->result();
 		}
+		
+		public function select($nrp){
+			return $this
+			->db
+			->get_where('kelas_mahasiswa',array('mahasiswa_nrp' => $nrp))
+			->result_array();
+		}
 	}
 ?>

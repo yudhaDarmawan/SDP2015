@@ -64,7 +64,7 @@ class Grade extends CI_Controller {
         $lecturer_login = $this->session->userdata('username');
 
         if ($yearNow == null){
-            $yearNow  = $this->class_model->getActiveTermYear();
+            $yearNow  = $this->data_umum_model->getSemester();
         }
         else {
             $yearNow  = str_replace('_',' ',$yearNow);
@@ -83,7 +83,7 @@ class Grade extends CI_Controller {
 		// Mengambil Lecturer Login dari Session Yang Ada
         $lecturer_login = $this->session->userdata('username');
 		if ($yearNow == null){
-			$yearNow  = $this->class_model->getActiveTermYear();
+			$yearNow  = $this->data_umum_model->getSemester();
 		}
 		else {
 			$yearNow  = str_replace('_',' ',$yearNow);
@@ -191,7 +191,7 @@ class Grade extends CI_Controller {
 		$data['title'] = "Mata Kuliah yang Diajar";
 		$this->load->helper('form');
 		$data['ddYear'] = $this->class_model->getComboBoxAllYear();
-		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->class_model->getActiveTermYear()));
+		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->data_umum_model->getSemester()));
 		$this->load->view('includes/header',$data);
 		$this->load->view('grade/grade_view', $data);
 		$this->load->view('includes/footer');
@@ -228,6 +228,8 @@ class Grade extends CI_Controller {
             if ($success) {
                 $this->session->set_flashdata('alert_level', 'success');
                 $this->session->set_flashdata('alert', 'Berhasil Mengirim Data Nilai ke kajur!');
+                $kajur_id = $this->dosen_model->getKajurId($classId);
+                $this->notifikasi_model->sendNotification($this->session->userdata('username'),$kajur_id, $class[7]." telah menyelesaikan penilaian ".$class[0].' / '.$class[3]);
                 redirect('grade/view/'.$classId);
             }
             else {

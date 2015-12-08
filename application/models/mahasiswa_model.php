@@ -135,5 +135,16 @@
 			$result = $this->db->get('mahasiswa')->row();
 			return $result->nip_dosen;
 		}
+		/****
+		Function getStatusPerwalian
+		Digunakan untuk mendapatkan status perwalian dari Table Mahasiswa
+		Input : nrp
+		Output : status_perwalian
+		****/
+		public function getStatusPerwalian($nrp){
+			$this->db->select('status_perwalian');
+			$query = $this->db->get_where('mahasiswa',array('nrp' => $nrp));
+			return $query->row_array();
+		}
 	}
 ?>
