@@ -62,7 +62,9 @@
                          </li>
                          <li><?= anchor('/','Daftar Mahasiswa');?></li>
                          <li><?= anchor('confirmation/all','Daftar Kelas');?></li>
-                    <?php } ?>
+						 <li><?= anchor('confirmation/page_prosentase','Report Prosentase Nilai');?></li>
+                   
+					<?php } ?>
 				</ul>
 
 

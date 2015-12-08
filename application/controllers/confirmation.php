@@ -24,6 +24,17 @@ class Confirmation extends CI_Controller {
 	public function index(){
 		redirect('confirmation/all');
     }
+	
+	public function page_prosentase(){
+		$data['pilihan'] = ['Prosentase Nilai Setiap Dosen', 'Prosentase Nilai Semua Mata Kuliah'];
+		$data['ddYear'] = $this->class_model->getComboBoxAllYear();
+		$data['selectedDdYear'] = str_replace('/','-',str_replace(' ','_',$this->class_model->getActiveTermYear()));
+        
+		$this->load->view('includes/header', $data);
+		$this->load->view('report/portal_printProsentase', $data);
+		$this->load->view('includes/footer');
+
+	}
     public function ajax_class($yearNow =null)
     {
 		
@@ -54,6 +65,52 @@ class Confirmation extends CI_Controller {
         // Print Output Berupa JSON
         echo json_encode($output);
     }
+	public function ajax_prosentaseDosen($idDosen){
+		//$this->session->set_userdata('namaDosen', $ddDosen);
+		$yearNow = $this->session->userdata('year');
+		
+		// Load Data Kelas
+		if(isset($_POST['order'])){
+			$column = ["kode_mk","sks","nama_mk", "A", "B", "C", "D", "E"];
+			$orders = array ($column[$_POST['order']['0']['column']] => $_POST['order']['0']['dir']);
+        }
+		else {
+			$orders = null;
+		}
+		
+		$classes = $this->confirmation_model->getDataTableReportByLecturer($idDosen, $orders, $yearNow );
+		
+		// sampai sini benar
+		$output = array("recordsTotal" => $this->class_model->countAll($idDosen), 
+						"recordsFiltered" => $this->class_model->countFiltered($idDosen, $orders , $yearNow),
+						"data" => $classes);
+		
+        // Print Output Berupa JSON
+        echo json_encode($output);		
+		
+	}
+	
+	public function ajax_prosentaseMatkul()
+    {
+		$yearNow = $this->session->userdata('year');
+		// Load Data Kelas
+		if(isset($_POST['order'])){
+			$column = ["kode_mk","sks","nama_mk", "A", "B", "C", "D", "E"];
+			$orders = array ($column[$_POST['order']['0']['column']] => $_POST['order']['0']['dir']);
+        }
+		else {
+			$orders = null;
+		}
+		$classes = $this->confirmation_model->getDataTableForAllMatkul($orders, $yearNow);
+		
+		$output = array("recordsTotal" => $this->confirmation_model->countAll($yearNow), 
+						"recordsFiltered" => $this->confirmation_model->countAll($yearNow),
+						"data" => $classes);
+		
+        // Print Output Berupa JSON
+        echo json_encode($output);
+    }
+	
 	
     public function ajax_score($classId){
 		// Load Data Kelas
@@ -75,6 +132,7 @@ class Confirmation extends CI_Controller {
         // Print Output Berupa JSON
         echo json_encode($output);
     }
+	
 	
     /**
      * Function : all()
@@ -182,5 +240,154 @@ class Confirmation extends CI_Controller {
 		// kembali ke page confirmation_portal_view
 		redirect('confirmation/index');
 	}
+	
+	public function reportProsentase(){
+		//echo $this->input->post('pilihan');
+		
+		if($this->input->post('pilihan') == "0"){
+			$year  = str_replace('_',' ',$this->input->post('ddYear'));
+			$yearNow  = str_replace('-','/',$year);
+			$this->session->set_userdata('year', $yearNow);
+			
+			$arrDosen = [];
+			$allDosen = $this->confirmation_model->allDosen();
+			foreach($allDosen as $row){
+				$arrDosen [$row['nip']] = $row['nama'];
+			}
+			
+			//coba kluarkan isi data
+			//$this->ajax_prosentaseDosen($arrDosen[]);
+			
+			$data['Dosen'] = $arrDosen;
+			$data['selectedDosen'] = '';
+			$this->load->view('includes/header', $data);
+			$this->load->view('report/reportProsentaseDosen_view', $data);
+			$this->load->view('includes/footer');
+			
+		}
+		else if($this->input->post('pilihan') == "1"){ 
+			// prosentase semua nilai matkul
+			$year  = str_replace('_',' ',$this->input->post('ddYear'));
+			$yearNow  = str_replace('-','/',$year);
+			$this->session->set_userdata('year', $yearNow);
+			
+			$this->load->view('includes/header');
+			$this->load->view('report/reportProsentaseMatkul_view');
+			$this->load->view('includes/footer');
+			
+		}
+		
+		
+	}
+	public function printToPDFPercentageDosen(){
+		
+		$idDosen = $this->input->post('ddDosen');
+		$data['title'] = "Report Prosentase Penilaian Dosen";
+		$data['namaDosen'] = $this->confirmation_model->getNamaDosen($this->input->post('ddDosen'));
+		$data['year'] = $this->session->userdata('year');
+		
+		// Load Data Kelas
+		if(isset($_POST['order'])){
+			$column = ["kode_mk","sks","nama_mk", "A", "B", "C", "D", "E"];
+			$orders = array ($column[$_POST['order']['0']['column']] => $_POST['order']['0']['dir']);
+		}
+		else {
+			$orders = null;
+		}
+		$allDataTable =  $this->confirmation_model->getDataTableReportByLecturer($idDosen, $orders, $data['year']);
+		$table = "<table autosize='1.6' border='1' cellspacing='0' width='100%' cellpadding='5'>";
+		$table.= "<thead>
+					<tr style='background:yellow'>
+						<td>KODE MK</td>
+						<td>SKS</td>
+						<td>NAMA MATA KULIAH</td>
+						<td>A</td>
+						<td>B</td>
+						<td>C</td>
+						<td>D</td>
+						<td>E</td>
+					</tr>
+				  </thead>";
+		foreach($allDataTable as $row){
+			$table .= "<tr>";
+			$table .= "<td>".$row[0]."</td>";
+			$table .= "<td>".$row[1]."</td>";
+			$table .= "<td>".$row[2]."</td>";
+			$table .= "<td>".$row[3]."%</td>";
+			$table .= "<td>".$row[4]."%</td>";
+			$table .= "<td>".$row[5]."%</td>";
+			$table .= "<td>".$row[6]."%</td>";
+			$table .= "<td>".$row[7]."%</td>";
+			$table .= "</tr>";
+		}
+		$table .= "</table>";
+		
+		$data['dataTable'] = $table;
+		$pdfFilePath = "print_report_prosentase_nilai_dosen.pdf";
+		$this->load->library('m_pdf');
+	
+		$pdf = $this->m_pdf->load();
+
+		//generate the PDF!
+		$html = $this->load->view('report/report_prosentaseLecture',$data,true);
+		$header =$this->load->view('report/includes/headerReport',$data,true);
+		$pdf->WriteHTML($header.$html);
+		$pdf->Output($pdfFilePath, "I");
+	}
+	public function printToPDF_PercentageMatkul(){
+		$yearNow = $this->session->userdata('year');
+		$data['title'] = "Report Prosentase Nilai Mata Kuliah";
+		$data['year'] = $yearNow;
+		// Load Data Kelas
+		if(isset($_POST['order'])){
+			$column = ["kode_mk","sks","nama_mk", "A", "B", "C", "D", "E"];
+			$orders = array ($column[$_POST['order']['0']['column']] => $_POST['order']['0']['dir']);
+        }
+		else {
+			$orders = null;
+		}
+		
+		$allDataTable = $this->confirmation_model->getDataTableForAllMatkul($orders, $yearNow);
+		$table = "<table autosize='1.6' border='1' cellspacing='0' width='100%' cellpadding='5'>";
+		$table.= "<thead>
+					<tr style='background:yellow'>
+						<td>KODE MK</td>
+						<td>SKS</td>
+						<td>NAMA MATA KULIAH</td>
+						<td>A</td>
+						<td>B</td>
+						<td>C</td>
+						<td>D</td>
+						<td>E</td>
+					</tr>
+				  </thead>";
+		foreach($allDataTable as $row){
+			$table .= "<tr>";
+			$table .= "<td>".$row[0]."</td>";
+			$table .= "<td>".$row[1]."</td>";
+			$table .= "<td>".$row[2]."</td>";
+			$table .= "<td>".$row[3]."%</td>";
+			$table .= "<td>".$row[4]."%</td>";
+			$table .= "<td>".$row[5]."%</td>";
+			$table .= "<td>".$row[6]."%</td>";
+			$table .= "<td>".$row[7]."%</td>";
+			$table .= "</tr>";
+		}
+		$table .= "</table>";
+		
+		$data['dataTable'] = $table;
+		$pdfFilePath = "print_report_prosentase_nilai_matkul.pdf";
+		$this->load->library('m_pdf');
+	
+		$pdf = $this->m_pdf->load();
+
+		//generate the PDF!
+		$html = $this->load->view('report/report_prosentaseMatkul',$data,true);
+		$header =$this->load->view('report/includes/headerReport',$data,true);
+		$pdf->WriteHTML($header.$html);
+		$pdf->Output($pdfFilePath, "I");
+		
+	}
+	
 }
 ?>

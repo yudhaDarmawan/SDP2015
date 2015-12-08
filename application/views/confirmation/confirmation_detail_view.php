@@ -31,7 +31,8 @@ v0.1 - 7 Januari 2015
             <button id='btnPrint' type='button' class='btn btn-primary btn-sm' data-toggle="modal" data-target="#managePrint">Cetak</button>
         </div>
     </div>
-    <br/>
+    <br>
+	<br/>
     <div class="row">
         <div class="col-md-12">
 
