@@ -29,6 +29,15 @@ class Bataltambah extends CI_Controller{
 		//$dataform["activeBatalTambah"] = "active";
 		//$dataform["activeDrop"] = "";
 		/****
+		Ambil Data Informasi mahasiswa dari table mahasiswa
+		****/
+		$dataform["data_mahasiswa"] = $this->mahasiswa_model->getDataMahasiswa($nrp);
+		
+		//Ambil Jurusan dari table informasi_kurikulum
+		$informasi_kurikulum_mahasiswa = $this->informasi_kurikulum_model->getDataKurikulum($dataform["data_mahasiswa"]["informasi_kurikulum_id"]);
+		$dataform["data_mahasiswa"]["informasi_kurikulum_mahasiswa"] = $informasi_kurikulum_mahasiswa;
+		
+		/****
 		Ambil Data Untuk pembuatan table view dari Kelas_Mahasiswa
 		berdasarkan NRP Mahasiswa yang login
 		****/
@@ -39,6 +48,7 @@ class Bataltambah extends CI_Controller{
 		/****
 		Ubah Hasil return dalam bentuk Array ke bentuk String.
 		Batasnya '|' (Pipeline) dan '_' (UnderScore)
+		Sekalian juga menghitung SKS total
 		****/
 		foreach($dataform["dataTable"] as $data){
 		$stringTable.=$data["data"]."|".$data["nama"]."|".$data["jumlah_sks"]."|".$data["bg_color"]."_";
@@ -93,7 +103,6 @@ class Bataltambah extends CI_Controller{
 		
 		if($this->input->post('btnSubmitBatal') == true){
 			$temp = $this->input->post('makul',true);
-			echo $temp;
 			if($this->session->userdata('table_session') != ""){
 				$stringTable = $this->session->userdata('table_session');
 			}
@@ -105,7 +114,6 @@ class Bataltambah extends CI_Controller{
 				3. Explode kedua untuk mengambil isi dari array data
 				4. Setelah diganti warnanya, Pakai Implode di concate dengan '_'
 				***/
-				echo "lalaal";
 				$explode1 = explode("_",$stringTable);
 				for($i = 0 ; $i < count($explode1)-1; $i++){
 					//Explode kedua
@@ -130,7 +138,7 @@ class Bataltambah extends CI_Controller{
 				$stringTable = $this->session->userdata('table_session');
 			}
 			if($temp != "null"){
-				$arrTampung = $this->matakuliah_model->selectMataKuliah($temp);
+				$arrTampung = $this->matakuliah_model->selectMataKuliah($temp)[0];
 				//Tambah Matakuliah ke String
 				//Urutan String : ID_MATA_KULIAH-NAMA_MATKUL-JUMLAH_SKS-WARNA
 				//Cek apakah data kembar / tidak
@@ -170,8 +178,9 @@ class Bataltambah extends CI_Controller{
 			//Kirimkan Notifikasi ke dosen wali mahasiswa
 			$this->Kelas_Mahasiswa_Model->kirimNotifikasi($nrp);
 		}
+		//Hitung Jumlah SKS Yang akan diambil mahasiswa Setelah Batal / Tambah
+		$dataform["jumlah_sks_baru"] = $this->generateJumlahSKS($this->session->userdata("table_session"));
 		$this->load->view('includes/header');
-		//$this->load->view('nav/navbarmahasiswa',array('nameStudent' => $this->Mahasiswa_Model->getNameStudent($this->session->userdata("username"))));
 		$this->load->view('perwalian/bataltambahdrop',$dataform);
 		$this->load->view('includes/footer');
 	
@@ -179,9 +188,8 @@ class Bataltambah extends CI_Controller{
 	public function drop(){
 		$nrp = $this->session->userdata("username");
 		$dataform = [];
-		$dataform["activeBatalTambah"] = "";
-		$dataform["activeDrop"] = "active";
-		$dataform["dataTable"] = $this->Kelas_Mahasiswa_Model->getTableForBatalTambahMhs($nrp);
+		$arrDataTable = $this->kelas_mahasiswa_model->select($nrp);
+		$dataform["dataTable"] = $this->createTableBatalTambah($arrDataTable);
 		$stringTable = "";
 		//Ubah Array ke bentuk String. Batasnya '|' dan '_'
 		foreach($dataform["dataTable"] as $data){
@@ -192,18 +200,21 @@ class Bataltambah extends CI_Controller{
 			//$dataform["dataTable"] = $this->session->userdata('table_session');
 			$stringTable = $this->session->userdata('table_session');
 		}
-		$dataform["dataComboBox"] = $this->Kelas_Mahasiswa_Model->getDataForComboBoxFromKelas($nrp);
+		$dataform["dataComboBox"] = $this->createComboBoxBatal($nrp);
 		if($this->input->post('btnClear') == true){
 		$stringTable = "";
 		$this->session->unset_userdata('table_session');	
 		//Ambil Data untuk Table
-		$dataform["dataTable"] = $this->Kelas_Mahasiswa_Model->getTableForBatalTambahMhs($nrp);
+		$dataform["dataTable"] = $this->createTableBatalTambah($arrDataTable);
 		
-		//Jadikan ke bentuk String
+		//Jadikan ke bentuk String + HItung jumlah SKSnya
+		$jumSks = 0;
 		foreach($dataform["dataTable"] as $data){
 		$stringTable.=$data["data"]."|".$data["nama"]."|".$data["jumlah_sks"]."|".$data["bg_color"]."_";
+		$jumSks = $jumSks + intval($data["jumlah_sks"]);
 		}
 		$dataform["dataTable2"] = $stringTable; 
+		$dataform["jumlah_sks_baru"] = $jumSks;
 		//Masukkan ke dalam Session table_session
 		$this->session->set_userdata('table_session', $stringTable);		
 		}
@@ -247,17 +258,23 @@ class Bataltambah extends CI_Controller{
 				
 			}
 		}
+		/****
+		Ambil Data Informasi mahasiswa dari table mahasiswa
+		****/
+		$dataform["data_mahasiswa"] = $this->mahasiswa_model->getDataMahasiswa($nrp);
+		
+		//Ambil Jurusan dari table informasi_kurikulum
+		$informasi_kurikulum_mahasiswa = $this->informasi_kurikulum_model->getDataKurikulum($dataform["data_mahasiswa"]["informasi_kurikulum_id"]);
+		$dataform["data_mahasiswa"]["informasi_kurikulum_mahasiswa"] = $informasi_kurikulum_mahasiswa;
+		$dataform["jumlah_sks_baru"] = $this->generateJumlahSKS($this->session->userdata("table_session"));
+		
 		$this->load->view('includes/header');
-		$this->load->view('nav/navbarmahasiswa',array('nameStudent' => $this->Mahasiswa_Model->getNameStudent($this->session->userdata("username"))));
-		$this->load->view('bataltambahdrop',$dataform);
+		$this->load->view('perwalian/bataltambahdrop',$dataform);
 		$this->load->view('includes/footer');
 	}
 	public function cekKembar($arrData, $stringData){
-		echo "Data yang akan ditambah: <br>";
-		print_r($arrData);
 		$explodeData = explode("_",$stringData);
 		array_pop($explodeData);
-		print_r($explodeData);
 		foreach($explodeData as $data){
 			$explodeData2 = explode("|",$data);
 			if($explodeData2[0] == $arrData["id"]){return 0;}
@@ -338,6 +355,8 @@ class Bataltambah extends CI_Controller{
 	/****
 	Function createComboBoxTambah
 	Digunakan untuk mengisi combobox pada form Tambah. 
+	Input : nrp
+	Output : Array of Data Mata Kuliah buat Combobox
 	****/
 	function createComboBoxTambah($nrp){
 		//Ambil Data dari mata_kuliah berdasarkan Status Aktif (1)
@@ -359,6 +378,28 @@ class Bataltambah extends CI_Controller{
 		$cekKembar = true;
 		}
 		return $arrHasil;
+	}
+	/****
+	Function generateJumlahSKS
+	Untuk menghitung jumlah SKS setelah Mahasiswa melakukan batal / tambah / drop
+	Input : String data batal/tambah/drop
+	Output : Jumlah SKS yang baru
+	****/
+	function generateJumlahSKS($stringData){
+		$jumlahSksBaru = 0;
+		//Explode Pertama untuk memisah Tiap Data
+		$explodeData1 = explode("_",$stringData);
+		//Membuang Array kosongan paling belakang
+		array_pop($explodeData1);
+		//Untuk setiap Array, Explode sekali lagi, dan ambil jumlah sksnya;
+		foreach($explodeData1 as $data){
+			$explodeData2 = explode("|",$data);
+			//Jika Warna (index ke 4 dari explode Data 2) adalah #FF6633 atau #FF8833 maka Tidak usah dihitung SKSnya 
+			if($explodeData2[3] == "none" || $explodeData2[3] == "#00CCFF"){
+				$jumlahSksBaru += intval($explodeData2[2]);
+			}
+		}
+		return $jumlahSksBaru;
 	}
 }
 

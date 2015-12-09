@@ -14,8 +14,6 @@ meliputi 3 form yaitu form Konfirmasi (yang paling atas), Form Batal, dan Form T
 Saling berkaitan. Form Batal, fungsinya untuk mengganti field status_ambil dari Table kelas_mahasiswa
 menjadi 'Batal'. Sedangkan Form Tambah, fungsinya untuk menambah data pada table status_ambil dengan status 'Tambah'. Sedangkan Form Konfirmasi, fungsinya untuk mengirim informasi kepada Dosen Wali Mahasiswa yang bersangkutan.
 -->
-
-
 <!--CONTENT-->
 	<div class="container">
 		<div class="row">
@@ -25,9 +23,26 @@ menjadi 'Batal'. Sedangkan Form Tambah, fungsinya untuk menambah data pada table
 					<li class=""><a data-toggle="tab" href="#drop">Drop</a></li>
 				</ul>
 				<div class="tab-content">
+					<!--Header Informasi Mahasiswa-->
+					<div class = "col-sm-12">
+						<div class= "panel panel-primary">
+							<div class="panel-heading">Biodata Mahasiswa</div>
+							<div class="panel panel-body" style="font-size:16px;">
+							Nama Mahasiswa : <?= $data_mahasiswa["nama"];?>	<br>
+							NRP Mahasiswa : <?= $data_mahasiswa["nrp"];?>	<br>
+							Total SKS : <?= $data_mahasiswa["sks"];?><br>
+							IPK : <?= $data_mahasiswa["ipk"];?><br>
+							Semester : <?= $data_mahasiswa["semester"];?><br>
+							Jurusan : <?= $data_mahasiswa["informasi_kurikulum_mahasiswa"]["jurusan"];?><br>
+							</div>
+						</div>
+					</div>
+					
 					<div role="tabpanel" class="tab-pane fade in active" id="bataltambah">
 						<!--Mata Kuliah Yang Diambil MHS-->
+						
 						<div class = "col-sm-12">
+						
 						<?php
 						$attr = array('class' => 'panel panel-primary');
 						echo form_open('bataltambah',$attr);
@@ -54,6 +69,9 @@ menjadi 'Batal'. Sedangkan Form Tambah, fungsinya untuk menambah data pada table
 						}
 						//Cetak Data ke Table
 						echo $this->table->generate($data);
+						echo "<p style='font-size:16px;'>Jumlah SKS yang diambil 	: 
+						".$jumlah_sks_baru."
+						</p>";
 						//echo $this->table->generate($dataTable); //Ambil dari Data Table hasil query
 						$attrTombol = "class='btn btn-primary pull-right' id='tombolKonfirmasi'";
 						//echo form_hidden('tampungArrayTable', $dataTable);
@@ -62,10 +80,7 @@ menjadi 'Batal'. Sedangkan Form Tambah, fungsinya untuk menambah data pada table
 						echo "</div>";
 						echo form_close();
 						?>
-						
 						</div>
-						
-
 						<!--END-->
 						<div class="col-sm-6">
 							<?php 
@@ -78,24 +93,12 @@ menjadi 'Batal'. Sedangkan Form Tambah, fungsinya untuk menambah data pada table
 										<label class='col-xs-3 control-label'>Mata Kuliah</label>
 										<div class='col-xs-8 selectContainer'>
 											";
-							/*$options = array(
-											'null' => 'Pilih Mata Kuliah',
-											'itp' => 'Intro to Programming'
-											);*/
 							$attr = "class='form-control'";
 							echo form_dropdown('makul',$dataComboBox,'null',$attr);
 							$attrTombol = "class='btn btn-primary pull-right' id='tombolBatal'";
 							echo "<div id='konfirmasi' class='col-sm-12' style='background:white;padding-top:10px;'>";
 							echo form_submit('btnSubmitBatal','Batal',$attrTombol);
 							echo "</div>";
-											/*<select class='form-control' name='matkul'>
-												<option value=''>Pilih Mata Kuliah</option>
-												<option value='itp'>Intro to Programming</option>
-												<option value='green'>Agama</option>
-												<option value='red'>Bahasa Indonesia</option>
-												<option value='yellow'>Algoritma dan Pemrograman 1</option>
-												<option value='white'>Internet World Wide Web</option>
-											</select>*/
 							echo "
 										</div>
 									</div>
@@ -148,6 +151,7 @@ menjadi 'Batal'. Sedangkan Form Tambah, fungsinya untuk menambah data pada table
 						</div>
 					</div>
 					<div role="tabpanel" class="tab-pane fade" id="drop">
+						
 						<div class="col-md-10 col-md-offset-1">
 						<?php
 						$attr = array('class' => 'panel panel-danger');
@@ -180,8 +184,7 @@ menjadi 'Batal'. Sedangkan Form Tambah, fungsinya untuk menambah data pada table
 						echo "<div class='col-md-1 pull-right'>".form_submit('btnClear','Clear', $attrTombol)."</div>";
 						echo form_close();
 						?>
-						
-							</div>
+						</div>
 						<?php
 							//DropDown Drop MAta kuliah
 							$attr = array('class' => 'panel panel-danger');
@@ -218,7 +221,6 @@ menjadi 'Batal'. Sedangkan Form Tambah, fungsinya untuk menambah data pada table
 										</div>
 									</div>
 							";
-							
 							echo "</div>";
 							echo form_close();
 							?>
@@ -229,37 +231,3 @@ menjadi 'Batal'. Sedangkan Form Tambah, fungsinya untuk menambah data pada table
 		</div>
 	</div>
 
-<script>
-
-$(document).on('click','#tombolBatal',function(){
-	alert("asdf");
-	$.ajax({
-			type: "POST",
-			url: "<?php echo base_url();?>" + "bataltambah/setTable",
-			dataType: 'json',
-			data: {name:id,status:check,countSKS:val},
-			success: function(msg)
-			{
-				//alert('here');
-				if(msg == "1"){
-					target.checked = false;	
-					alert('Anda tidak bisa mengambil matakuliah ini dikarenakan jadwal kuliah bentrok');
-				}else{
-					if(target.checked){
-						if(val<= 22){
-							val = (+val) + (+msg);
-							$('#totalSKS').text(val);
-						}
-					}else{
-						val = (+val) - (+msg);
-						$('#totalSKS').text(val);
-					}
-				}
-			}
-		})
-	
-});
-	
-
-
-</script>
