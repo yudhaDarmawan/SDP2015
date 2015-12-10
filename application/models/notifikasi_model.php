@@ -9,6 +9,7 @@
 			parent::__construct();
             $this->load->database();
 		}
+
 		public function getNotification($limit=null, $start=0)
 		{
 			$name = $this->session->userdata('username');
@@ -19,6 +20,7 @@
             if($limit !=null) {
                 $this->db->limit($limit, $start);
             }
+			$this->db->limit($limit, $start);
             $this->db->order_by('tanggal_create','desc');
 			$result = $this->db->get();
 			return $result->result();

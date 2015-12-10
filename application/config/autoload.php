@@ -124,6 +124,5 @@ $autoload['model'] = array('matakuliah_model','mahasiswa_model','dosen_model','n
 							'model_mata_kuliah',
                             'model_notifikasi');
 
-
 /* End of file autoload.php */
 /* Location: ./application/config/autoload.php */

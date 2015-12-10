@@ -167,5 +167,28 @@
 			);
 			$this->db->insert_batch('kelas',$data);
 		}
+		
+		/****
+		Function selectStatus
+		Mengambil data mata_kuliah yang sedang dibuka (Statusnya adalah 1)
+		Input : Status = 1 
+		Output : Result Array of Mata_Kuliah
+		****/
+		public function selectStatus($status = 1){
+			return $this
+			->db
+			->get_where('mata_kuliah',array('status' => $status))
+			->result_array();
+		}
+		
+		/****
+		Function selectMataKuliah
+		Mengambil data mata_kuliah Berdasarkan Kode Mata Kuliahnya
+		Input : ID_Mata_Kuliah
+		Output : Result Array of Mata_Kuliah
+		****/
+		public function selectMataKuliah($ID_Mata_Kuliah){
+			return $this->db->get_where('mata_kuliah', array('id' => $ID_Mata_Kuliah))->result_array();
+		}
 	}
 ?>
