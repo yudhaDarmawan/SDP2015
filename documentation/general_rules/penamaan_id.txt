@@ -1,5 +1,5 @@
 /***** Penamaan ID ****/
-Table `Kelas` 			 : K[YY]001
+Table `Kelas` 			 : [YY][0-1][5 digit mata_kuliah_id][A-Z] CONTOH 151MK001A
 Table `Nilai` 			 : N[4 Digit NRP]0001
 Table `log_penilaian`	 : NL[YYMMDD]001
 Table `hrevisi_penilaian`: NR[YYMM]001

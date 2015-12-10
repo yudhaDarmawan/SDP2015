@@ -38,9 +38,10 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "Home";
 $route['404_override'] = '';
 
-
+$route['confirmation/view/(:any)/(:any)'] = 'confirmation/view/$1/$2';
+$route['confirmation/view/(:any)'] = 'confirmation/all';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

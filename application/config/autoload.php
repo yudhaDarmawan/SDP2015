@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array();
+$autoload['libraries'] = array('database','session','form_validation','table');
 
 
 /*
@@ -64,7 +64,7 @@ $autoload['libraries'] = array();
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array();
+$autoload['helper'] = array('url','cookie','form','html','security');
 
 
 /*
@@ -109,8 +109,20 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array();
-
+$autoload['model'] = array('matakuliah_model','mahasiswa_model','dosen_model','nilai_model','class_model','syarat_matakuliah_model','kelas_mahasiswa_model','data_umum_model','notifikasi_model','model_calon_mahasiswa', 
+							'model_mahasiswa', 
+							'model_dosen',
+							'model_karyawan',
+							'model_user',
+							'model_informasi_kurikulum',
+							'model_informasi_beasiswa',
+							'model_informasi_dispensasi',
+							'model_hkeuangan',
+							'model_dkeuangan',
+							'model_kelas',
+							'model_kelas_mahasiswa',
+							'model_mata_kuliah',
+                            'model_notifikasi');
 
 /* End of file autoload.php */
 /* Location: ./application/config/autoload.php */
