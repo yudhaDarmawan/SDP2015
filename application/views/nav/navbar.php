@@ -11,15 +11,15 @@
 			<div class="navbar-collapse collapse" id="navbar">
 
 				<ul class="nav navbar-nav">
-                    <li><?= anchor('/','Home');?></li>
+                    <li><?= anchor('/Perwalian/home','Home');?></li>
 
                     <?php if ($this->session->userdata('user_role') == 'mahasiswa'){ ?>
                         <li><?= anchor('/','Biodata');?></li>
-                        <li class="dropdown">
+                        <li class="dropdown" <?php if($this->session->userdata('currentPage') == "frs"){echo "class='active'";} ?>>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Perwalian <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><?= anchor('/','FRS');?></li>
-                                <li><?= anchor('/','Batal/Tambah/Drop');?></li>
+                                <li><?= anchor('/Perwalian/frs/','FRS');?></li>
+                                <li><?= anchor('/bataltambah','Batal/Tambah/Drop');?></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -70,19 +70,18 @@
 
                 <!--- Navbar Umum-->
 				<ul class="nav navbar-nav navbar-right">
+
 					<li><a id="notif" data-toggle="dropdown" data-target="#" href="#"><span class="glyphicon glyphicon-bell"></span> Notification  </a>
                             <ul class="dropdown-menu notifications" role="menu" aria-labelledby="notif">
                                 <div class="notifications-wrapper" id="notifikasi">
                                 </div>
                                 <div class="notification-footer"><button class="btn btn-primary btn-block" id="notifikasi-viewmore">View More</button></div>
                             </ul>
-
 					</li>
 
 
 
-					<li><a id="user" data-toggle="dropdown" data-target="#" href="#"><span class="glyphicon glyphicon-user"></span> <?php echo
-$this->session->userdata('username');?> <span class="caret"></span> </a>
+					<li><a id="user" data-toggle="dropdown" data-target="#" href="#"><span class="glyphicon glyphicon-user"></span> <?php echo $this->session->userdata('username');?> <span class="caret"></span> </a>
 					<ul class="dropdown-menu users" role="menu" aria-labelledby="user">
                         <div class="notifications-wrapper">
                             <a class="content" href="#">
