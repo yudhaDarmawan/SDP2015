@@ -201,7 +201,7 @@
 						if($this->session->userdata('currentPage') == 'home')
 						{
 							//jika iya, maka tampilkan navbar mahasiswa
-							$this->load->view('nav/navbarmahasiswa');
+
 							//dan tampilkan view content home
 							$this->load->view('contentdefault');
 						}
@@ -213,7 +213,7 @@
 								//jika ya maka set halaman currentPage menjadi Frs
 								$this->session->set_userdata('currentPage','frs');
 								//tampilkan navbar mahasiswa
-								$this->load->view('nav/navbarmahasiswa');
+
 								//buat variable countSKS yang nanti digunakan untuk menampung
 								//total sks yang akan diambil saat perwalian
 								$data['countSKS']=0;
@@ -283,7 +283,6 @@
 				$data['nowSemester'] = $this->data_umum_model->getSemester();
 				//$this->load->view('includes/header',$data );
 				$this->session->userdata('currentPage','jadwal');
-				$this->load->view('nav/navbarmahasiswa',$data);
 				$this->load->view('perwalian/jadwal',$data);
 				$this->load->view('includes/footer');
 			}
