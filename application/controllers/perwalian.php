@@ -72,7 +72,6 @@
 					{
 						//Jika menekan maka tampilkan halaman index
 						$this->session->set_userdata('currentPage','home');
-						$this->load->view('nav/navbarmahasiswa');
 						$this->load->view('contentdefault');
 					}
 					else if($this->input->post('perwalian'))
@@ -83,7 +82,6 @@
 							//set posisi menu sekarang di frs
 							$this->session->set_userdata('currentPage','frs');
 							//menampilkan menu mahasiswa
-							$this->load->view('nav/navbarmahasiswa');
 							$data['countSKS']=0;
 							//set data countSKS = 0
 							//jika terdapat session countSKS maka
@@ -139,7 +137,6 @@
 						//mengeset posisi menu sekarang dibatal
 						$this->session->set_userdata('currentPage','batal');
 						//menglaod view menu mahasiswa
-						$this->load->view('nav/navbarmahasiswa');
 						//mengload content dari batal tambah
 						$this->load->view('contentdefault');
 					}
@@ -183,7 +180,6 @@
 							$this->mahasiswa_model->setAfterStudyPlan();
 							$data['nowSemester'] = $this->data_umum_model->getSemester();
 							//tampilkan navbar mahasiswa
-							$this->load->view('nav/navbarmahasiswa');
 							$this->load->view('perwalian/jadwal',$data);
 						}else
 						{

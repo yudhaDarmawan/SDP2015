@@ -214,6 +214,9 @@ class Home extends CI_Controller
             return false;
         }
     }
+    public function login(){
+        redirect('/');
+    }
 }
 
 

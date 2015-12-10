@@ -9,14 +9,16 @@
 			parent::__construct();
             $this->load->database();
 		}
-		public function getNotification($limit, $start)
+		public function getNotification($limit=null, $start=0)
 		{
 			$name = $this->session->userdata('username');
             $this->db->select('n.dari,n.tujuan,n.judul,d.nama as nama_asal, n.tanggal_create');
             $this->db->from('notifikasi n, dosen d');
             $this->db->where('d.nip = n.dari');
             $this->db->where('n.tujuan',$name);
-			$this->db->limit($limit, $start);
+            if($limit !=null) {
+                $this->db->limit($limit, $start);
+            }
             $this->db->order_by('tanggal_create','desc');
 			$result = $this->db->get();
 			return $result->result();
