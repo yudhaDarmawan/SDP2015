@@ -9,18 +9,19 @@
 	    </div>
 	    <div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav">
-				<li><?php echo anchor('keuangan', 'Admin BAU', 'style=background:#663344;'); ?></li>
+				<li <?php if($currentTab == 'awal') echo 'class=active'; ?>><?php echo anchor('keuangan', 'Admin BAU', 'style=background:#663344;'); ?></li>
 			</ul>
 			<ul class="nav navbar-nav">
-				<li><?php echo anchor('keuangan/pembayaran_usp', 'Pembayaran USP', ''); ?></li>
+				<li <?php if($currentTab == 'pembayaran_usp') echo 'class=active'; ?>><?php echo anchor('keuangan/pembayaran_usp', 'Pembayaran USP', ''); ?></li>
 			</ul>
 			<ul class="nav navbar-nav">
-				<li><?php echo anchor('keuangan/pembayaran_upp', 'Pembayaran UPP', ''); ?></li>
+				<li <?php if($currentTab == 'pembayaran_upp') echo 'class=active'; ?>><?php echo anchor('keuangan/pembayaran_upp', 'Pembayaran UPP', ''); ?></li>
 			</ul>
+			
 			<ul class="nav navbar-nav navbar-right">
 				<li>
 					<?php
-					echo anchor('bau/userLogout', '<span class="glyphicon glyphicon-log-out"></span> Logout', '');
+					echo anchor('login/userLogout', '<span class="glyphicon glyphicon-log-out"></span> Logout', '');
 					?>
 				</li>
 			</ul>
