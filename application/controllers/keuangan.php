@@ -3,16 +3,6 @@
 class Keuangan extends CI_Controller {
 	function __construct(){
 		parent::__construct();
-		$this->load->helper('form');
-		$this->load->helper('url');
-		$this->load->helper('cookie');
-		$this->load->library('session');
-		$this->load->library('table');
-		$this->load->model('model_tagihan');
-		$this->load->model('model_tagihan_join');
-		$this->load->model('model_dosen');
-		$this->load->model('model_notifikasi');
-		$this->load->model('model_calon_mahasiswa');
 	}
 	
 	public function getViewVariable($bol1, $bol2){
@@ -45,10 +35,10 @@ class Keuangan extends CI_Controller {
 		
 		// load view.
 		$data['currentTab'] = 'awal';
-		$this->load->view('header', $data);
-		$this->load->view('navbar_keuangan', $data);
+		$this->load->view('includes/header_bau', $data);
+		$this->load->view('nav/navbar_keuangan', $data);
 		$this->load->view('keuangan_placeholder');
-		$this->load->view('footer', $data);
+		$this->load->view('includes/footer_bau', $data);
 	}
 	
 	public function pembayaran_upp(){
@@ -137,10 +127,10 @@ class Keuangan extends CI_Controller {
 		// current tab.
 		$data['currentTab'] = 'pembayaran_upp';
 		// load view.
-		$this->load->view('header', $data);
-		$this->load->view('navbar_keuangan');
+		$this->load->view('includes/header_bau', $data);
+		$this->load->view('nav/navbar_keuangan', $data);
 		$this->load->view('pembayaran_upp', $data);
-		$this->load->view('footer', $data);
+		$this->load->view('includes/footer_bau', $data);
 	}
 	
 	public function pembayaran_usp(){
@@ -274,9 +264,9 @@ class Keuangan extends CI_Controller {
 		// current tab.
 		$data['currentTab'] = 'pembayaran_usp';
 		// load view.
-		$this->load->view('header', $data);
-		$this->load->view('navbar_keuangan', $data);
+		$this->load->view('includes/header_bau', $data);
+		$this->load->view('nav/navbar_keuangan', $data);
 		$this->load->view('pembayaran_usp', $data);
-		$this->load->view('footer', $data);
+		$this->load->view('includes/footer_bau', $data);
 	}
 }

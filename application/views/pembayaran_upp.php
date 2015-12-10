@@ -130,7 +130,7 @@
 						echo "<td>"; 
 						if ($table[$a]['1stPeriode'] > 0)echo "<div style='color:green;'>";
 						else echo "<div style='color:red;'>";
-						echo $table[$a]['1stPeriode']." ".form_submit('btnChange$no','Change Status'); 
+						echo number_format($table[$a]['1stPeriode'])." ".form_submit('btnChange$no','Change Status'); 
 						echo "</div>";
 						echo "</td>";
 					}
@@ -138,7 +138,7 @@
 						echo "<td>"; 
 						if ($table[$a]['2ndPeriode'] > 0)echo "<div style='color:green;'>";
 						else echo "<div style='color:red;'>";
-						echo $table[$a]['2ndPeriode']." ".form_submit('btnChange$no','Change Status');
+						echo number_format($table[$a]['2ndPeriode'])." ".form_submit('btnChange$no','Change Status');
 						echo "</div>";
 						echo "</td>";
 					}
@@ -146,7 +146,7 @@
 						echo "<td>"; 
 						if ($table[$a]['3rdPeriode'] > 0)echo "<div style='color:green;'>";
 						else echo "<div style='color:red;'>";
-						echo $table[$a]['3rdPeriode']." ".form_submit('btnChange$no','Change Status	'); 
+						echo number_format($table[$a]['3rdPeriode'])." ".form_submit('btnChange$no','Change Status	'); 
 						echo "</div>";
 						echo "</td>";
 					}

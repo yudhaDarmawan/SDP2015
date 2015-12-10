@@ -140,7 +140,7 @@
 						echo "<td>"; echo $table[$a]['noreg']; echo "</td>";
 						echo "<td>"; echo $table[$a]['jurusan']; echo "</td>";
 						echo "<td>"; echo $table[$a]['nama']; echo "</td>";
-						echo "<td>"; echo $table[$a]['jumlah']; echo "</td>";
+						echo "<td>"; echo number_format($table[$a]['jumlah']); echo "</td>";
 						echo "<td>"; echo $table[$a]['tanggal_batas']; echo "</td>";
 						echo "<td>"; 
 						$no = $table[$a]['noreg'];
