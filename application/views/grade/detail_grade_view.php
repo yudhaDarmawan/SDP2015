@@ -2,20 +2,21 @@
     <?php if($this->session->flashdata('alert')){
         echo '<div class="alert alert-'.$this->session->flashdata('alert_level').'" role="alert">'.$this->session->flashdata('alert').'</div>';
     }?>
+    <div class="page-header"><h2><?=$class[6]?> <?= $class[0] ?> / <?= $class[3]?> <small><?= $class[1] ?></small><h2></div>
 <div class="panel panel-info">
-	  <div class="panel-heading"><?php echo $title;?></div>
+    <div class="panel-heading">Detail Kelas</div>
 	  <div class="panel-body">
 		<?php echo $this->table->generate();?>
 	  </div>
 	</div>
     <div class="row">
         <div class="col-md-8 col-sm-6">
+
             <?php
                 echo form_open();
-                echo form_submit(['name' => 'btnCetak','value' => 'Cetak' , 'class'=>'btn btn-primary btn-sm']).' ';
                 echo form_submit(['name' => 'btnRevisi','value' => 'Revisi' , 'class'=>'btn btn-primary btn-sm','id'=>'btnRevisi']);
             ?>
-
+            <button id='btnPrint' type='button' class='btn btn-primary btn-sm' data-toggle="modal" data-target="#managePrint">Cetak</button>
             <button id='btnProsentase' type='button' class='btn btn-primary btn-sm' data-toggle="modal" data-target="#managePercentage">Atur Prosentase</button>
             <button id='btnGrade' type='button' class='btn btn-primary btn-sm' data-toggle="modal" data-target="#manageGrade">Grade</button>
             <?php
@@ -26,13 +27,14 @@
         </div>
         <div class="col-md-4 col-sm-6 text-right">
             <div class="btn-group" role="group" aria-label="...">
-                <button id="btnEditUTS" type='button' class="btn btn-default btn-sm">Edit UTS</button>
-                <button id="btnEditTugas" type='button' class="btn btn-default btn-sm">Edit Tugas</button>
-                <button id="btnEditUAS" type='button' class="btn btn-default btn-sm">Edit UAS</button>
+                <button id="btnEditUTS" type='button' class="btn btn-default btn-sm">Enable Edit UTS</button>
+                <button id="btnEditTugas" type='button' class="btn btn-default btn-sm">Enable Edit Tugas</button>
+                <button id="btnEditUAS" type='button' class="btn btn-default btn-sm">Enable Edit UAS</button>
             </div>
 
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-12">
         <table id="table_grade" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -63,58 +65,118 @@
             </tr>
             </tfoot>
             </table>
-
         </div>
-
     </div>
-    </br.>
+    </br>
+
+
     <div class="row">
-        <div class="col-md-offset-8 col-md-4 col-sm-offset-6 col-sm-6">
+        <div class=" col-md-4 col-sm-4 col-xs-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">Summary Kelas</div>
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="text-right">A</th>
+                        <td class="percentA text-right">0%</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">B</th>
+                        <td class="percentB text-right">0%</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">C</th>
+                        <td class="percentC text-right">0%</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">D</th>
+                        <td class="percentD text-right">0%</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">E</th>
+                        <td class="percentE text-right">0%</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right">IP Dosen</th>
+                        <td class="ipdosen text-right">0%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+            <?php if($class[19] != ""){ ?>
             <div class="row">
-                <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase A :
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4 percentA text-right">0%
+                <div class="col-md-12">
+                <strong>Komentar Kajur: </strong>
+                <div class="well"><?php echo $class[19];?></div>
                 </div>
             </div>
+            <?php } ?>
             <div class="row">
-                <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase B :
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4 percentB text-right">0%
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase C :
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4 percentC text-right">0%
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase D :
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4 percentD text-right">0%
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-sm-8 col-xs-8 text-right">
-                    Prosentase E :
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-4 percentE text-right">0%
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-offset-8 col-sm-offset-8 col-xs-offset-8 col-md-4 col-sm-4 col-xs-4 text-right">
+                <div class="col-md-12 text-right">
                     <?php echo form_open();?>
                     <?php echo form_submit(['id'=>'btnSend','name'=>'btnSend','value'=>'Kirim','class'=>'btn btn-primary']);?>
-                    <?php echo form_close();?>
+                     <?php echo form_close();?>
                 </div>
             </div>
-
         </div>
     </div>
+    <?php
+    $ctrRevisi = 0;
+    if (isset($revisions) && count($revisions) > 0){
+        $statusRevisi = ["0" => "<span class='label label-warning'>Menunggu</span>",
+            "1" => "<span class='label label-danger'>Ditolak</span>",
+            "2" => "<span class='label label-success'>Disetujui</span>"]
+        ?>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="page-header"><h3>Daftar Revisi</h3></div>
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <?php foreach ($revisions as $revision) { $ctrRevisi++;?>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="h<?= $revision['id']?>">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#c<?= $revision['id']?>" aria-expanded="true" aria-controls="c<?= $revision['id']?>">
+                                        <?php echo $statusRevisi[$revision["status_revisi"]];?> Revisi #<?php echo $revision['id'];?> <small><?= date_format(date_create_from_format('Y-m-d H:i:s',$revision['tanggal_create']),'d M Y'); ?></small>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="c<?= $revision['id']?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="h<?= $revision['id']?>">
+                                <div class="panel-body">
+                                    <strong>Catatan Revisi</strong> : <?= $revision["catatan"]?>
+                                </div>
+                                <table class="table table-bordered">
+                                    <thead><tr>
+                                        <th>#</th>
+                                        <th>NRP</th>
+                                        <th>Nama Mahasiswa</th>
+                                        <th>Nilai Akhir Sebelum</th>
+                                        <th>Nilai Akhir Sesudah</th>
+                                    </tr></thead>
+                                    <tbody>
+                                    <?php
+                                    $ctrMahasiswa = 1;
+                                    foreach ($revision["mahasiswa"] as $student){
+                                        echo "<tr>";
+                                        echo "<td>".$ctrMahasiswa++."</td>";
+                                        echo "<td>".$student['nrp']."</td>";
+                                        echo "<td>".$student['nama']."</td>";
+                                        echo "<td>".$student['nilai_akhir_sebelum']."</td>";
+                                        echo "<td><strong>".$student['nilai_akhir_sesudah']."</strong></td>";
+                                        echo "</tr>";
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                                <?php if ($revision["status_revisi"] == 0){ $revisionExist = true; }?>
+                            </div>
+                        </div>
+                    <?php };?>
+                </div>
+            </div>
+        </div>
+    <?php }?>
+
+
     </div><!-- End of Container -->
 </div>
   <script>
@@ -125,6 +187,18 @@
 
         var logGrade = '<?php if($this->session->userdata('logClass') == $classId){ echo $this->session->userdata('logGrade');}?>';
         $(document).ready(function() {
+            $('#accordion').collapse();
+            $('#accordion .panel-collapse').each(function (index) {
+                if (index < <?= $ctrRevisi-1 ?>){
+                    $(this).collapse('hide');
+                    console.log(index);
+                }
+            })
+            // Method untuk mendisable kan Button Revision jika ada revisi
+            <?php if(isset($revisionExist)){ ?>
+            $('#btnRevisi').attr('disabled','')
+            <?php }?>
+
             table = $('#table_grade').DataTable({
                 "processing": true, //Feature control the processing indicator.
                 "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -140,7 +214,7 @@
                 "columnDefs": [
                     {
                         "targets": [ 0,-1 ], //last column
-                        "orderable": false, //set not orderable
+                        "orderable": false //set not orderable
                     },
                 ],
                 "createdRow": function ( row, data, index ) {
@@ -212,6 +286,7 @@
                     event.preventDefault();
                     if ($(this).hasClass('active')){
                         $(this).removeClass('active');
+                        $(this).html('Enable Edit UTS');
                         $('.nilai_uts').attr('disabled','');
                         if (!$('#btnEditUAS').hasClass('active') && !$('#btnEditTugas').hasClass('active')){
                             $('.grade_edit').removeAttr('disabled');
@@ -221,6 +296,7 @@
                     }
                     else {
                         $(this).addClass('active');
+                        $(this).html('Disable Edit UTS');
                         $('.nilai_uts').removeAttr('disabled');
                         $('.grade_edit').attr('disabled','');
                         $('#btnSaveAll').removeAttr('disabled');
@@ -232,6 +308,7 @@
                     event.preventDefault();
                     if ($(this).hasClass('active')){
                         $(this).removeClass('active');
+                        $(this).html('Enable Edit UAS');
                         $('.nilai_uas').attr('disabled','');
                         if (!$('#btnEditUTS').hasClass('active') && !$('#btnEditTugas').hasClass('active')){
                             $('.grade_edit').removeAttr('disabled');
@@ -241,6 +318,7 @@
                     }
                     else {
                         $(this).addClass('active');
+                        $(this).html('Disable Edit UAS');
                         $('.nilai_uas').removeAttr('disabled');
                         $('.grade_edit').attr('disabled','');
                         $('#btnSaveAll').removeAttr('disabled');
@@ -251,6 +329,7 @@
                     event.preventDefault();
                     if ($(this).hasClass('active')){
                         $(this).removeClass('active');
+                        $(this).html('Enable Edit Tugas');
                         $('.nilai_tugas').attr('disabled','');
                         if (!$('#btnEditUTS').hasClass('active') && !$('#btnEditUAS').hasClass('active')){
                             $('.grade_edit').removeAttr('disabled');
@@ -260,6 +339,7 @@
                     }
                     else {
                         $(this).addClass('active');
+                        $(this).html('Disable Edit Tugas');
                         $('.nilai_tugas').removeAttr('disabled');
                         $('.grade_edit').attr('disabled','');
                         $('#btnSaveAll').removeAttr('disabled');
@@ -297,6 +377,9 @@
                     $('#btnEditUAS').removeClass('active');
                     $('#btnEditUTS').removeClass('active');
                     $('#btnEditTugas').removeClass('active');
+                    $('#btnEditUAS').html('Enable Edit UAS');
+                    $('#btnEditUTS').html('Enable Edit UTS');
+                    $('#btnEditTugas').html('Enable Edit Tugas');
                 });
                 $('#btnCancelAll').click(function(event) {
                     event.preventDefault();
@@ -309,6 +392,9 @@
                     $('#btnEditUAS').removeClass('active');
                     $('#btnEditUTS').removeClass('active');
                     $('#btnEditTugas').removeClass('active');
+                    $('#btnEditUAS').html('Enable Edit UAS');
+                    $('#btnEditUTS').html('Enable Edit UTS');
+                    $('#btnEditTugas').html('Enable Edit Tugas');
                 });
             }
             else {
@@ -334,7 +420,9 @@
                 $('.percentC').html(arrPercent[2]+"%");
                 $('.percentD').html(arrPercent[3]+"%");
                 $('.percentE').html(arrPercent[4]+"%");
+                $('.ipdosen').html(arrPercent[5])
             });
+
 
         });
         function reload_table()
@@ -347,6 +435,7 @@
                 $('.percentC').html(arrPercent[2]+"%");
                 $('.percentD').html(arrPercent[3]+"%");
                 $('.percentE').html(arrPercent[4]+"%");
+                $('.ipdosen').html(arrPercent[5]);
             });
         }
     </script>
@@ -381,7 +470,7 @@
 	  <?php echo form_open();?>
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="manageGradeLabel">Atur Grade</h4>
+        <h4 class="modal-title" id="manageGradeLabel">Atur Prosentase</h4>
       </div>
       <div class="modal-body">
 			
@@ -407,4 +496,34 @@
 	  <?php echo form_close();?>
     </div>
   </div>
+</div>
+
+
+<!-- Manage Cetak Print -->
+<div class="modal fade" id="managePrint" tabindex="-1" role="dialog" aria-labelledby="managePrint">
+    <div class="modal-dialog modal-sm"" role="document">
+    <div class="modal-content">
+        <?php echo form_open('grade/printPdf/'.$classId);?>
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="managePrint">Atur Cetak</h4>
+        </div>
+        <div class="modal-body">
+
+         <?php
+                echo form_checkbox('uts','uts',true). ' UTS <br>';
+                echo form_checkbox('uas','uas',true).' UAS <br>';
+                echo form_checkbox('tugas','tugas',true).' Tugas <br>';
+                echo form_checkbox('nilai_akhir','nilai_akhir',true).' Nilai Akhir <br>';
+                echo form_checkbox('nilai_akhir_grade','nilai_akhir_grade',true).' Nilai Akhir Setelah Grade <br>';
+                echo form_checkbox('nilai_grade','nilai_grade',true).' Nilai Grade <br>';
+            ?>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+            <?php echo form_submit('btnCetak','Cetak','class="btn btn-primary"');?>
+        </div>
+        <?php echo form_close();?>
+    </div>
+</div>
 </div>
